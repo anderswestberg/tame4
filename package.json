@@ -1,13 +1,26 @@
 {
   "name": "@diginet/tame4",
-  "version": "4.3.1",
+  "version": "4.3.2",
   "description": "TAME 4: TwinCAT ADS Made Easy",
   "main": "tame.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anderswestberg/tame4.git"
   },
-  "keywords": ["ADS","Beckhoff","TwinCAT","PLC","TAME","TAME4", "ads", "beckhoff", "twincat", "plc", "tame", "tame4"],
+  "keywords": [
+    "ADS",
+    "Beckhoff",
+    "TwinCAT",
+    "PLC",
+    "TAME",
+    "TAME4",
+    "ads",
+    "beckhoff",
+    "twincat",
+    "plc",
+    "tame",
+    "tame4"
+  ],
   "author": "Thomas Schmidt <t.schmidt.p1@freenet.de>",
   "license": "(MIT or GPL-3.0)",
   "bugs": {
