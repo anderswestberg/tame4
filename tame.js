@@ -4362,7 +4362,7 @@
 
                     //Get name and type.
                     nameAndType = dataString.substring(strAddr + nameOffs, (strAddr + infoLen)).split(String.fromCharCode(0));
-                    name = nameAndType[0].toUpperCase();
+                    var name = nameAndType[0].toUpperCase();
 
 
                     //Create an entry.
