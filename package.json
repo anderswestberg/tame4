@@ -2,7 +2,8 @@
   "name": "@diginet/tame4",
   "version": "4.3.4",
   "description": "TAME 4: TwinCAT ADS Made Easy",
-  "main": "tame.js",
+  "main": "./tame.js",
+  "types": "./tame.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anderswestberg/tame4.git"
