@@ -1,4 +1,4 @@
-declare class TAME {
+export declare class TAME {
     service: any;
     version: 'V4.3.1 171120';
     weekdShortNames: {

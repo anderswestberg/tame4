@@ -1,4 +1,4 @@
-class TAME {
+export class TAME {
     version: 'V4.3.1 171120'
     weekdShortNames: {
         ge: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],

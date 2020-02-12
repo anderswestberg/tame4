@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var TAME = /** @class */ (function () {
     function TAME(service) {
         var _this = this;
@@ -4299,4 +4301,5 @@ var TAME = /** @class */ (function () {
     };
     return TAME;
 }());
+exports.TAME = TAME;
 //# sourceMappingURL=tame.js.map
