@@ -1,6 +1,6 @@
 {
   "name": "@diginet/tame4",
-  "version": "4.3.2",
+  "version": "4.3.3",
   "description": "TAME 4: TwinCAT ADS Made Easy",
   "main": "tame.js",
   "repository": {
