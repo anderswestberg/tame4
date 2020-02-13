@@ -137,7 +137,6 @@ export declare class TAME {
      * @return {Object} xmlHttpReq  A XMLHttpRequest.
      */
     createXMLHttpReq(): any;
-    adsReqSend(adsReq: any): void;
     adsReqSendAsync(adsReq: any): Promise<any>;
     /**
      * Create the objects for SOAP and XMLHttpRequest and send the request.
@@ -496,7 +495,7 @@ export declare class TAME {
      *
      * @param {Object} adsReq   The object containing the arguments of the ADS request.
      */
-    parseResponse(adsReq: any): any;
+    parseResponse(adsReq: any, xmlDocument: XMLDocument): any;
     /**
      * Get the handles from the PLC.
      *
@@ -596,7 +595,7 @@ export declare class TAME {
     /**
      *  Get the upload info.
      */
-    getUploadInfo(): void;
+    getUploadInfo(): Promise<void>;
     /**
      * Parse the upload information and call the request for
      * reading the upload data.

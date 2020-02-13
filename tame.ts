@@ -821,111 +821,6 @@ export class TAME {
         return xmlHttpReq;
     }
 
-
-    adsReqSend(adsReq) {
-
-        var soapReq;
-
-        //Cancel the request, if the last on with the same ID is not finished.
-        if (typeof adsReq.reqDescr.id === 'number' && this.currReq[adsReq.reqDescr.id] > 0) {
-            this.log('TAME library warning: Request dropped (last request with ID ' + adsReq.reqDescr.id + ' not finished!)');
-            this.currReq[adsReq.reqDescr.id]++;
-            if (this.currReq[adsReq.reqDescr.id] <= this.maxDropReq) {
-                return;
-            }
-            //Automatic acknowleding after a count of 'maxDropReq' to
-            //prevent stucking.
-            this.currReq[adsReq.reqDescr.id] = 0;
-        }
-
-
-        //Create the XMLHttpRequest object.
-        this.xmlHttpReq = this.createXMLHttpReq();
-
-        //Generate the SOAP request.
-        soapReq = '<?xml version=\'1.0\' encoding=\'utf-8\'?>';
-        soapReq += '<soap:Envelope xmlns:xsi=\'http://www.w3.org/2001/XMLSchema-instance\' ';
-        soapReq += 'xmlns:xsd=\'http://www.w3.org/2001/XMLSchema\' ';
-        soapReq += 'xmlns:soap=\'http://schemas.xmlsoap.org/soap/envelope/\'>';
-        soapReq += '<soap:Body><q1:';
-        soapReq += adsReq.method;
-        soapReq += ' xmlns:q1=\'http://beckhoff.org/message/\'><netId xsi:type=\'xsd:string\'>';
-        soapReq += this.service.amsNetId;
-        soapReq += '</netId><nPort xsi:type=\'xsd:int\'>';
-        soapReq += this.service.amsPort;
-        soapReq += '</nPort>';
-
-        if (adsReq.indexGroup !== undefined) {
-            soapReq += '<indexGroup xsi:type=\'xsd:unsignedInt\'>';
-            soapReq += adsReq.indexGroup;
-            soapReq += '</indexGroup>';
-        }
-        if (adsReq.indexOffset !== undefined) {
-            soapReq += '<indexOffset xsi:type=\'xsd:unsignedInt\'>';
-            soapReq += adsReq.indexOffset;
-            soapReq += '</indexOffset>';
-        }
-        if ((adsReq.method === 'Read' || adsReq.method === 'ReadWrite') && adsReq.reqDescr.readLength > 0) {
-            soapReq += '<cbRdLen xsi:type=\'xsd:int\'>';
-            soapReq += adsReq.reqDescr.readLength;
-            soapReq += '</cbRdLen>';
-        }
-        if (adsReq.pData && adsReq.pData.length > 0) {
-            soapReq += '<pData xsi:type=\'xsd:base64Binary\'>';
-            soapReq += adsReq.pData;
-            soapReq += '</pData>';
-        }
-        if (adsReq.pwrData && adsReq.pwrData.length > 0) {
-            soapReq += '<pwrData xsi:type=\'xsd:base64Binary\'>';
-            soapReq += adsReq.pwrData;
-            soapReq += '</pwrData>';
-        }
-        soapReq += '</q1:';
-        soapReq += adsReq.method;
-        soapReq += '></soap:Body></soap:Envelope>';
-
-        //Send the AJAX request.
-        if (typeof this.xmlHttpReq === 'object') {
-
-            this.xmlHttpReq.open('POST', this.service.serviceUrl, true, this.service.serviceUser, this.service.servicePassword);
-
-            this.xmlHttpReq.setRequestHeader('SOAPAction', 'http://beckhoff.org/action/TcAdsSync.' + adsReq.method);
-            this.xmlHttpReq.setRequestHeader('Content-Type', 'text/xml; charset=utf-8');
-
-            this.xmlHttpReq.timeout = this.xmlHttpReqTimeout;
-            this.xmlHttpReq.ontimeout = (e) => {
-                this.log('TAME library error: XMLHttpRequest timed out. Timeout ' + this.xmlHttpReqTimeout + ' milliseconds.');
-                this.log(e);
-                if (typeof adsReq.reqDescr.ot === 'function') {
-                    //on timeout function
-                    adsReq.reqDescr.ot();
-                }
-            };
-
-            this.xmlHttpReq.onreadystatechange = () => {
-                if (this.xmlHttpReq.readyState === 4) {
-                    if (this.xmlHttpReq.status === 200) {
-                        //request OK
-                        this.parseResponse(adsReq);
-                    } else {
-                        //request failed
-                        this.log('TAME library error: XMLHttpRequest returns an error. Status code : ' + this.xmlHttpReq.status);
-                        if (typeof adsReq.reqDescr.oe === 'function') {
-                            //on error function
-                            adsReq.reqDescr.oe();
-                        }
-                    }
-                }
-            };
-            this.xmlHttpReq.send(soapReq);
-
-            //Request with index 'id' sent.
-            if (typeof adsReq.reqDescr.id === 'number') {
-                this.currReq[adsReq.reqDescr.id] = 1;
-            }
-        }
-    }
-
     async adsReqSendAsync(adsReq) {
 
         //Generate the SOAP request.
@@ -970,11 +865,6 @@ export class TAME {
         soapReq += adsReq.method;
         soapReq += '></soap:Body></soap:Envelope>';
 
-        this.xmlHttpReq.open('POST', this.service.serviceUrl, true, this.service.serviceUser, this.service.servicePassword);
-
-        this.xmlHttpReq.setRequestHeader('SOAPAction', 'http://beckhoff.org/action/TcAdsSync.' + adsReq.method);
-        this.xmlHttpReq.setRequestHeader('Content-Type', 'text/xml; charset=utf-8');
-
         let options =  { 
             method: 'POST',
             headers: [
@@ -986,7 +876,9 @@ export class TAME {
         if (this.service.serviceUser || this.service.servicePassword)
             options.headers.push(['Authorization', 'Basic ' + btoa(this.service.serviceUser + ":" + this.service.servicePassword)])
         let response = await fetch(this.service.serviceUrl, options);
-        return this.parseResponse(adsReq)
+        let str = await response.text()
+        const xmlDocument = new window.DOMParser().parseFromString(str, "text/xml") as XMLDocument
+        return this.parseResponse(response, xmlDocument)
     }
 
     /**
@@ -1002,7 +894,7 @@ export class TAME {
             this.log(adsReq);
         }
 
-        adsReq.send = () => this.adsReqSend(adsReq)
+        adsReq.send = async () => await this.adsReqSendAsync(adsReq)
         return adsReq;
     }
 
@@ -3906,31 +3798,14 @@ export class TAME {
      * 
      * @param {Object} adsReq   The object containing the arguments of the ADS request.
      */
-    parseResponse(adsReq) {
+    parseResponse(adsReq, xmlDocument: XMLDocument) {
 
         let response, errorCode, errorText;
         let result: any
 
-        //Acknowledge the receive of a request with index 'id'.
-        if (typeof adsReq.reqDescr.id === 'number') {
-            this.currReq[adsReq.reqDescr.id] = 0;
-        }
-
-        //Check if the XML data object is valid.
-        if (this.xmlHttpReq.responseXML === null) {
-            this.log('TAME library error: Request contains no XML data. Object "responseXML" is null.');
-            this.log('TAME library error: This is the "responseText":');
-            this.log(this.xmlHttpReq.responseText);
-            if (typeof adsReq.reqDescr.oe === 'function') {
-                //on error function
-                adsReq.reqDescr.oe();
-            }
-            return;
-        }
-
         //Get the response
         try {
-            response = this.xmlHttpReq.responseXML.documentElement;
+            response = xmlDocument.documentElement;
         } catch (e) {
             this.log('TAME library error: No XML data in server response: ' + e);
             if (typeof adsReq.reqDescr.oe === 'function') {
@@ -4263,7 +4138,7 @@ export class TAME {
      *  Get the upload info. 
      */
 
-    getUploadInfo() {
+    async getUploadInfo() {
         //Generate the ADS request object and call the send function.
         var adsReq = {
             method: 'Read',
@@ -4274,7 +4149,7 @@ export class TAME {
                 //sync: false
             }
         };
-        this.createRequest(adsReq).send();
+        await this.adsReqSendAsync(adsReq)
     }
 
 
