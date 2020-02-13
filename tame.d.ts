@@ -612,6 +612,7 @@ export declare class TAME {
      * @param {Object} adsReq   An ADS Request Descriptor.
      */
     parseUpload(adsReq: any): void;
+    configXmlHttpReq: any;
     /**
     * Get the symbol-file (*.tpy) from the server and create
     * an object (symTable) with the symbol names as the properties.

@@ -4503,30 +4503,30 @@ export class TAME {
         }
     }
 
-
+    configXmlHttpReq = null
     /**
     * Get the symbol-file (*.tpy) from the server and create
     * an object (symTable) with the symbol names as the properties. 
     */
     getConfigFile() {
 
-        var xmlHttpReq = this.createXMLHttpReq(),
-            symbolArray = [],
+        this.configXmlHttpReq = this.createXMLHttpReq()
+        var symbolArray = [],
             configFile, name, allSymbols, typeArr, arrayLength, type, elem,
             tcVersion, i;
 
         this.log('TAME library info: Start reading the TPY file.');
 
         //HTTPRequest
-        xmlHttpReq.open('GET', this.service.configFileUrl, !this.service.syncXmlHttp, this.service.serviceUser, this.service.servicePassword);
-        xmlHttpReq.setRequestHeader('Content-Type', 'text/xml');
+        this.configXmlHttpReq.open('GET', this.service.configFileUrl, !this.service.syncXmlHttp, this.service.serviceUser, this.service.servicePassword);
+        this.configXmlHttpReq.setRequestHeader('Content-Type', 'text/xml');
 
-        xmlHttpReq.onload = () => {
+        this.configXmlHttpReq.onload = () => {
 
             //Create a DOM object from XML
             if (typeof DOMParser != 'undefined') {
                 try {
-                    configFile = (new DOMParser()).parseFromString(xmlHttpReq.responseText, "text/xml");
+                    configFile = (new DOMParser()).parseFromString(this.configXmlHttpReq.responseText, "text/xml");
                 } catch (e) {
                     this.log('TAME library error: Creating a DOM object from TPY failed:' + e);
                     return;
@@ -4836,7 +4836,7 @@ export class TAME {
             }
         };
 
-        xmlHttpReq.send(null);
+        this.configXmlHttpReq.send(null);
 
     }
 
