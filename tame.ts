@@ -1376,25 +1376,7 @@ export class TAME {
      * @param {Array} data
      */
     encodeBase64(data) {
-        let test = btoa(String.fromCharCode(...data))
-        var $ = this.b64Enc,
-        i = 0,
-        out = '',
-        c1, c2, c3;
-
-        while (i < data.length) {
-            c1 = data[i++];
-            c2 = data[i++];
-            c3 = data[i++];
-            out = out +
-                $[c1 >> 2] +
-                $[((c1 & 3) << 4) | (c2 >> 4)] +
-                (isNaN(c2) ? '=' : $[(((c2 & 15) << 2) | (c3 >> 6))]) +
-                ((isNaN(c2) || isNaN(c3)) ? '=' : $[c3 & 63]);
-        }
-        if (out !== test)
-            console.log("Bug in encodeBase64")
-        return out;
+        return btoa(String.fromCharCode(...data))
     }
 
     /**
@@ -2069,39 +2051,7 @@ export class TAME {
      * @param {String} data
      */
     decodeBase64(data) {
-        let test = atob(data)
-        var $ = this.b64Dec,
-            i = 0,
-            output = '',
-            c1, c2, c3,
-            e1, e2, e3, e4;
-
-        //Cut all characters but A-Z, a-z, 0-9, +, /, or =
-        data = data.replace(/[^A-Za-z0-9\+\/\=]/g, '');
-
-        do {
-            e1 = $[data.charAt(i++)];
-            e2 = $[data.charAt(i++)];
-            e3 = $[data.charAt(i++)];
-            e4 = $[data.charAt(i++)];
-
-            c1 = (e1 << 2) | (e2 >> 4);
-            c2 = ((e2 & 15) << 4) | (e3 >> 2);
-            c3 = ((e3 & 3) << 6) | e4;
-
-            output += String.fromCharCode(c1);
-            if (e3 !== 64) {
-                output += String.fromCharCode(c2);
-            }
-            if (e4 !== 64) {
-                output += String.fromCharCode(c3);
-            }
-        }
-        while (i < data.length);
-
-        if (output !== test)
-            console.log("Bug in decodeBase64")
-        return output;    
+        return atob(data)
     }
 
     /**
