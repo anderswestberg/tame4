@@ -959,14 +959,14 @@ export class TAME {
                         }
                     };
 
-                    this.xmlHttpReq.onreadystatechange = function () {
-                        if (adsReq.xmlHttpReq.readyState === 4) {
-                            if (adsReq.xmlHttpReq.status === 200) {
+                    this.xmlHttpReq.onreadystatechange = () => {
+                        if (this.xmlHttpReq.readyState === 4) {
+                            if (this.xmlHttpReq.status === 200) {
                                 //request OK
                                 this.parseResponse(adsReq);
                             } else {
                                 //request failed
-                                this.log('TAME library error: XMLHttpRequest returns an error. Status code : ' + adsReq.xmlHttpReq.status);
+                                this.log('TAME library error: XMLHttpRequest returns an error. Status code : ' + this.xmlHttpReq.status);
                                 if (typeof adsReq.reqDescr.oe === 'function') {
                                     //on error function
                                     adsReq.reqDescr.oe();
@@ -2220,7 +2220,7 @@ export class TAME {
 
         try {
 
-            response = adsReq.xmlHttpReq.responseXML.documentElement;
+            response = this.xmlHttpReq.responseXML.documentElement;
             dataString = this.decodeBase64(response.getElementsByTagName('ppData')[0].firstChild.data);
 
             //Run through the elements in the item list.
@@ -2442,7 +2442,7 @@ export class TAME {
         }
 
         try {
-            response = adsReq.xmlHttpReq.responseXML.documentElement;
+            response = this.xmlHttpReq.responseXML.documentElement;
             dataString = this.decodeBase64(response.getElementsByTagName('ppRdData')[0].firstChild.data);
 
             //Read the error codes of the ADS sub commands.
@@ -2544,7 +2544,7 @@ export class TAME {
 
         //Just look for errors.
         try {
-            response = adsReq.xmlHttpReq.responseXML.documentElement;
+            response = this.xmlHttpReq.responseXML.documentElement;
             dataString = this.decodeBase64(response.getElementsByTagName('ppRdData')[0].firstChild.data);
 
             //Read the error codes of the ADS sub commands.
@@ -2607,7 +2607,7 @@ export class TAME {
         var response;
 
         try {
-            response = adsReq.xmlHttpReq.responseXML.documentElement;
+            response = this.xmlHttpReq.responseXML.documentElement;
             this.adsState = parseInt(response.getElementsByTagName('pAdsState')[0].firstChild.data, 10);
             this.adsStateTxt = this.adsStates[this.adsState];
             this.deviceState = parseInt(response.getElementsByTagName('pDeviceState')[0].firstChild.data, 10);
@@ -2630,7 +2630,7 @@ export class TAME {
             subStrAddr = 0,
             dataString, dataSubString, handleVal, idx, arrlen, errorCode, returnLen;
 
-        response = adsReq.xmlHttpReq.responseXML.documentElement;
+        response = this.xmlHttpReq.responseXML.documentElement;
         dataString = this.decodeBase64(response.getElementsByTagName('ppRdData')[0].firstChild.data);
 
         //Read the error codes and the return length of the ADS sub commands.
@@ -3935,10 +3935,10 @@ export class TAME {
         }
 
         //Check if the XML data object is valid.
-        if (adsReq.xmlHttpReq.responseXML === null) {
+        if (this.xmlHttpReq.responseXML === null) {
             this.log('TAME library error: Request contains no XML data. Object "responseXML" is null.');
             this.log('TAME library error: This is the "responseText":');
-            this.log(adsReq.xmlHttpReq.responseText);
+            this.log(this.xmlHttpReq.responseText);
             if (typeof adsReq.reqDescr.oe === 'function') {
                 //on error function
                 adsReq.reqDescr.oe();
@@ -3948,7 +3948,7 @@ export class TAME {
 
         //Get the response
         try {
-            response = adsReq.xmlHttpReq.responseXML.documentElement;
+            response = this.xmlHttpReq.responseXML.documentElement;
         } catch (e) {
             this.log('TAME library error: No XML data in server response: ' + e);
             if (typeof adsReq.reqDescr.oe === 'function') {
@@ -4305,7 +4305,7 @@ export class TAME {
         var response, dataString, dataSubString, data, adsReq2;
 
         try {
-            response = adsReq.xmlHttpReq.responseXML.documentElement;
+            response = this.xmlHttpReq.responseXML.documentElement;
             dataString = this.decodeBase64(response.getElementsByTagName('ppData')[0].firstChild.data);
             dataSubString = dataString.substr(0, 4);
             this.symbolCount = this.subStringToData(dataSubString, 'DWORD');
@@ -4345,7 +4345,7 @@ export class TAME {
             dataString, dataSubString, data, cnt, infoLen, nameAndType, typeArr, arrayLength, type, elem;
 
         try {
-            response = adsReq.xmlHttpReq.responseXML.documentElement;
+            response = this.xmlHttpReq.responseXML.documentElement;
             dataString = this.decodeBase64(response.getElementsByTagName('ppData')[0].firstChild.data);
 
             for (cnt = 0; cnt < this.symbolCount; cnt++) {
