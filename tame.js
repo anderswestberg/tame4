@@ -89,21 +89,21 @@ class TAME {
         //Generate a Base64 alphabet for the encoder. Using an array or object to
         //store the alphabet the en-/decoder runs faster than with the commonly
         //used string. At least with the browsers of 2009. ;-)
-        this.b64Enc = (function () {
+        this.b64Enc = (() => {
             var ret = {}, str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/', i;
             for (i = 0; i < str.length; i++) {
                 ret[i] = str.charAt(i);
             }
             return ret;
-        }());
+        })();
         //Generate a Base64 alphabet for the decoder.
-        this.b64Dec = (function () {
+        this.b64Dec = (() => {
             var ret = {}, str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=', i;
             for (i = 0; i < str.length; i++) {
                 ret[str.charAt(i)] = i;
             }
             return ret;
-        }());
+        })();
         /**
          * The shortcuts for reading and writing data.
          *
@@ -949,7 +949,7 @@ class TAME {
                     //Test with timeout
                     //experimental, seems like it doesn't work with all browsers (05/2017)
                     this.xmlHttpReq.timeout = this.xmlHttpReqTimeout;
-                    this.xmlHttpReq.ontimeout = function (e) {
+                    this.xmlHttpReq.ontimeout = (e) => {
                         this.log('TAME library error: XMLHttpRequest timed out. Timeout ' + this.xmlHttpReqTimeout + ' milliseconds.');
                         this.log(e);
                         if (typeof adsReq.reqDescr.ot === 'function') {
@@ -3461,7 +3461,7 @@ class TAME {
             oefunct = reqDescr.oe;
         }
         //On-error-function, reset the state
-        reqDescr.oe = function () {
+        reqDescr.oe = () => {
             this.log('TAME library error: ADS state request failed.');
             this.adsState = null;
             this.adsStateTxt = '';
