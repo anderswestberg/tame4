@@ -273,38 +273,36 @@ export class TAME {
 
         //XMLHttpRequest timeout
         this.xmlHttpReqTimeout = 5000;
+    }
 
-
+    async open() {
         /**
          * Get the names of the PLC variables using the upload info.
          */
-        if (service.dontFetchSymbols === true) {
+        if (this.service.dontFetchSymbols === true) {
             this.log('TAME library warning: Reading of the UploadInfo and the TPY file deactivated. Symbol Table could not be created.');
 
             if (this.alignment !== 1 && this.alignment !== 4 && this.alignment !== 8) {
                 this.log('TAME library warning: The value for the alignment should be 1, 4 or 8.');
             }
 
-            this.log('TAME library info: Target information: NetId: ' + service.amsNetId + ', AMS port: ' + service.amsPort + ' , alignment: ' + this.alignment);
+            this.log('TAME library info: Target information: NetId: ' + this.service.amsNetId + ', AMS port: ' + this.service.amsPort + ' , alignment: ' + this.alignment);
 
-            if (service.syncXmlHttp !== true) {
+            if (this.service.syncXmlHttp !== true) {
                 window.setTimeout(this.onReady, 1);
             }
 
         } else {
-            if (typeof service.configFileUrl == 'string') {
+            if (typeof this.service.configFileUrl == 'string') {
                 this.log('TAME library info: Fetching the TPY file from the webserver.');
                 //Get the symbol file and parse it. Upload Info will be fetched after.
-                this.getConfigFile();
+                await this.getConfigFile();
             } else {
                 //Start getting the Upload Info.
-                this.checkGetUploadInfo();
+                await this.checkGetUploadInfo();
             }
         }
-
     }
-
-
 
     //======================================================================================
     //                                 Helper Functions
@@ -4508,7 +4506,7 @@ export class TAME {
     * Get the symbol-file (*.tpy) from the server and create
     * an object (symTable) with the symbol names as the properties. 
     */
-    getConfigFile() {
+    async getConfigFile() {
 
         this.configXmlHttpReq = this.createXMLHttpReq()
         var symbolArray = [],
@@ -4521,7 +4519,7 @@ export class TAME {
         this.configXmlHttpReq.open('GET', this.service.configFileUrl, !this.service.syncXmlHttp, this.service.serviceUser, this.service.servicePassword);
         this.configXmlHttpReq.setRequestHeader('Content-Type', 'text/xml');
 
-        this.configXmlHttpReq.onload = () => {
+        this.configXmlHttpReq.onload = async () => {
 
             //Create a DOM object from XML
             if (typeof DOMParser != 'undefined') {
@@ -4825,7 +4823,7 @@ export class TAME {
                     this.log('TAME library info: Data type table ready.');
 
                     //Get Upload Info
-                    this.checkGetUploadInfo();
+                    await this.checkGetUploadInfo();
 
                 } catch (e) {
                     this.log('TAME library error: An error occured while creating the data type information:');
@@ -4876,7 +4874,7 @@ export class TAME {
     /**
      * Check if the UploadInfo has to be fetched.
      */
-    checkGetUploadInfo() {
+    async checkGetUploadInfo() {
 
         this.setServiceParamFromTPY();
 
@@ -4884,7 +4882,7 @@ export class TAME {
             this.log('TAME library info: Start fetching the symbols from PLC.');
             //Get the UploadInfo.
             try {
-                this.getUploadInfo();
+                await this.getUploadInfo();
             } catch (e) {
                 this.log('TAME library error: Could\'nt fetch the symbol information from the PLC:' + e);
                 return;

@@ -92,6 +92,7 @@ export declare class TAME {
     b64Enc: {};
     b64Dec: {};
     constructor(service: any);
+    open(): Promise<void>;
     /**
      * Decode variable names passed as strings and return the object,
      * store data values if they are passed too.
@@ -617,7 +618,7 @@ export declare class TAME {
     * Get the symbol-file (*.tpy) from the server and create
     * an object (symTable) with the symbol names as the properties.
     */
-    getConfigFile(): void;
+    getConfigFile(): Promise<void>;
     /**
      *  Set the service parameter with the values read from the TPY file.
      */
@@ -625,7 +626,7 @@ export declare class TAME {
     /**
      * Check if the UploadInfo has to be fetched.
      */
-    checkGetUploadInfo(): void;
+    checkGetUploadInfo(): Promise<void>;
     /**
      * Call the onReady function.
      */
