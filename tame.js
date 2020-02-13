@@ -970,7 +970,7 @@ class TAME {
         else if (adsReq.reqDescr.debug) {
             this.log(adsReq);
         }
-        adsReq.send = this.adsReqSend;
+        adsReq.send = () => this.adsReqSend(adsReq);
         return adsReq;
     }
     /**

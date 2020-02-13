@@ -964,7 +964,7 @@ export class TAME {
             this.log(adsReq);
         }
 
-        adsReq.send = this.adsReqSend
+        adsReq.send = () => this.adsReqSend(adsReq)
         return adsReq;
     }
 
