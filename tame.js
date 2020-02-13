@@ -1983,7 +1983,7 @@ class TAME {
      * @param {String} data
      */
     decodeBase64(data) {
-        let test = atob(data);
+        let test = atob(String.fromCharCode.apply(null, data));
         var $ = this.b64Dec, i = 0, output = '', c1, c2, c3, e1, e2, e3, e4;
         //Cut all characters but A-Z, a-z, 0-9, +, /, or =
         data = data.replace(/[^A-Za-z0-9\+\/\=]/g, '');

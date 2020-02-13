@@ -2069,7 +2069,7 @@ export class TAME {
      * @param {String} data
      */
     decodeBase64(data) {
-        let test = atob(data)
+        let test = atob(String.fromCharCode.apply(null, data))
         var $ = this.b64Dec,
             i = 0,
             output = '',
