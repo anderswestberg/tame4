@@ -2604,13 +2604,15 @@ export class TAME {
 
     writeSingle(method, type, args) {
         let reqDescr = this.createSingleDescriptor(method, type, args)
-        this.writeReq(reqDescr);
+        let adsReq = this.writeReq(reqDescr);
+        this.createRequest(adsReq).send();
         return true
     }
 
     async readSingle(method, type, args) {
         let reqDescr = this.createSingleDescriptor(method, type, args)
-        this.readReq(reqDescr);
+        let adsReq = this.readReq(reqDescr);
+        this.createRequest(adsReq).send();
         return 42
     }
 
@@ -3276,7 +3278,7 @@ export class TAME {
             pData: pData,
             reqDescr: reqDescr
         };
-        this.createRequest(adsReq).send();
+        return adsReq
     };
 
 
@@ -3351,7 +3353,7 @@ export class TAME {
             indexOffset: this.getIndexOffset(reqDescr),
             reqDescr: reqDescr
         };
-        this.createRequest(adsReq).send();
+        return adsReq
     };
 
 

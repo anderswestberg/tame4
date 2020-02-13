@@ -419,7 +419,7 @@ export declare class TAME {
      *                              this object contains the allocation of PLC and
      *                              JavaScript variables in an item list.
      */
-    writeReq(reqDescr: any): void;
+    writeReq(reqDescr: any): {};
     /**
      * This is the function for creating a read request. If no value for the
      * data length ist passed, calculate the value and then call the function
@@ -429,7 +429,7 @@ export declare class TAME {
      *                              this object contains the allocation of PLC and
      *                              JavaScript variables in an item list.
      */
-    readReq(reqDescr: any): void;
+    readReq(reqDescr: any): {};
     /**
      * This is the function for creating a sum read request.
      *

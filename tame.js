@@ -2437,13 +2437,15 @@ class TAME {
     }
     writeSingle(method, type, args) {
         let reqDescr = this.createSingleDescriptor(method, type, args);
-        this.writeReq(reqDescr);
+        let adsReq = this.writeReq(reqDescr);
+        this.createRequest(adsReq).send();
         return true;
     }
     readSingle(method, type, args) {
         return __awaiter(this, void 0, void 0, function* () {
             let reqDescr = this.createSingleDescriptor(method, type, args);
-            this.readReq(reqDescr);
+            let adsReq = this.readReq(reqDescr);
+            this.createRequest(adsReq).send();
             return 42;
         });
     }
@@ -3047,7 +3049,7 @@ class TAME {
             pData: pData,
             reqDescr: reqDescr
         };
-        this.createRequest(adsReq).send();
+        return adsReq;
     }
     ;
     /**
@@ -3110,7 +3112,7 @@ class TAME {
             indexOffset: this.getIndexOffset(reqDescr),
             reqDescr: reqDescr
         };
-        this.createRequest(adsReq).send();
+        return adsReq;
     }
     ;
     /**
