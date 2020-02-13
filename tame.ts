@@ -110,29 +110,6 @@ export class TAME {
             alert(message);
         }
     }
-    //Generate a Base64 alphabet for the encoder. Using an array or object to
-    //store the alphabet the en-/decoder runs faster than with the commonly
-    //used string. At least with the browsers of 2009. ;-)
-    b64Enc = (() => {
-        var ret = {},
-            str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
-            i;
-        for (i = 0; i < str.length; i++) {
-            ret[i] = str.charAt(i);
-        }
-        return ret;
-    }())
-
-    //Generate a Base64 alphabet for the decoder.
-    b64Dec = (() => {
-        var ret = {},
-            str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
-            i;
-        for (i = 0; i < str.length; i++) {
-            ret[str.charAt(i)] = i;
-        }
-        return ret;
-    }())
 
     constructor(public service: any) {
 
@@ -862,7 +839,7 @@ export class TAME {
 
         adsReq.send = () => {
 
-            var soapReq, async;
+            var soapReq;
 
             //Cancel the request, if the last on with the same ID is not finished.
             if (typeof adsReq.reqDescr.id === 'number' && this.currReq[adsReq.reqDescr.id] > 0) {
@@ -876,20 +853,6 @@ export class TAME {
                 this.currReq[adsReq.reqDescr.id] = 0;
             }
 
-            //Check if this should be a synchronous or a asynchronous XMLHttpRequest
-            //adsReq.sync is used internal and it's most important, then comes reqDescr.sync and
-            //at last the global parameter 
-            if (adsReq.sync === true) {
-                async = false;
-            } else if (adsReq.reqDescr.sync === true) {
-                async = false;
-            } else if (adsReq.reqDescr.sync === false) {
-                async = true;
-            } else if (this.service.syncXmlHttp === true) {
-                async = false;
-            } else {
-                async = true;
-            }
 
             //Create the XMLHttpRequest object.
             this.xmlHttpReq = this.createXMLHttpReq();
@@ -939,47 +902,39 @@ export class TAME {
             //Send the AJAX request.
             if (typeof this.xmlHttpReq === 'object') {
 
-                this.xmlHttpReq.open('POST', this.service.serviceUrl, async, this.service.serviceUser, this.service.servicePassword);
+                this.xmlHttpReq.open('POST', this.service.serviceUrl, true, this.service.serviceUser, this.service.servicePassword);
 
                 this.xmlHttpReq.setRequestHeader('SOAPAction', 'http://beckhoff.org/action/TcAdsSync.' + adsReq.method);
                 this.xmlHttpReq.setRequestHeader('Content-Type', 'text/xml; charset=utf-8');
 
-                if (async === true) {
-                    //asynchronous request
+                //Test with timeout
+                //experimental, seems like it doesn't work with all browsers (05/2017)
+                this.xmlHttpReq.timeout = this.xmlHttpReqTimeout;
+                this.xmlHttpReq.ontimeout = (e) => {
+                    this.log('TAME library error: XMLHttpRequest timed out. Timeout ' + this.xmlHttpReqTimeout + ' milliseconds.');
+                    this.log(e);
+                    if (typeof adsReq.reqDescr.ot === 'function') {
+                        //on timeout function
+                        adsReq.reqDescr.ot();
+                    }
+                };
 
-                    //Test with timeout
-                    //experimental, seems like it doesn't work with all browsers (05/2017)
-                    this.xmlHttpReq.timeout = this.xmlHttpReqTimeout;
-                    this.xmlHttpReq.ontimeout = (e) => {
-                        this.log('TAME library error: XMLHttpRequest timed out. Timeout ' + this.xmlHttpReqTimeout + ' milliseconds.');
-                        this.log(e);
-                        if (typeof adsReq.reqDescr.ot === 'function') {
-                            //on timeout function
-                            adsReq.reqDescr.ot();
-                        }
-                    };
-
-                    this.xmlHttpReq.onreadystatechange = () => {
-                        if (this.xmlHttpReq.readyState === 4) {
-                            if (this.xmlHttpReq.status === 200) {
-                                //request OK
-                                this.parseResponse(adsReq);
-                            } else {
-                                //request failed
-                                this.log('TAME library error: XMLHttpRequest returns an error. Status code : ' + this.xmlHttpReq.status);
-                                if (typeof adsReq.reqDescr.oe === 'function') {
-                                    //on error function
-                                    adsReq.reqDescr.oe();
-                                }
+                this.xmlHttpReq.onreadystatechange = () => {
+                    if (this.xmlHttpReq.readyState === 4) {
+                        if (this.xmlHttpReq.status === 200) {
+                            //request OK
+                            this.parseResponse(adsReq);
+                        } else {
+                            //request failed
+                            this.log('TAME library error: XMLHttpRequest returns an error. Status code : ' + this.xmlHttpReq.status);
+                            if (typeof adsReq.reqDescr.oe === 'function') {
+                                //on error function
+                                adsReq.reqDescr.oe();
                             }
                         }
-                    };
-                    this.xmlHttpReq.send(soapReq);
-                } else {
-                    //synchronous request
-                    this.xmlHttpReq.send(soapReq);
-                    this.parseResponse(adsReq);
-                }
+                    }
+                };
+                this.xmlHttpReq.send(soapReq);
 
                 //Request with index 'id' sent.
                 if (typeof adsReq.reqDescr.id === 'number') {
@@ -1399,22 +1354,7 @@ export class TAME {
      * @param {Array} data
      */
     encodeBase64(data) {
-        var $ = this.b64Enc,
-            i = 0,
-            out = '',
-            c1, c2, c3;
-
-        while (i < data.length) {
-            c1 = data[i++];
-            c2 = data[i++];
-            c3 = data[i++];
-            out = out +
-                $[c1 >> 2] +
-                $[((c1 & 3) << 4) | (c2 >> 4)] +
-                (isNaN(c2) ? '=' : $[(((c2 & 15) << 2) | (c3 >> 6))]) +
-                ((isNaN(c2) || isNaN(c3)) ? '=' : $[c3 & 63]);
-        }
-        return out;
+        return btoa(data)
     }
 
     /**
@@ -2089,36 +2029,7 @@ export class TAME {
      * @param {String} data
      */
     decodeBase64(data) {
-        var $ = this.b64Dec,
-            i = 0,
-            output = '',
-            c1, c2, c3,
-            e1, e2, e3, e4;
-
-        //Cut all characters but A-Z, a-z, 0-9, +, /, or =
-        data = data.replace(/[^A-Za-z0-9\+\/\=]/g, '');
-
-        do {
-            e1 = $[data.charAt(i++)];
-            e2 = $[data.charAt(i++)];
-            e3 = $[data.charAt(i++)];
-            e4 = $[data.charAt(i++)];
-
-            c1 = (e1 << 2) | (e2 >> 4);
-            c2 = ((e2 & 15) << 4) | (e3 >> 2);
-            c3 = ((e3 & 3) << 6) | e4;
-
-            output += String.fromCharCode(c1);
-            if (e3 !== 64) {
-                output += String.fromCharCode(c2);
-            }
-            if (e4 !== 64) {
-                output += String.fromCharCode(c3);
-            }
-        }
-        while (i < data.length);
-
-        return output;
+        return btoa(data)
     }
 
     /**
@@ -2685,7 +2596,6 @@ export class TAME {
     createSingleDescriptor(method, type, args) {
 
         var reqDescr = {},
-            arrSymType,
             len, itemInfo;
 
         args.type = type; //To prevent error messages in getItemInformation()
@@ -2764,6 +2674,7 @@ export class TAME {
         } else {
             this.readReq(reqDescr);
         }
+        return 42;
     }
 
 

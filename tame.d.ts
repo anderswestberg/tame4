@@ -89,8 +89,6 @@ export declare class TAME {
     handleNames: any[];
     xmlHttpReq: any;
     log(message: any): void;
-    b64Enc: {};
-    b64Dec: {};
     constructor(service: any);
     /**
      * Decode variable names passed as strings and return the object,
@@ -389,7 +387,7 @@ export declare class TAME {
      * @param {String} type     The PLC data type.
      * @param {Object} args     The arguments for building for the Request Descriptor.
      */
-    createSingleDescriptor(method: any, type: any, args: any): void;
+    createSingleDescriptor(method: any, type: any, args: any): number;
     /**
      * Create a Request Descriptor for an array. An item list of
      * single variables is generated.
@@ -510,44 +508,44 @@ export declare class TAME {
      *
      * @param {Object} args
      */
-    writeBool: (args: any) => void;
-    writeByte: (args: any) => void;
-    writeUsint: (args: any) => void;
-    writeSint: (args: any) => void;
-    writeWord: (args: any) => void;
-    writeUint: (args: any) => void;
-    writeInt: (args: any) => void;
-    writeInt1Dp: (args: any) => void;
-    writeInt2Dp: (args: any) => void;
-    writeDword: (args: any) => void;
-    writeUdint: (args: any) => void;
-    writeDint: (args: any) => void;
-    writeReal: (args: any) => void;
-    writeLreal: (args: any) => void;
-    writeString: (args: any) => void;
-    writeTime: (args: any) => void;
-    writeTod: (args: any) => void;
-    writeDate: (args: any) => void;
-    writeDt: (args: any) => void;
-    readBool: (args: any) => void;
-    readByte: (args: any) => void;
-    readUsint: (args: any) => void;
-    readSint: (args: any) => void;
-    readWord: (args: any) => void;
-    readUint: (args: any) => void;
-    readInt: (args: any) => void;
-    readInt1Dp: (args: any) => void;
-    readInt2Dp: (args: any) => void;
-    readDword: (args: any) => void;
-    readUdint: (args: any) => void;
-    readDint: (args: any) => void;
-    readReal: (args: any) => void;
-    readLreal: (args: any) => void;
-    readString: (args: any) => void;
-    readTime: (args: any) => void;
-    readTod: (args: any) => void;
-    readDate: (args: any) => void;
-    readDt: (args: any) => void;
+    writeBool: (args: any) => number;
+    writeByte: (args: any) => number;
+    writeUsint: (args: any) => number;
+    writeSint: (args: any) => number;
+    writeWord: (args: any) => number;
+    writeUint: (args: any) => number;
+    writeInt: (args: any) => number;
+    writeInt1Dp: (args: any) => number;
+    writeInt2Dp: (args: any) => number;
+    writeDword: (args: any) => number;
+    writeUdint: (args: any) => number;
+    writeDint: (args: any) => number;
+    writeReal: (args: any) => number;
+    writeLreal: (args: any) => number;
+    writeString: (args: any) => number;
+    writeTime: (args: any) => number;
+    writeTod: (args: any) => number;
+    writeDate: (args: any) => number;
+    writeDt: (args: any) => number;
+    readBool: (args: any) => number;
+    readByte: (args: any) => number;
+    readUsint: (args: any) => number;
+    readSint: (args: any) => number;
+    readWord: (args: any) => number;
+    readUint: (args: any) => number;
+    readInt: (args: any) => number;
+    readInt1Dp: (args: any) => number;
+    readInt2Dp: (args: any) => number;
+    readDword: (args: any) => number;
+    readUdint: (args: any) => number;
+    readDint: (args: any) => number;
+    readReal: (args: any) => number;
+    readLreal: (args: any) => number;
+    readString: (args: any) => number;
+    readTime: (args: any) => number;
+    readTod: (args: any) => number;
+    readDate: (args: any) => number;
+    readDt: (args: any) => number;
     writeStruct: (args: any) => void;
     readStruct: (args: any) => void;
     writeArrayOfBool: (args: any) => void;
