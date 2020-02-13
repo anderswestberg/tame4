@@ -358,7 +358,7 @@ export declare class TAME {
      *
      * @param {Object} adsReq   ADS Reqest Object
      */
-    parseReadReq(adsReq: any): void;
+    parseReadReq(adsReq: any): any;
     /**
      * Decode the response string of a SumReadRequest and store the data.
      *
@@ -497,7 +497,7 @@ export declare class TAME {
      *
      * @param {Object} adsReq   The object containing the arguments of the ADS request.
      */
-    parseResponse(adsReq: any): void;
+    parseResponse(adsReq: any): any;
     /**
      * Get the handles from the PLC.
      *

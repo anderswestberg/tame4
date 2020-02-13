@@ -1030,9 +1030,8 @@ class TAME {
                     this.xmlHttpReq.onreadystatechange = () => {
                         if (this.xmlHttpReq.readyState === 4) {
                             if (this.xmlHttpReq.status === 200) {
-                                //request OK
-                                this.parseResponse(adsReq);
-                                resolve(42);
+                                //request OK                           
+                                resolve(this.parseResponse(adsReq));
                             }
                             else {
                                 //request failed
@@ -2164,7 +2163,8 @@ class TAME {
      * @param {Object} adsReq   ADS Reqest Object
      */
     parseReadReq(adsReq) {
-        var response, itemList = adsReq.reqDescr.items, arrType = [], strAddr = 0, item, dataString, dataSubString, data, strlen, len, plen, mod, type, format, idx, listlen, startaddr;
+        let response, itemList = adsReq.reqDescr.items, arrType = [], strAddr = 0, item, dataString, dataSubString, strlen, len, plen, mod, type, format, idx, listlen, startaddr;
+        let result;
         try {
             response = this.xmlHttpReq.responseXML.documentElement;
             dataString = this.decodeBase64(response.getElementsByTagName('ppData')[0].firstChild.data);
@@ -2207,10 +2207,10 @@ class TAME {
                 }
                 //Slice the string and decode the data
                 dataSubString = dataString.substr(strAddr, len);
-                data = this.subStringToData(dataSubString, type, format);
+                result = this.subStringToData(dataSubString, type, format);
                 //Parse the name of the JavaScript variable and write the data to it
                 if (type !== 'EndStruct') {
-                    this.parseVarName(item.jvar, data, adsReq.reqDescr.dataObj, item.prefix, item.suffix);
+                    this.parseVarName(item.jvar, result, adsReq.reqDescr.dataObj, item.prefix, item.suffix);
                 }
                 //Set the next address
                 if (adsReq.reqDescr.seq === true) {
@@ -2221,8 +2221,9 @@ class TAME {
         catch (e) {
             this.log('TAME library error: Parsing of Read Request failed:' + e);
             this.log(item);
-            return;
+            return result;
         }
+        return result;
     }
     /**
      * Decode the response string of a SumReadRequest and store the data.
@@ -2534,11 +2535,13 @@ class TAME {
         this.log('TAME library info: Handle cache ready.');
     }
     writeSingle(method, type, args) {
-        let reqDescr = this.createSingleDescriptor(method, type, args);
-        let adsReq = this.writeReq(reqDescr);
-        this.createRequest(adsReq);
-        let value = this.adsReqSendAsync(adsReq);
-        return value;
+        return __awaiter(this, void 0, void 0, function* () {
+            let reqDescr = this.createSingleDescriptor(method, type, args);
+            let adsReq = this.writeReq(reqDescr);
+            this.createRequest(adsReq);
+            let value = yield this.adsReqSendAsync(adsReq);
+            return value;
+        });
     }
     readSingle(method, type, args) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -3651,7 +3654,8 @@ class TAME {
      * @param {Object} adsReq   The object containing the arguments of the ADS request.
      */
     parseResponse(adsReq) {
-        var response, errorCode, errorText;
+        let response, errorCode, errorText;
+        let result;
         //Acknowledge the receive of a request with index 'id'.
         if (typeof adsReq.reqDescr.id === 'number') {
             this.currReq[adsReq.reqDescr.id] = 0;
@@ -3726,7 +3730,7 @@ class TAME {
                     this.parseHandles(adsReq);
                     break;
                 default:
-                    this.parseReadReq(adsReq);
+                    result = this.parseReadReq(adsReq);
             }
         }
         //Call the On-Complete-Script.
@@ -3738,6 +3742,7 @@ class TAME {
                 adsReq.reqDescr.oc();
             }
         }
+        return result;
     }
     ;
     /**

@@ -1035,9 +1035,8 @@ export class TAME {
                 this.xmlHttpReq.onreadystatechange = () => {
                     if (this.xmlHttpReq.readyState === 4) {
                         if (this.xmlHttpReq.status === 200) {
-                            //request OK
-                            this.parseResponse(adsReq);
-                            resolve(42)
+                            //request OK                           
+                            resolve(this.parseResponse(adsReq))
                         } else {
                             //request failed
                             this.log('TAME library error: XMLHttpRequest returns an error. Status code : ' + this.xmlHttpReq.status);
@@ -2253,12 +2252,12 @@ export class TAME {
      */
     parseReadReq(adsReq) {
 
-        var response,
+        let response,
             itemList = adsReq.reqDescr.items,
             arrType = [],
             strAddr = 0,
-            item, dataString, dataSubString, data, strlen, len, plen, mod, type, format, idx, listlen, startaddr;
-
+            item, dataString, dataSubString, strlen, len, plen, mod, type, format, idx, listlen, startaddr;
+        let result: any
 
         try {
 
@@ -2310,11 +2309,11 @@ export class TAME {
 
                 //Slice the string and decode the data
                 dataSubString = dataString.substr(strAddr, len);
-                data = this.subStringToData(dataSubString, type, format);
+                result = this.subStringToData(dataSubString, type, format);
 
                 //Parse the name of the JavaScript variable and write the data to it
                 if (type !== 'EndStruct') {
-                    this.parseVarName(item.jvar, data, adsReq.reqDescr.dataObj, item.prefix, item.suffix);
+                    this.parseVarName(item.jvar, result, adsReq.reqDescr.dataObj, item.prefix, item.suffix);
                 }
 
                 //Set the next address
@@ -2325,8 +2324,9 @@ export class TAME {
         } catch (e) {
             this.log('TAME library error: Parsing of Read Request failed:' + e);
             this.log(item);
-            return;
+            return result;
         }
+        return result
     }
 
     /**
@@ -2711,11 +2711,11 @@ export class TAME {
         this.log('TAME library info: Handle cache ready.');
     }
 
-    writeSingle(method, type, args) {
+    async writeSingle(method, type, args) {
         let reqDescr = this.createSingleDescriptor(method, type, args)
         let adsReq = this.writeReq(reqDescr)
         this.createRequest(adsReq)
-        let value = this.adsReqSendAsync(adsReq)
+        let value = await this.adsReqSendAsync(adsReq)
         return value
     }
 
@@ -3977,7 +3977,8 @@ export class TAME {
      */
     parseResponse(adsReq) {
 
-        var response, errorCode, errorText;
+        let response, errorCode, errorText;
+        let result: any
 
         //Acknowledge the receive of a request with index 'id'.
         if (typeof adsReq.reqDescr.id === 'number') {
@@ -4058,7 +4059,7 @@ export class TAME {
                     this.parseHandles(adsReq);
                     break;
                 default:
-                    this.parseReadReq(adsReq);
+                    result = this.parseReadReq(adsReq);
             }
         }
 
@@ -4071,6 +4072,7 @@ export class TAME {
                 adsReq.reqDescr.oc();
             }
         }
+        return result
     };
 
 
