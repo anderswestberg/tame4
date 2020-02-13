@@ -110,7 +110,29 @@ export class TAME {
             alert(message);
         }
     }
+    //Generate a Base64 alphabet for the encoder. Using an array or object to
+    //store the alphabet the en-/decoder runs faster than with the commonly
+    //used string. At least with the browsers of 2009. ;-)
+    b64Enc = (() => {
+        var ret = {},
+            str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+            i: number;
+        for (i = 0; i < str.length; i++) {
+            ret[i] = str.charAt(i);
+        }
+        return ret;
+    })();
 
+    //Generate a Base64 alphabet for the decoder.
+    b64Dec = (() => {
+        var ret = {},
+            str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
+            i: number;
+        for (i = 0; i < str.length; i++) {
+            ret[str.charAt(i)] = i;
+        }
+        return ret;
+    })();
     constructor(public service: any) {
 
         this.log('TAME library version: ' + this.version);
@@ -1354,7 +1376,23 @@ export class TAME {
      * @param {Array} data
      */
     encodeBase64(data) {
-        return btoa(data)
+        //return btoa(data)
+        var $ = this.b64Enc,
+        i = 0,
+        out = '',
+        c1, c2, c3;
+
+        while (i < data.length) {
+            c1 = data[i++];
+            c2 = data[i++];
+            c3 = data[i++];
+            out = out +
+                $[c1 >> 2] +
+                $[((c1 & 3) << 4) | (c2 >> 4)] +
+                (isNaN(c2) ? '=' : $[(((c2 & 15) << 2) | (c3 >> 6))]) +
+                ((isNaN(c2) || isNaN(c3)) ? '=' : $[c3 & 63]);
+        }
+        return out;
     }
 
     /**
@@ -2029,8 +2067,37 @@ export class TAME {
      * @param {String} data
      */
     decodeBase64(data) {
-        return atob(data)
-    }
+        //return atob(data)
+        var $ = this.b64Dec,
+            i = 0,
+            output = '',
+            c1, c2, c3,
+            e1, e2, e3, e4;
+
+        //Cut all characters but A-Z, a-z, 0-9, +, /, or =
+        data = data.replace(/[^A-Za-z0-9\+\/\=]/g, '');
+
+        do {
+            e1 = $[data.charAt(i++)];
+            e2 = $[data.charAt(i++)];
+            e3 = $[data.charAt(i++)];
+            e4 = $[data.charAt(i++)];
+
+            c1 = (e1 << 2) | (e2 >> 4);
+            c2 = ((e2 & 15) << 4) | (e3 >> 2);
+            c3 = ((e3 & 3) << 6) | e4;
+
+            output += String.fromCharCode(c1);
+            if (e3 !== 64) {
+                output += String.fromCharCode(c2);
+            }
+            if (e4 !== 64) {
+                output += String.fromCharCode(c3);
+            }
+        }
+        while (i < data.length);
+
+        return output;    }
 
     /**
      * Convert B64-substrings to data.

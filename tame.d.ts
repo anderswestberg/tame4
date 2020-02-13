@@ -89,6 +89,8 @@ export declare class TAME {
     handleNames: any[];
     xmlHttpReq: any;
     log(message: any): void;
+    b64Enc: {};
+    b64Dec: {};
     constructor(service: any);
     /**
      * Decode variable names passed as strings and return the object,
