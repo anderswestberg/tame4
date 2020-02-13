@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 class TAME {
     constructor(service) {
@@ -109,44 +118,44 @@ class TAME {
          *
          * @param {Object} args
          */
-        this.writeBool = (args) => this.createSingleDescriptor('Write', 'BOOL', args);
-        this.writeByte = (args) => this.createSingleDescriptor('Write', 'BYTE', args);
-        this.writeUsint = (args) => this.createSingleDescriptor('Write', 'USINT', args);
-        this.writeSint = (args) => this.createSingleDescriptor('Write', 'SINT', args);
-        this.writeWord = (args) => this.createSingleDescriptor('Write', 'WORD', args);
-        this.writeUint = (args) => this.createSingleDescriptor('Write', 'UINT', args);
-        this.writeInt = (args) => this.createSingleDescriptor('Write', 'INT', args);
-        this.writeInt1Dp = (args) => this.createSingleDescriptor('Write', 'INT1DP', args);
-        this.writeInt2Dp = (args) => this.createSingleDescriptor('Write', 'INT2DP', args);
-        this.writeDword = (args) => this.createSingleDescriptor('Write', 'DWORD', args);
-        this.writeUdint = (args) => this.createSingleDescriptor('Write', 'UDINT', args);
-        this.writeDint = (args) => this.createSingleDescriptor('Write', 'DINT', args);
-        this.writeReal = (args) => this.createSingleDescriptor('Write', 'REAL', args);
-        this.writeLreal = (args) => this.createSingleDescriptor('Write', 'LREAL', args);
-        this.writeString = (args) => this.createSingleDescriptor('Write', 'STRING', args);
-        this.writeTime = (args) => this.createSingleDescriptor('Write', 'TIME', args);
-        this.writeTod = (args) => this.createSingleDescriptor('Write', 'TOD', args);
-        this.writeDate = (args) => this.createSingleDescriptor('Write', 'DATE', args);
-        this.writeDt = (args) => this.createSingleDescriptor('Write', 'DT', args);
-        this.readBool = (args) => this.createSingleDescriptor('Read', 'BOOL', args);
-        this.readByte = (args) => this.createSingleDescriptor('Read', 'BYTE', args);
-        this.readUsint = (args) => this.createSingleDescriptor('Read', 'USINT', args);
-        this.readSint = (args) => this.createSingleDescriptor('Read', 'SINT', args);
-        this.readWord = (args) => this.createSingleDescriptor('Read', 'WORD', args);
-        this.readUint = (args) => this.createSingleDescriptor('Read', 'UINT', args);
-        this.readInt = (args) => this.createSingleDescriptor('Read', 'INT', args);
-        this.readInt1Dp = (args) => this.createSingleDescriptor('Read', 'INT1DP', args);
-        this.readInt2Dp = (args) => this.createSingleDescriptor('Read', 'INT2DP', args);
-        this.readDword = (args) => this.createSingleDescriptor('Read', 'DWORD', args);
-        this.readUdint = (args) => this.createSingleDescriptor('Read', 'UDINT', args);
-        this.readDint = (args) => this.createSingleDescriptor('Read', 'DINT', args);
-        this.readReal = (args) => this.createSingleDescriptor('Read', 'REAL', args);
-        this.readLreal = (args) => this.createSingleDescriptor('Read', 'LREAL', args);
-        this.readString = (args) => this.createSingleDescriptor('Read', 'STRING', args);
-        this.readTime = (args) => this.createSingleDescriptor('Read', 'TIME', args);
-        this.readTod = (args) => this.createSingleDescriptor('Read', 'TOD', args);
-        this.readDate = (args) => this.createSingleDescriptor('Read', 'DATE', args);
-        this.readDt = (args) => this.createSingleDescriptor('Read', 'DT', args);
+        this.writeBool = (args) => this.writeSingle('Write', 'BOOL', args);
+        this.writeByte = (args) => this.writeSingle('Write', 'BYTE', args);
+        this.writeUsint = (args) => this.writeSingle('Write', 'USINT', args);
+        this.writeSint = (args) => this.writeSingle('Write', 'SINT', args);
+        this.writeWord = (args) => this.writeSingle('Write', 'WORD', args);
+        this.writeUint = (args) => this.writeSingle('Write', 'UINT', args);
+        this.writeInt = (args) => this.writeSingle('Write', 'INT', args);
+        this.writeInt1Dp = (args) => this.writeSingle('Write', 'INT1DP', args);
+        this.writeInt2Dp = (args) => this.writeSingle('Write', 'INT2DP', args);
+        this.writeDword = (args) => this.writeSingle('Write', 'DWORD', args);
+        this.writeUdint = (args) => this.writeSingle('Write', 'UDINT', args);
+        this.writeDint = (args) => this.writeSingle('Write', 'DINT', args);
+        this.writeReal = (args) => this.writeSingle('Write', 'REAL', args);
+        this.writeLreal = (args) => this.writeSingle('Write', 'LREAL', args);
+        this.writeString = (args) => this.writeSingle('Write', 'STRING', args);
+        this.writeTime = (args) => this.writeSingle('Write', 'TIME', args);
+        this.writeTod = (args) => this.writeSingle('Write', 'TOD', args);
+        this.writeDate = (args) => this.writeSingle('Write', 'DATE', args);
+        this.writeDt = (args) => this.writeSingle('Write', 'DT', args);
+        this.readBool = (args) => this.readSingle('Read', 'BOOL', args);
+        this.readByte = (args) => this.readSingle('Read', 'BYTE', args);
+        this.readUsint = (args) => this.readSingle('Read', 'USINT', args);
+        this.readSint = (args) => this.readSingle('Read', 'SINT', args);
+        this.readWord = (args) => this.readSingle('Read', 'WORD', args);
+        this.readUint = (args) => this.readSingle('Read', 'UINT', args);
+        this.readInt = (args) => this.readSingle('Read', 'INT', args);
+        this.readInt1Dp = (args) => this.readSingle('Read', 'INT1DP', args);
+        this.readInt2Dp = (args) => this.readSingle('Read', 'INT2DP', args);
+        this.readDword = (args) => this.readSingle('Read', 'DWORD', args);
+        this.readUdint = (args) => this.readSingle('Read', 'UDINT', args);
+        this.readDint = (args) => this.readSingle('Read', 'DINT', args);
+        this.readReal = (args) => this.readSingle('Read', 'REAL', args);
+        this.readLreal = (args) => this.readSingle('Read', 'LREAL', args);
+        this.readString = (args) => this.readSingle('Read', 'STRING', args);
+        this.readTime = (args) => this.readSingle('Read', 'TIME', args);
+        this.readTod = (args) => this.readSingle('Read', 'TOD', args);
+        this.readDate = (args) => this.readSingle('Read', 'DATE', args);
+        this.readDt = (args) => this.readSingle('Read', 'DT', args);
         this.writeStruct = (args) => this.createStructDescriptor('Write', args);
         this.readStruct = (args) => this.createStructDescriptor('Read', args);
         this.writeArrayOfBool = (args) => this.createArrayDescriptor('Write', 'BOOL', args);
@@ -2426,6 +2435,18 @@ class TAME {
         this.handleCacheReady = true;
         this.log('TAME library info: Handle cache ready.');
     }
+    writeSingle(method, type, args) {
+        let reqDescr = this.createSingleDescriptor(method, type, args);
+        this.writeReq(reqDescr);
+        return true;
+    }
+    readSingle(method, type, args) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let reqDescr = this.createSingleDescriptor(method, type, args);
+            this.readReq(reqDescr);
+            return 42;
+        });
+    }
     //======================================================================================
     //                     Functions for Creating Request Descriptors
     //======================================================================================  
@@ -2508,14 +2529,7 @@ class TAME {
                     suffix: args.suffix
                 }]
         };
-        //Call the send function.
-        if (method === 'Write') {
-            this.writeReq(reqDescr);
-        }
-        else {
-            this.readReq(reqDescr);
-        }
-        return 42;
+        return reqDescr;
     }
     /**
      * Create a Request Descriptor for an array. An item list of

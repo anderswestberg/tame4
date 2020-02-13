@@ -2602,6 +2602,17 @@ export class TAME {
         this.log('TAME library info: Handle cache ready.');
     }
 
+    writeSingle(method, type, args) {
+        let reqDescr = this.createSingleDescriptor(method, type, args)
+        this.writeReq(reqDescr);
+        return true
+    }
+
+    async readSingle(method, type, args) {
+        let reqDescr = this.createSingleDescriptor(method, type, args)
+        this.readReq(reqDescr);
+        return 42
+    }
 
     //======================================================================================
     //                     Functions for Creating Request Descriptors
@@ -2689,14 +2700,7 @@ export class TAME {
                 suffix: args.suffix
             }]
         };
-
-        //Call the send function.
-        if (method === 'Write') {
-            this.writeReq(reqDescr);
-        } else {
-            this.readReq(reqDescr);
-        }
-        return 42;
+        return reqDescr
     }
 
 
@@ -4117,45 +4121,45 @@ export class TAME {
      * 
      * @param {Object} args
      */
-    writeBool = (args) => this.createSingleDescriptor('Write', 'BOOL', args)
-    writeByte = (args) => this.createSingleDescriptor('Write', 'BYTE', args)
-    writeUsint = (args) => this.createSingleDescriptor('Write', 'USINT', args)
-    writeSint = (args) => this.createSingleDescriptor('Write', 'SINT', args)
-    writeWord = (args) => this.createSingleDescriptor('Write', 'WORD', args)
-    writeUint = (args) => this.createSingleDescriptor('Write', 'UINT', args)
-    writeInt = (args) => this.createSingleDescriptor('Write', 'INT', args)
-    writeInt1Dp = (args) => this.createSingleDescriptor('Write', 'INT1DP', args)
-    writeInt2Dp = (args) => this.createSingleDescriptor('Write', 'INT2DP', args)
-    writeDword = (args) => this.createSingleDescriptor('Write', 'DWORD', args)
-    writeUdint = (args) => this.createSingleDescriptor('Write', 'UDINT', args)
-    writeDint = (args) => this.createSingleDescriptor('Write', 'DINT', args)
-    writeReal = (args) => this.createSingleDescriptor('Write', 'REAL', args)
-    writeLreal = (args) => this.createSingleDescriptor('Write', 'LREAL', args)
-    writeString = (args) => this.createSingleDescriptor('Write', 'STRING', args)
-    writeTime = (args) => this.createSingleDescriptor('Write', 'TIME', args)
-    writeTod = (args) => this.createSingleDescriptor('Write', 'TOD', args)
-    writeDate = (args) => this.createSingleDescriptor('Write', 'DATE', args)
-    writeDt = (args) => this.createSingleDescriptor('Write', 'DT', args)
+    writeBool = (args) => this.writeSingle('Write', 'BOOL', args)
+    writeByte = (args) => this.writeSingle('Write', 'BYTE', args)
+    writeUsint = (args) => this.writeSingle('Write', 'USINT', args)
+    writeSint = (args) => this.writeSingle('Write', 'SINT', args)
+    writeWord = (args) => this.writeSingle('Write', 'WORD', args)
+    writeUint = (args) => this.writeSingle('Write', 'UINT', args)
+    writeInt = (args) => this.writeSingle('Write', 'INT', args)
+    writeInt1Dp = (args) => this.writeSingle('Write', 'INT1DP', args)
+    writeInt2Dp = (args) => this.writeSingle('Write', 'INT2DP', args)
+    writeDword = (args) => this.writeSingle('Write', 'DWORD', args)
+    writeUdint = (args) => this.writeSingle('Write', 'UDINT', args)
+    writeDint = (args) => this.writeSingle('Write', 'DINT', args)
+    writeReal = (args) => this.writeSingle('Write', 'REAL', args)
+    writeLreal = (args) => this.writeSingle('Write', 'LREAL', args)
+    writeString = (args) => this.writeSingle('Write', 'STRING', args)
+    writeTime = (args) => this.writeSingle('Write', 'TIME', args)
+    writeTod = (args) => this.writeSingle('Write', 'TOD', args)
+    writeDate = (args) => this.writeSingle('Write', 'DATE', args)
+    writeDt = (args) => this.writeSingle('Write', 'DT', args)
 
-    readBool = (args) => this.createSingleDescriptor('Read', 'BOOL', args)
-    readByte = (args) => this.createSingleDescriptor('Read', 'BYTE', args)
-    readUsint = (args) => this.createSingleDescriptor('Read', 'USINT', args)
-    readSint = (args) => this.createSingleDescriptor('Read', 'SINT', args)
-    readWord = (args) => this.createSingleDescriptor('Read', 'WORD', args)
-    readUint = (args) => this.createSingleDescriptor('Read', 'UINT', args)
-    readInt = (args) => this.createSingleDescriptor('Read', 'INT', args)
-    readInt1Dp = (args) => this.createSingleDescriptor('Read', 'INT1DP', args)
-    readInt2Dp = (args) => this.createSingleDescriptor('Read', 'INT2DP', args)
-    readDword = (args) => this.createSingleDescriptor('Read', 'DWORD', args)
-    readUdint = (args) => this.createSingleDescriptor('Read', 'UDINT', args)
-    readDint = (args) => this.createSingleDescriptor('Read', 'DINT', args)
-    readReal = (args) => this.createSingleDescriptor('Read', 'REAL', args)
-    readLreal = (args) => this.createSingleDescriptor('Read', 'LREAL', args)
-    readString = (args) => this.createSingleDescriptor('Read', 'STRING', args)
-    readTime = (args) => this.createSingleDescriptor('Read', 'TIME', args)
-    readTod = (args) => this.createSingleDescriptor('Read', 'TOD', args)
-    readDate = (args) => this.createSingleDescriptor('Read', 'DATE', args)
-    readDt = (args) => this.createSingleDescriptor('Read', 'DT', args)
+    readBool = (args) => this.readSingle('Read', 'BOOL', args)
+    readByte = (args) => this.readSingle('Read', 'BYTE', args)
+    readUsint = (args) => this.readSingle('Read', 'USINT', args)
+    readSint = (args) => this.readSingle('Read', 'SINT', args)
+    readWord = (args) => this.readSingle('Read', 'WORD', args)
+    readUint = (args) => this.readSingle('Read', 'UINT', args)
+    readInt = (args) => this.readSingle('Read', 'INT', args)
+    readInt1Dp = (args) => this.readSingle('Read', 'INT1DP', args)
+    readInt2Dp = (args) => this.readSingle('Read', 'INT2DP', args)
+    readDword = (args) => this.readSingle('Read', 'DWORD', args)
+    readUdint = (args) => this.readSingle('Read', 'UDINT', args)
+    readDint = (args) => this.readSingle('Read', 'DINT', args)
+    readReal = (args) => this.readSingle('Read', 'REAL', args)
+    readLreal = (args) => this.readSingle('Read', 'LREAL', args)
+    readString = (args) => this.readSingle('Read', 'STRING', args)
+    readTime = (args) => this.readSingle('Read', 'TIME', args)
+    readTod = (args) => this.readSingle('Read', 'TOD', args)
+    readDate = (args) => this.readSingle('Read', 'DATE', args)
+    readDt = (args) => this.readSingle('Read', 'DT', args)
 
     writeStruct = (args) => this.createStructDescriptor('Write', args)
     readStruct = (args) => this.createStructDescriptor('Read', args)
