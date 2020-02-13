@@ -139,6 +139,7 @@ export declare class TAME {
      */
     createXMLHttpReq(): any;
     adsReqSend(adsReq: any): void;
+    adsReqSendAsync(adsReq: any): Promise<any>;
     /**
      * Create the objects for SOAP and XMLHttpRequest and send the request.
      *
@@ -382,8 +383,8 @@ export declare class TAME {
      * @param {Object} adsReq   ADS Request Object
      */
     parseHandles(adsReq: any): void;
-    writeSingle(method: any, type: any, args: any): boolean;
-    readSingle(method: any, type: any, args: any): Promise<number>;
+    writeSingle(method: any, type: any, args: any): Promise<any>;
+    readSingle(method: any, type: any, args: any): Promise<any>;
     /**
      * Create the Request Descriptor for a single variable. An item list
      * with a single array item is generated.
@@ -513,44 +514,44 @@ export declare class TAME {
      *
      * @param {Object} args
      */
-    writeBool: (args: any) => boolean;
-    writeByte: (args: any) => boolean;
-    writeUsint: (args: any) => boolean;
-    writeSint: (args: any) => boolean;
-    writeWord: (args: any) => boolean;
-    writeUint: (args: any) => boolean;
-    writeInt: (args: any) => boolean;
-    writeInt1Dp: (args: any) => boolean;
-    writeInt2Dp: (args: any) => boolean;
-    writeDword: (args: any) => boolean;
-    writeUdint: (args: any) => boolean;
-    writeDint: (args: any) => boolean;
-    writeReal: (args: any) => boolean;
-    writeLreal: (args: any) => boolean;
-    writeString: (args: any) => boolean;
-    writeTime: (args: any) => boolean;
-    writeTod: (args: any) => boolean;
-    writeDate: (args: any) => boolean;
-    writeDt: (args: any) => boolean;
-    readBool: (args: any) => Promise<number>;
-    readByte: (args: any) => Promise<number>;
-    readUsint: (args: any) => Promise<number>;
-    readSint: (args: any) => Promise<number>;
-    readWord: (args: any) => Promise<number>;
-    readUint: (args: any) => Promise<number>;
-    readInt: (args: any) => Promise<number>;
-    readInt1Dp: (args: any) => Promise<number>;
-    readInt2Dp: (args: any) => Promise<number>;
-    readDword: (args: any) => Promise<number>;
-    readUdint: (args: any) => Promise<number>;
-    readDint: (args: any) => Promise<number>;
-    readReal: (args: any) => Promise<number>;
-    readLreal: (args: any) => Promise<number>;
-    readString: (args: any) => Promise<number>;
-    readTime: (args: any) => Promise<number>;
-    readTod: (args: any) => Promise<number>;
-    readDate: (args: any) => Promise<number>;
-    readDt: (args: any) => Promise<number>;
+    writeBool: (args: any) => Promise<any>;
+    writeByte: (args: any) => Promise<any>;
+    writeUsint: (args: any) => Promise<any>;
+    writeSint: (args: any) => Promise<any>;
+    writeWord: (args: any) => Promise<any>;
+    writeUint: (args: any) => Promise<any>;
+    writeInt: (args: any) => Promise<any>;
+    writeInt1Dp: (args: any) => Promise<any>;
+    writeInt2Dp: (args: any) => Promise<any>;
+    writeDword: (args: any) => Promise<any>;
+    writeUdint: (args: any) => Promise<any>;
+    writeDint: (args: any) => Promise<any>;
+    writeReal: (args: any) => Promise<any>;
+    writeLreal: (args: any) => Promise<any>;
+    writeString: (args: any) => Promise<any>;
+    writeTime: (args: any) => Promise<any>;
+    writeTod: (args: any) => Promise<any>;
+    writeDate: (args: any) => Promise<any>;
+    writeDt: (args: any) => Promise<any>;
+    readBool: (args: any) => Promise<any>;
+    readByte: (args: any) => Promise<any>;
+    readUsint: (args: any) => Promise<any>;
+    readSint: (args: any) => Promise<any>;
+    readWord: (args: any) => Promise<any>;
+    readUint: (args: any) => Promise<any>;
+    readInt: (args: any) => Promise<any>;
+    readInt1Dp: (args: any) => Promise<any>;
+    readInt2Dp: (args: any) => Promise<any>;
+    readDword: (args: any) => Promise<any>;
+    readUdint: (args: any) => Promise<any>;
+    readDint: (args: any) => Promise<any>;
+    readReal: (args: any) => Promise<any>;
+    readLreal: (args: any) => Promise<any>;
+    readString: (args: any) => Promise<any>;
+    readTime: (args: any) => Promise<any>;
+    readTod: (args: any) => Promise<any>;
+    readDate: (args: any) => Promise<any>;
+    readDt: (args: any) => Promise<any>;
     writeStruct: (args: any) => void;
     readStruct: (args: any) => void;
     writeArrayOfBool: (args: any) => void;

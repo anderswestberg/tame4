@@ -33,6 +33,9 @@
     "lint": "jshint tame.js"
   },
   "devDependencies": {
-    "jshint": "^2.8.0"
+    "@typescript-eslint/eslint-plugin": "^2.19.2",
+    "@typescript-eslint/parser": "^2.19.2",
+    "jshint": "^2.8.0",
+    "typescript": "^3.7.5"
   }
 }
