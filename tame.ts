@@ -1376,7 +1376,7 @@ export class TAME {
      * @param {Array} data
      */
     encodeBase64(data) {
-        let test = btoa(data)
+        let test = btoa(String.fromCharCode(...data))
         var $ = this.b64Enc,
         i = 0,
         out = '',
@@ -2069,7 +2069,7 @@ export class TAME {
      * @param {String} data
      */
     decodeBase64(data) {
-        let test = atob(String.fromCharCode(...data))
+        let test = atob(data)
         var $ = this.b64Dec,
             i = 0,
             output = '',
