@@ -1951,7 +1951,7 @@ class TAME {
      * @param {String} data
      */
     decodeBase64(data) {
-        return btoa(data);
+        return atob(data);
     }
     /**
      * Convert B64-substrings to data.

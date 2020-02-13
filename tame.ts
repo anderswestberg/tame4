@@ -2029,7 +2029,7 @@ export class TAME {
      * @param {String} data
      */
     decodeBase64(data) {
-        return btoa(data)
+        return atob(data)
     }
 
     /**
