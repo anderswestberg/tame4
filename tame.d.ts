@@ -138,6 +138,7 @@ export declare class TAME {
      * @return {Object} xmlHttpReq  A XMLHttpRequest.
      */
     createXMLHttpReq(): any;
+    adsReqSend(adsReq: any): void;
     /**
      * Create the objects for SOAP and XMLHttpRequest and send the request.
      *
