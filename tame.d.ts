@@ -89,8 +89,6 @@ export declare class TAME {
     handleNames: any[];
     xmlHttpReq: any;
     log(message: any): void;
-    b64Enc: {};
-    b64Dec: {};
     constructor(service: any);
     open(): Promise<void>;
     /**

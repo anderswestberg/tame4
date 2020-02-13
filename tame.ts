@@ -110,29 +110,7 @@ export class TAME {
             alert(message);
         }
     }
-    //Generate a Base64 alphabet for the encoder. Using an array or object to
-    //store the alphabet the en-/decoder runs faster than with the commonly
-    //used string. At least with the browsers of 2009. ;-)
-    b64Enc = (() => {
-        var ret = {},
-            str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
-            i: number;
-        for (i = 0; i < str.length; i++) {
-            ret[i] = str.charAt(i);
-        }
-        return ret;
-    })();
 
-    //Generate a Base64 alphabet for the decoder.
-    b64Dec = (() => {
-        var ret = {},
-            str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
-            i: number;
-        for (i = 0; i < str.length; i++) {
-            ret[str.charAt(i)] = i;
-        }
-        return ret;
-    })();
     constructor(public service: any) {
 
         this.log('TAME library version: ' + this.version);
@@ -950,110 +928,65 @@ export class TAME {
 
     async adsReqSendAsync(adsReq) {
 
-        return new Promise<any>((resolve, reject) => {
-            var soapReq;
+        //Generate the SOAP request.
+        let soapReq = '<?xml version=\'1.0\' encoding=\'utf-8\'?>';
+        soapReq += '<soap:Envelope xmlns:xsi=\'http://www.w3.org/2001/XMLSchema-instance\' ';
+        soapReq += 'xmlns:xsd=\'http://www.w3.org/2001/XMLSchema\' ';
+        soapReq += 'xmlns:soap=\'http://schemas.xmlsoap.org/soap/envelope/\'>';
+        soapReq += '<soap:Body><q1:';
+        soapReq += adsReq.method;
+        soapReq += ' xmlns:q1=\'http://beckhoff.org/message/\'><netId xsi:type=\'xsd:string\'>';
+        soapReq += this.service.amsNetId;
+        soapReq += '</netId><nPort xsi:type=\'xsd:int\'>';
+        soapReq += this.service.amsPort;
+        soapReq += '</nPort>';
 
-            //Cancel the request, if the last on with the same ID is not finished.
-            if (typeof adsReq.reqDescr.id === 'number' && this.currReq[adsReq.reqDescr.id] > 0) {
-                this.log('TAME library warning: Request dropped (last request with ID ' + adsReq.reqDescr.id + ' not finished!)');
-                this.currReq[adsReq.reqDescr.id]++;
-                if (this.currReq[adsReq.reqDescr.id] <= this.maxDropReq) {
-                    return;
-                }
-                //Automatic acknowleding after a count of 'maxDropReq' to
-                //prevent stucking.
-                this.currReq[adsReq.reqDescr.id] = 0;
-            }
+        if (adsReq.indexGroup !== undefined) {
+            soapReq += '<indexGroup xsi:type=\'xsd:unsignedInt\'>';
+            soapReq += adsReq.indexGroup;
+            soapReq += '</indexGroup>';
+        }
+        if (adsReq.indexOffset !== undefined) {
+            soapReq += '<indexOffset xsi:type=\'xsd:unsignedInt\'>';
+            soapReq += adsReq.indexOffset;
+            soapReq += '</indexOffset>';
+        }
+        if ((adsReq.method === 'Read' || adsReq.method === 'ReadWrite') && adsReq.reqDescr.readLength > 0) {
+            soapReq += '<cbRdLen xsi:type=\'xsd:int\'>';
+            soapReq += adsReq.reqDescr.readLength;
+            soapReq += '</cbRdLen>';
+        }
+        if (adsReq.pData && adsReq.pData.length > 0) {
+            soapReq += '<pData xsi:type=\'xsd:base64Binary\'>';
+            soapReq += adsReq.pData;
+            soapReq += '</pData>';
+        }
+        if (adsReq.pwrData && adsReq.pwrData.length > 0) {
+            soapReq += '<pwrData xsi:type=\'xsd:base64Binary\'>';
+            soapReq += adsReq.pwrData;
+            soapReq += '</pwrData>';
+        }
+        soapReq += '</q1:';
+        soapReq += adsReq.method;
+        soapReq += '></soap:Body></soap:Envelope>';
 
+        this.xmlHttpReq.open('POST', this.service.serviceUrl, true, this.service.serviceUser, this.service.servicePassword);
 
-            //Create the XMLHttpRequest object.
-            this.xmlHttpReq = this.createXMLHttpReq();
+        this.xmlHttpReq.setRequestHeader('SOAPAction', 'http://beckhoff.org/action/TcAdsSync.' + adsReq.method);
+        this.xmlHttpReq.setRequestHeader('Content-Type', 'text/xml; charset=utf-8');
 
-            //Generate the SOAP request.
-            soapReq = '<?xml version=\'1.0\' encoding=\'utf-8\'?>';
-            soapReq += '<soap:Envelope xmlns:xsi=\'http://www.w3.org/2001/XMLSchema-instance\' ';
-            soapReq += 'xmlns:xsd=\'http://www.w3.org/2001/XMLSchema\' ';
-            soapReq += 'xmlns:soap=\'http://schemas.xmlsoap.org/soap/envelope/\'>';
-            soapReq += '<soap:Body><q1:';
-            soapReq += adsReq.method;
-            soapReq += ' xmlns:q1=\'http://beckhoff.org/message/\'><netId xsi:type=\'xsd:string\'>';
-            soapReq += this.service.amsNetId;
-            soapReq += '</netId><nPort xsi:type=\'xsd:int\'>';
-            soapReq += this.service.amsPort;
-            soapReq += '</nPort>';
-
-            if (adsReq.indexGroup !== undefined) {
-                soapReq += '<indexGroup xsi:type=\'xsd:unsignedInt\'>';
-                soapReq += adsReq.indexGroup;
-                soapReq += '</indexGroup>';
-            }
-            if (adsReq.indexOffset !== undefined) {
-                soapReq += '<indexOffset xsi:type=\'xsd:unsignedInt\'>';
-                soapReq += adsReq.indexOffset;
-                soapReq += '</indexOffset>';
-            }
-            if ((adsReq.method === 'Read' || adsReq.method === 'ReadWrite') && adsReq.reqDescr.readLength > 0) {
-                soapReq += '<cbRdLen xsi:type=\'xsd:int\'>';
-                soapReq += adsReq.reqDescr.readLength;
-                soapReq += '</cbRdLen>';
-            }
-            if (adsReq.pData && adsReq.pData.length > 0) {
-                soapReq += '<pData xsi:type=\'xsd:base64Binary\'>';
-                soapReq += adsReq.pData;
-                soapReq += '</pData>';
-            }
-            if (adsReq.pwrData && adsReq.pwrData.length > 0) {
-                soapReq += '<pwrData xsi:type=\'xsd:base64Binary\'>';
-                soapReq += adsReq.pwrData;
-                soapReq += '</pwrData>';
-            }
-            soapReq += '</q1:';
-            soapReq += adsReq.method;
-            soapReq += '></soap:Body></soap:Envelope>';
-
-            //Send the AJAX request.
-            if (typeof this.xmlHttpReq === 'object') {
-
-                this.xmlHttpReq.open('POST', this.service.serviceUrl, true, this.service.serviceUser, this.service.servicePassword);
-
-                this.xmlHttpReq.setRequestHeader('SOAPAction', 'http://beckhoff.org/action/TcAdsSync.' + adsReq.method);
-                this.xmlHttpReq.setRequestHeader('Content-Type', 'text/xml; charset=utf-8');
-
-                this.xmlHttpReq.timeout = this.xmlHttpReqTimeout;
-                this.xmlHttpReq.ontimeout = (e) => {
-                    this.log('TAME library error: XMLHttpRequest timed out. Timeout ' + this.xmlHttpReqTimeout + ' milliseconds.');
-                    this.log(e);
-                    if (typeof adsReq.reqDescr.ot === 'function') {
-                        //on timeout function
-                        adsReq.reqDescr.ot();
-                    }
-                    reject(e)
-                };
-
-                this.xmlHttpReq.onreadystatechange = () => {
-                    if (this.xmlHttpReq.readyState === 4) {
-                        if (this.xmlHttpReq.status === 200) {
-                            //request OK                           
-                            resolve(this.parseResponse(adsReq))
-                        } else {
-                            //request failed
-                            this.log('TAME library error: XMLHttpRequest returns an error. Status code : ' + this.xmlHttpReq.status);
-                            if (typeof adsReq.reqDescr.oe === 'function') {
-                                //on error function
-                                adsReq.reqDescr.oe();
-                            }
-                            reject('TAME library error: XMLHttpRequest returns an error. Status code : ' + this.xmlHttpReq.status)
-                        }
-                    }
-                };
-                this.xmlHttpReq.send(soapReq);
-
-                //Request with index 'id' sent.
-                if (typeof adsReq.reqDescr.id === 'number') {
-                    this.currReq[adsReq.reqDescr.id] = 1;
-                }
-            }
-        })
+        let options =  { 
+            method: 'POST',
+            headers: [
+                ['SOAPAction', 'http://beckhoff.org/action/TcAdsSync.' + adsReq.method],
+                ['Content-Type', 'text/xml; charset=utf-8']
+            ],
+            body: soapReq
+        }
+        if (this.service.serviceUser || this.service.servicePassword)
+            options.headers.push(['Authorization', 'Basic ' + btoa(this.service.serviceUser + ":" + this.service.servicePassword)])
+        let response = await fetch(this.service.serviceUrl, options);
+        return this.parseResponse(adsReq)
     }
 
     /**
