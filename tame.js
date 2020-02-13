@@ -1336,7 +1336,7 @@ class TAME {
      * @param {Array} data
      */
     encodeBase64(data) {
-        //return btoa(data)
+        let test = btoa(data);
         var $ = this.b64Enc, i = 0, out = '', c1, c2, c3;
         while (i < data.length) {
             c1 = data[i++];
@@ -1348,6 +1348,8 @@ class TAME {
                 (isNaN(c2) ? '=' : $[(((c2 & 15) << 2) | (c3 >> 6))]) +
                 ((isNaN(c2) || isNaN(c3)) ? '=' : $[c3 & 63]);
         }
+        if (out !== test)
+            console.log("Bug in encodeBase64");
         return out;
     }
     /**
@@ -1981,7 +1983,7 @@ class TAME {
      * @param {String} data
      */
     decodeBase64(data) {
-        //return atob(data)
+        let test = atob(data);
         var $ = this.b64Dec, i = 0, output = '', c1, c2, c3, e1, e2, e3, e4;
         //Cut all characters but A-Z, a-z, 0-9, +, /, or =
         data = data.replace(/[^A-Za-z0-9\+\/\=]/g, '');
@@ -2001,6 +2003,8 @@ class TAME {
                 output += String.fromCharCode(c3);
             }
         } while (i < data.length);
+        if (output !== test)
+            console.log("Bug in decodeBase64");
         return output;
     }
     /**

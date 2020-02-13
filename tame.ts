@@ -1376,7 +1376,7 @@ export class TAME {
      * @param {Array} data
      */
     encodeBase64(data) {
-        //return btoa(data)
+        let test = btoa(data)
         var $ = this.b64Enc,
         i = 0,
         out = '',
@@ -1392,6 +1392,8 @@ export class TAME {
                 (isNaN(c2) ? '=' : $[(((c2 & 15) << 2) | (c3 >> 6))]) +
                 ((isNaN(c2) || isNaN(c3)) ? '=' : $[c3 & 63]);
         }
+        if (out !== test)
+            console.log("Bug in encodeBase64")
         return out;
     }
 
@@ -2067,7 +2069,7 @@ export class TAME {
      * @param {String} data
      */
     decodeBase64(data) {
-        //return atob(data)
+        let test = atob(data)
         var $ = this.b64Dec,
             i = 0,
             output = '',
@@ -2097,7 +2099,10 @@ export class TAME {
         }
         while (i < data.length);
 
-        return output;    }
+        if (output !== test)
+            console.log("Bug in decodeBase64")
+        return output;    
+    }
 
     /**
      * Convert B64-substrings to data.
