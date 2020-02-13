@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var TAME = /** @class */ (function () {
-    function TAME(service) {
-        var _this = this;
+class TAME {
+    constructor(service) {
         this.service = service;
         this.indexGroups = {
             M: 16416,
@@ -93,86 +92,86 @@ var TAME = /** @class */ (function () {
          *
          * @param {Object} args
          */
-        this.writeBool = function (args) { return _this.createSingleDescriptor('Write', 'BOOL', args); };
-        this.writeByte = function (args) { return _this.createSingleDescriptor('Write', 'BYTE', args); };
-        this.writeUsint = function (args) { return _this.createSingleDescriptor('Write', 'USINT', args); };
-        this.writeSint = function (args) { return _this.createSingleDescriptor('Write', 'SINT', args); };
-        this.writeWord = function (args) { return _this.createSingleDescriptor('Write', 'WORD', args); };
-        this.writeUint = function (args) { return _this.createSingleDescriptor('Write', 'UINT', args); };
-        this.writeInt = function (args) { return _this.createSingleDescriptor('Write', 'INT', args); };
-        this.writeInt1Dp = function (args) { return _this.createSingleDescriptor('Write', 'INT1DP', args); };
-        this.writeInt2Dp = function (args) { return _this.createSingleDescriptor('Write', 'INT2DP', args); };
-        this.writeDword = function (args) { return _this.createSingleDescriptor('Write', 'DWORD', args); };
-        this.writeUdint = function (args) { return _this.createSingleDescriptor('Write', 'UDINT', args); };
-        this.writeDint = function (args) { return _this.createSingleDescriptor('Write', 'DINT', args); };
-        this.writeReal = function (args) { return _this.createSingleDescriptor('Write', 'REAL', args); };
-        this.writeLreal = function (args) { return _this.createSingleDescriptor('Write', 'LREAL', args); };
-        this.writeString = function (args) { return _this.createSingleDescriptor('Write', 'STRING', args); };
-        this.writeTime = function (args) { return _this.createSingleDescriptor('Write', 'TIME', args); };
-        this.writeTod = function (args) { return _this.createSingleDescriptor('Write', 'TOD', args); };
-        this.writeDate = function (args) { return _this.createSingleDescriptor('Write', 'DATE', args); };
-        this.writeDt = function (args) { return _this.createSingleDescriptor('Write', 'DT', args); };
-        this.readBool = function (args) { return _this.createSingleDescriptor('Read', 'BOOL', args); };
-        this.readByte = function (args) { return _this.createSingleDescriptor('Read', 'BYTE', args); };
-        this.readUsint = function (args) { return _this.createSingleDescriptor('Read', 'USINT', args); };
-        this.readSint = function (args) { return _this.createSingleDescriptor('Read', 'SINT', args); };
-        this.readWord = function (args) { return _this.createSingleDescriptor('Read', 'WORD', args); };
-        this.readUint = function (args) { return _this.createSingleDescriptor('Read', 'UINT', args); };
-        this.readInt = function (args) { return _this.createSingleDescriptor('Read', 'INT', args); };
-        this.readInt1Dp = function (args) { return _this.createSingleDescriptor('Read', 'INT1DP', args); };
-        this.readInt2Dp = function (args) { return _this.createSingleDescriptor('Read', 'INT2DP', args); };
-        this.readDword = function (args) { return _this.createSingleDescriptor('Read', 'DWORD', args); };
-        this.readUdint = function (args) { return _this.createSingleDescriptor('Read', 'UDINT', args); };
-        this.readDint = function (args) { return _this.createSingleDescriptor('Read', 'DINT', args); };
-        this.readReal = function (args) { return _this.createSingleDescriptor('Read', 'REAL', args); };
-        this.readLreal = function (args) { return _this.createSingleDescriptor('Read', 'LREAL', args); };
-        this.readString = function (args) { return _this.createSingleDescriptor('Read', 'STRING', args); };
-        this.readTime = function (args) { return _this.createSingleDescriptor('Read', 'TIME', args); };
-        this.readTod = function (args) { return _this.createSingleDescriptor('Read', 'TOD', args); };
-        this.readDate = function (args) { return _this.createSingleDescriptor('Read', 'DATE', args); };
-        this.readDt = function (args) { return _this.createSingleDescriptor('Read', 'DT', args); };
-        this.writeStruct = function (args) { return _this.createStructDescriptor('Write', args); };
-        this.readStruct = function (args) { return _this.createStructDescriptor('Read', args); };
-        this.writeArrayOfBool = function (args) { return _this.createArrayDescriptor('Write', 'BOOL', args); };
-        this.writeArrayOfByte = function (args) { return _this.createArrayDescriptor('Write', 'BYTE', args); };
-        this.writeArrayOfUsint = function (args) { return _this.createArrayDescriptor('Write', 'USINT', args); };
-        this.writeArrayOfSint = function (args) { return _this.createArrayDescriptor('Write', 'SINT', args); };
-        this.writeArrayOfWord = function (args) { return _this.createArrayDescriptor('Write', 'WORD', args); };
-        this.writeArrayOfUint = function (args) { return _this.createArrayDescriptor('Write', 'UINT', args); };
-        this.writeArrayOfInt = function (args) { return _this.createArrayDescriptor('Write', 'INT', args); };
-        this.writeArrayOfInt1Dp = function (args) { return _this.createArrayDescriptor('Write', 'INT1DP', args); };
-        this.writeArrayOfInt2Dp = function (args) { return _this.createArrayDescriptor('Write', 'INT2DP', args); };
-        this.writeArrayOfDword = function (args) { return _this.createArrayDescriptor('Write', 'DWORD', args); };
-        this.writeArrayOfUdint = function (args) { return _this.createArrayDescriptor('Write', 'UDINT', args); };
-        this.writeArrayOfDint = function (args) { return _this.createArrayDescriptor('Write', 'DINT', args); };
-        this.writeArrayOfReal = function (args) { return _this.createArrayDescriptor('Write', 'REAL', args); };
-        this.writeArrayOfLreal = function (args) { return _this.createArrayDescriptor('Write', 'LREAL', args); };
-        this.writeArrayOfString = function (args) { return _this.createArrayDescriptor('Write', 'STRING', args); };
-        this.writeArrayOfTime = function (args) { return _this.createArrayDescriptor('Write', 'TIME', args); };
-        this.writeArrayOfTod = function (args) { return _this.createArrayDescriptor('Write', 'TOD', args); };
-        this.writeArrayOfDate = function (args) { return _this.createArrayDescriptor('Write', 'DATE', args); };
-        this.writeArrayOfDt = function (args) { return _this.createArrayDescriptor('Write', 'DT', args); };
-        this.writeArrayOfStruct = function (args) { return _this.createArrayDescriptor('Write', 'STRUCT', args); };
-        this.readArrayOfBool = function (args) { return _this.createArrayDescriptor('Read', 'BOOL', args); };
-        this.readArrayOfByte = function (args) { return _this.createArrayDescriptor('Read', 'BYTE', args); };
-        this.readArrayOfUsint = function (args) { return _this.createArrayDescriptor('Read', 'USINT', args); };
-        this.readArrayOfSint = function (args) { return _this.createArrayDescriptor('Read', 'SINT', args); };
-        this.readArrayOfWord = function (args) { return _this.createArrayDescriptor('Read', 'WORD', args); };
-        this.readArrayOfUint = function (args) { return _this.createArrayDescriptor('Read', 'UINT', args); };
-        this.readArrayOfInt = function (args) { return _this.createArrayDescriptor('Read', 'INT', args); };
-        this.readArrayOfInt1Dp = function (args) { return _this.createArrayDescriptor('Read', 'INT1DP', args); };
-        this.readArrayOfInt2Dp = function (args) { return _this.createArrayDescriptor('Read', 'INT2DP', args); };
-        this.readArrayOfDword = function (args) { return _this.createArrayDescriptor('Read', 'DWORD', args); };
-        this.readArrayOfUdint = function (args) { return _this.createArrayDescriptor('Read', 'UDINT', args); };
-        this.readArrayOfDint = function (args) { return _this.createArrayDescriptor('Read', 'DINT', args); };
-        this.readArrayOfReal = function (args) { return _this.createArrayDescriptor('Read', 'REAL', args); };
-        this.readArrayOfLreal = function (args) { return _this.createArrayDescriptor('Read', 'LREAL', args); };
-        this.readArrayOfString = function (args) { return _this.createArrayDescriptor('Read', 'STRING', args); };
-        this.readArrayOfTime = function (args) { return _this.createArrayDescriptor('Read', 'TIME', args); };
-        this.readArrayOfTod = function (args) { return _this.createArrayDescriptor('Read', 'TOD', args); };
-        this.readArrayOfDate = function (args) { return _this.createArrayDescriptor('Read', 'DATE', args); };
-        this.readArrayOfDt = function (args) { return _this.createArrayDescriptor('Read', 'DT', args); };
-        this.readArrayOfStruct = function (args) { return _this.createArrayDescriptor('Read', 'STRUCT', args); };
+        this.writeBool = (args) => this.createSingleDescriptor('Write', 'BOOL', args);
+        this.writeByte = (args) => this.createSingleDescriptor('Write', 'BYTE', args);
+        this.writeUsint = (args) => this.createSingleDescriptor('Write', 'USINT', args);
+        this.writeSint = (args) => this.createSingleDescriptor('Write', 'SINT', args);
+        this.writeWord = (args) => this.createSingleDescriptor('Write', 'WORD', args);
+        this.writeUint = (args) => this.createSingleDescriptor('Write', 'UINT', args);
+        this.writeInt = (args) => this.createSingleDescriptor('Write', 'INT', args);
+        this.writeInt1Dp = (args) => this.createSingleDescriptor('Write', 'INT1DP', args);
+        this.writeInt2Dp = (args) => this.createSingleDescriptor('Write', 'INT2DP', args);
+        this.writeDword = (args) => this.createSingleDescriptor('Write', 'DWORD', args);
+        this.writeUdint = (args) => this.createSingleDescriptor('Write', 'UDINT', args);
+        this.writeDint = (args) => this.createSingleDescriptor('Write', 'DINT', args);
+        this.writeReal = (args) => this.createSingleDescriptor('Write', 'REAL', args);
+        this.writeLreal = (args) => this.createSingleDescriptor('Write', 'LREAL', args);
+        this.writeString = (args) => this.createSingleDescriptor('Write', 'STRING', args);
+        this.writeTime = (args) => this.createSingleDescriptor('Write', 'TIME', args);
+        this.writeTod = (args) => this.createSingleDescriptor('Write', 'TOD', args);
+        this.writeDate = (args) => this.createSingleDescriptor('Write', 'DATE', args);
+        this.writeDt = (args) => this.createSingleDescriptor('Write', 'DT', args);
+        this.readBool = (args) => this.createSingleDescriptor('Read', 'BOOL', args);
+        this.readByte = (args) => this.createSingleDescriptor('Read', 'BYTE', args);
+        this.readUsint = (args) => this.createSingleDescriptor('Read', 'USINT', args);
+        this.readSint = (args) => this.createSingleDescriptor('Read', 'SINT', args);
+        this.readWord = (args) => this.createSingleDescriptor('Read', 'WORD', args);
+        this.readUint = (args) => this.createSingleDescriptor('Read', 'UINT', args);
+        this.readInt = (args) => this.createSingleDescriptor('Read', 'INT', args);
+        this.readInt1Dp = (args) => this.createSingleDescriptor('Read', 'INT1DP', args);
+        this.readInt2Dp = (args) => this.createSingleDescriptor('Read', 'INT2DP', args);
+        this.readDword = (args) => this.createSingleDescriptor('Read', 'DWORD', args);
+        this.readUdint = (args) => this.createSingleDescriptor('Read', 'UDINT', args);
+        this.readDint = (args) => this.createSingleDescriptor('Read', 'DINT', args);
+        this.readReal = (args) => this.createSingleDescriptor('Read', 'REAL', args);
+        this.readLreal = (args) => this.createSingleDescriptor('Read', 'LREAL', args);
+        this.readString = (args) => this.createSingleDescriptor('Read', 'STRING', args);
+        this.readTime = (args) => this.createSingleDescriptor('Read', 'TIME', args);
+        this.readTod = (args) => this.createSingleDescriptor('Read', 'TOD', args);
+        this.readDate = (args) => this.createSingleDescriptor('Read', 'DATE', args);
+        this.readDt = (args) => this.createSingleDescriptor('Read', 'DT', args);
+        this.writeStruct = (args) => this.createStructDescriptor('Write', args);
+        this.readStruct = (args) => this.createStructDescriptor('Read', args);
+        this.writeArrayOfBool = (args) => this.createArrayDescriptor('Write', 'BOOL', args);
+        this.writeArrayOfByte = (args) => this.createArrayDescriptor('Write', 'BYTE', args);
+        this.writeArrayOfUsint = (args) => this.createArrayDescriptor('Write', 'USINT', args);
+        this.writeArrayOfSint = (args) => this.createArrayDescriptor('Write', 'SINT', args);
+        this.writeArrayOfWord = (args) => this.createArrayDescriptor('Write', 'WORD', args);
+        this.writeArrayOfUint = (args) => this.createArrayDescriptor('Write', 'UINT', args);
+        this.writeArrayOfInt = (args) => this.createArrayDescriptor('Write', 'INT', args);
+        this.writeArrayOfInt1Dp = (args) => this.createArrayDescriptor('Write', 'INT1DP', args);
+        this.writeArrayOfInt2Dp = (args) => this.createArrayDescriptor('Write', 'INT2DP', args);
+        this.writeArrayOfDword = (args) => this.createArrayDescriptor('Write', 'DWORD', args);
+        this.writeArrayOfUdint = (args) => this.createArrayDescriptor('Write', 'UDINT', args);
+        this.writeArrayOfDint = (args) => this.createArrayDescriptor('Write', 'DINT', args);
+        this.writeArrayOfReal = (args) => this.createArrayDescriptor('Write', 'REAL', args);
+        this.writeArrayOfLreal = (args) => this.createArrayDescriptor('Write', 'LREAL', args);
+        this.writeArrayOfString = (args) => this.createArrayDescriptor('Write', 'STRING', args);
+        this.writeArrayOfTime = (args) => this.createArrayDescriptor('Write', 'TIME', args);
+        this.writeArrayOfTod = (args) => this.createArrayDescriptor('Write', 'TOD', args);
+        this.writeArrayOfDate = (args) => this.createArrayDescriptor('Write', 'DATE', args);
+        this.writeArrayOfDt = (args) => this.createArrayDescriptor('Write', 'DT', args);
+        this.writeArrayOfStruct = (args) => this.createArrayDescriptor('Write', 'STRUCT', args);
+        this.readArrayOfBool = (args) => this.createArrayDescriptor('Read', 'BOOL', args);
+        this.readArrayOfByte = (args) => this.createArrayDescriptor('Read', 'BYTE', args);
+        this.readArrayOfUsint = (args) => this.createArrayDescriptor('Read', 'USINT', args);
+        this.readArrayOfSint = (args) => this.createArrayDescriptor('Read', 'SINT', args);
+        this.readArrayOfWord = (args) => this.createArrayDescriptor('Read', 'WORD', args);
+        this.readArrayOfUint = (args) => this.createArrayDescriptor('Read', 'UINT', args);
+        this.readArrayOfInt = (args) => this.createArrayDescriptor('Read', 'INT', args);
+        this.readArrayOfInt1Dp = (args) => this.createArrayDescriptor('Read', 'INT1DP', args);
+        this.readArrayOfInt2Dp = (args) => this.createArrayDescriptor('Read', 'INT2DP', args);
+        this.readArrayOfDword = (args) => this.createArrayDescriptor('Read', 'DWORD', args);
+        this.readArrayOfUdint = (args) => this.createArrayDescriptor('Read', 'UDINT', args);
+        this.readArrayOfDint = (args) => this.createArrayDescriptor('Read', 'DINT', args);
+        this.readArrayOfReal = (args) => this.createArrayDescriptor('Read', 'REAL', args);
+        this.readArrayOfLreal = (args) => this.createArrayDescriptor('Read', 'LREAL', args);
+        this.readArrayOfString = (args) => this.createArrayDescriptor('Read', 'STRING', args);
+        this.readArrayOfTime = (args) => this.createArrayDescriptor('Read', 'TIME', args);
+        this.readArrayOfTod = (args) => this.createArrayDescriptor('Read', 'TOD', args);
+        this.readArrayOfDate = (args) => this.createArrayDescriptor('Read', 'DATE', args);
+        this.readArrayOfDt = (args) => this.createArrayDescriptor('Read', 'DT', args);
+        this.readArrayOfStruct = (args) => this.createArrayDescriptor('Read', 'STRUCT', args);
         this.log('TAME library version: ' + this.version);
         //Set language for names of days and months, default is german.
         this.lang = (typeof service.language === 'string') ? service.language : 'ge',
@@ -315,14 +314,14 @@ var TAME = /** @class */ (function () {
             }
         }
     }
-    TAME.prototype.log = function (message) {
+    log(message) {
         try {
             window.console.log(message);
         }
         catch (e) {
             alert(message);
         }
-    };
+    }
     //======================================================================================
     //                                 Helper Functions
     //======================================================================================
@@ -336,7 +335,7 @@ var TAME = /** @class */ (function () {
      *                          Used with createArrayDescriptor and createStructDescriptor
      *                          for better performance.
      */
-    TAME.prototype.parseVarName = function (name, data, obj, prefix, suffix) {
+    parseVarName(name, data, obj, prefix, suffix) {
         var arr = [], last = 0, a = [], i = 0;
         if (typeof name === 'number') {
             arr[0] = name.toString(10);
@@ -399,13 +398,13 @@ var TAME = /** @class */ (function () {
             obj[arr[i]] = data;
         }
         return obj[arr[i]];
-    };
+    }
     /**
      * Check if a passed string length is valid.
      *
      * @param {Number} len
      */
-    TAME.prototype.isValidStringLen = function (len) {
+    isValidStringLen(len) {
         if (len === undefined) {
             return false;
         }
@@ -415,14 +414,14 @@ var TAME = /** @class */ (function () {
         this.log('TAME library error: User defined string length not valid! length: ' + len);
         this.log('Max. string length: ' + this.maxStringLen);
         return false;
-    };
+    }
     /**
      * The function returns the IndexGroup for a PLC variable address.
      *
      * @param {Object} req          An object with the address or the name for the request.
      * @return {Number} indexGroup  The IndexGroup for the ADS request.
      */
-    TAME.prototype.getIndexGroup = function (req) {
+    getIndexGroup(req) {
         var indexGroup;
         if (req.addr) {
             //Try to get the IndexGroup by address
@@ -476,14 +475,14 @@ var TAME = /** @class */ (function () {
             this.log(req);
         }
         return indexGroup;
-    };
+    }
     /**
      * The function returns the IndexOffset for a PLC variable address.
      *
      * @param {Object} req          An object with the address or the name for the request.
      * @return {Number} indexOffset The IndexOffset for the ADS request.
      */
-    TAME.prototype.getIndexOffset = function (req) {
+    getIndexOffset(req) {
         var indexOffset, numString = '', mxaddr = [], i, dataType, itemArray, splittedType, bitoffs, subitem;
         if (req.addr) {
             //Try to get the IndexOffset by address
@@ -590,7 +589,7 @@ var TAME = /** @class */ (function () {
             this.log(req);
         }
         return indexOffset;
-    };
+    }
     /**
      * The function parses the PLC variable name, looks in the symbol and data type table and
      * returns an object with the necessary information.
@@ -599,7 +598,7 @@ var TAME = /** @class */ (function () {
      * @return {Objecct} itemInfo    An object with the information about the item.
      *
      */
-    TAME.prototype.getItemInformation = function (item) {
+    getItemInformation(item) {
         var itemInfo = {}, arrPlcVarName, splitType;
         if (typeof item.name === 'string') {
             item.name = item.name.toUpperCase();
@@ -808,13 +807,13 @@ var TAME = /** @class */ (function () {
         this.log(itemInfo);
         */
         return itemInfo;
-    };
+    }
     /**
      * This function creates a XMLHttpRequest object.
      *
      * @return {Object} xmlHttpReq  A XMLHttpRequest.
      */
-    TAME.prototype.createXMLHttpReq = function () {
+    createXMLHttpReq() {
         var xmlHttpReq;
         if (window.XMLHttpRequest) {
             //Create the XMLHttpRequest object.
@@ -837,32 +836,31 @@ var TAME = /** @class */ (function () {
             }
         }
         return xmlHttpReq;
-    };
+    }
     /**
      * Create the objects for SOAP and XMLHttpRequest and send the request.
      *
      * @param {Object} adsReq   The object containing the arguments of the ADS request.
      */
-    TAME.prototype.createRequest = function (adsReq) {
-        var _this = this;
+    createRequest(adsReq) {
         if (adsReq.reqDescr === undefined) {
             adsReq.reqDescr = {};
         }
         else if (adsReq.reqDescr.debug) {
             this.log(adsReq);
         }
-        adsReq.send = function () {
+        adsReq.send = () => {
             var soapReq, async;
             //Cancel the request, if the last on with the same ID is not finished.
-            if (typeof adsReq.reqDescr.id === 'number' && _this.currReq[adsReq.reqDescr.id] > 0) {
-                _this.log('TAME library warning: Request dropped (last request with ID ' + adsReq.reqDescr.id + ' not finished!)');
-                _this.currReq[adsReq.reqDescr.id]++;
-                if (_this.currReq[adsReq.reqDescr.id] <= _this.maxDropReq) {
+            if (typeof adsReq.reqDescr.id === 'number' && this.currReq[adsReq.reqDescr.id] > 0) {
+                this.log('TAME library warning: Request dropped (last request with ID ' + adsReq.reqDescr.id + ' not finished!)');
+                this.currReq[adsReq.reqDescr.id]++;
+                if (this.currReq[adsReq.reqDescr.id] <= this.maxDropReq) {
                     return;
                 }
                 //Automatic acknowleding after a count of 'maxDropReq' to
                 //prevent stucking.
-                _this.currReq[adsReq.reqDescr.id] = 0;
+                this.currReq[adsReq.reqDescr.id] = 0;
             }
             //Check if this should be a synchronous or a asynchronous XMLHttpRequest
             //adsReq.sync is used internal and it's most important, then comes reqDescr.sync and
@@ -876,14 +874,14 @@ var TAME = /** @class */ (function () {
             else if (adsReq.reqDescr.sync === false) {
                 async = true;
             }
-            else if (_this.service.syncXmlHttp === true) {
+            else if (this.service.syncXmlHttp === true) {
                 async = false;
             }
             else {
                 async = true;
             }
             //Create the XMLHttpRequest object.
-            _this.xmlHttpReq = _this.createXMLHttpReq();
+            this.xmlHttpReq = this.createXMLHttpReq();
             //Generate the SOAP request.
             soapReq = '<?xml version=\'1.0\' encoding=\'utf-8\'?>';
             soapReq += '<soap:Envelope xmlns:xsi=\'http://www.w3.org/2001/XMLSchema-instance\' ';
@@ -892,9 +890,9 @@ var TAME = /** @class */ (function () {
             soapReq += '<soap:Body><q1:';
             soapReq += adsReq.method;
             soapReq += ' xmlns:q1=\'http://beckhoff.org/message/\'><netId xsi:type=\'xsd:string\'>';
-            soapReq += _this.service.amsNetId;
+            soapReq += this.service.amsNetId;
             soapReq += '</netId><nPort xsi:type=\'xsd:int\'>';
-            soapReq += _this.service.amsPort;
+            soapReq += this.service.amsPort;
             soapReq += '</nPort>';
             if (adsReq.indexGroup !== undefined) {
                 soapReq += '<indexGroup xsi:type=\'xsd:unsignedInt\'>';
@@ -925,16 +923,16 @@ var TAME = /** @class */ (function () {
             soapReq += adsReq.method;
             soapReq += '></soap:Body></soap:Envelope>';
             //Send the AJAX request.
-            if (typeof _this.xmlHttpReq === 'object') {
-                _this.xmlHttpReq.open('POST', _this.service.serviceUrl, async, _this.service.serviceUser, _this.service.servicePassword);
-                _this.xmlHttpReq.setRequestHeader('SOAPAction', 'http://beckhoff.org/action/TcAdsSync.' + adsReq.method);
-                _this.xmlHttpReq.setRequestHeader('Content-Type', 'text/xml; charset=utf-8');
+            if (typeof this.xmlHttpReq === 'object') {
+                this.xmlHttpReq.open('POST', this.service.serviceUrl, async, this.service.serviceUser, this.service.servicePassword);
+                this.xmlHttpReq.setRequestHeader('SOAPAction', 'http://beckhoff.org/action/TcAdsSync.' + adsReq.method);
+                this.xmlHttpReq.setRequestHeader('Content-Type', 'text/xml; charset=utf-8');
                 if (async === true) {
                     //asynchronous request
                     //Test with timeout
                     //experimental, seems like it doesn't work with all browsers (05/2017)
-                    _this.xmlHttpReq.timeout = _this.xmlHttpReqTimeout;
-                    _this.xmlHttpReq.ontimeout = function (e) {
+                    this.xmlHttpReq.timeout = this.xmlHttpReqTimeout;
+                    this.xmlHttpReq.ontimeout = function (e) {
                         this.log('TAME library error: XMLHttpRequest timed out. Timeout ' + this.xmlHttpReqTimeout + ' milliseconds.');
                         this.log(e);
                         if (typeof adsReq.reqDescr.ot === 'function') {
@@ -942,7 +940,7 @@ var TAME = /** @class */ (function () {
                             adsReq.reqDescr.ot();
                         }
                     };
-                    _this.xmlHttpReq.onreadystatechange = function () {
+                    this.xmlHttpReq.onreadystatechange = function () {
                         if (adsReq.xmlHttpReq.readyState === 4) {
                             if (adsReq.xmlHttpReq.status === 200) {
                                 //request OK
@@ -958,21 +956,21 @@ var TAME = /** @class */ (function () {
                             }
                         }
                     };
-                    _this.xmlHttpReq.send(soapReq);
+                    this.xmlHttpReq.send(soapReq);
                 }
                 else {
                     //synchronous request
-                    _this.xmlHttpReq.send(soapReq);
-                    _this.parseResponse(adsReq);
+                    this.xmlHttpReq.send(soapReq);
+                    this.parseResponse(adsReq);
                 }
                 //Request with index 'id' sent.
                 if (typeof adsReq.reqDescr.id === 'number') {
-                    _this.currReq[adsReq.reqDescr.id] = 1;
+                    this.currReq[adsReq.reqDescr.id] = 1;
                 }
             }
         };
         return adsReq;
-    };
+    }
     /**
      * Function for checking the input values when writing numeric PLC variables.
      *
@@ -981,7 +979,7 @@ var TAME = /** @class */ (function () {
      * @param {Number} min
      * @param {Number} max
      */
-    TAME.prototype.checkValue = function (item, type, min, max) {
+    checkValue(item, type, min, max) {
         var val;
         //Test if value is valid.
         if (typeof item.val === 'string') {
@@ -1071,7 +1069,7 @@ var TAME = /** @class */ (function () {
             }
         }
         return val;
-    };
+    }
     /**
      * Get type and format and return it in an array. Create an
      * item.type entry if it doesn't exist.
@@ -1079,7 +1077,7 @@ var TAME = /** @class */ (function () {
      * @param {Object} item     An item of a variable list.
      * @return {Array} arr      An array with type and format.
      */
-    TAME.prototype.getTypeAndFormat = function (item) {
+    getTypeAndFormat(item) {
         var arr = [], typeArray, dataType, i;
         if (typeof item.type === 'string') {
             //Type is defined
@@ -1094,14 +1092,14 @@ var TAME = /** @class */ (function () {
             this.log(item);
         }
         return arr;
-    };
+    }
     /**
      * Create a structure definition based on the information in the data table.
      *
      * @param {String}  structname  The name of the structure in the data table.
      * @return {Object} struct      An object containing the items of the structure.
      */
-    TAME.prototype.createStructDef = function (structname) {
+    createStructDef(structname) {
         var struct = {}, subitem, subitems;
         subitems = this.dataTypeTable[structname].subItems;
         for (subitem in subitems) {
@@ -1117,7 +1115,7 @@ var TAME = /** @class */ (function () {
             }
         }
         return struct;
-    };
+    }
     //======================================================================================
     //                                  Encoder Functions
     //======================================================================================
@@ -1126,7 +1124,7 @@ var TAME = /** @class */ (function () {
      *
      * @param {Number} charcode
      */
-    TAME.prototype.charcodeToDual = function (charcode) {
+    charcodeToDual(charcode) {
         if ((charcode >= 0x61) && (charcode <= 0x66)) {
             return (charcode - 0x57); //a-f
         }
@@ -1137,14 +1135,14 @@ var TAME = /** @class */ (function () {
             return (charcode - 0x30); //0-9
         }
         return 0;
-    };
+    }
     /**
      * Convert a number into an array of bytes.
      *
      * @param {Number} value
      * @param {Number} varlen
      */
-    TAME.prototype.numToByteArr = function (value, varlen) {
+    numToByteArr(value, varlen) {
         var bytes = [], hex = value.toString(16), i;
         while (hex.length < varlen * 2) {
             hex = '0' + hex;
@@ -1155,13 +1153,13 @@ var TAME = /** @class */ (function () {
                     this.charcodeToDual(hex.charCodeAt((i * 2) + 1)));
         }
         return bytes;
-    };
+    }
     /**
      * Convert a JavaScript floating point number to a PLC REAL value.
      *
      * @param {Number} num
      */
-    TAME.prototype.floatToReal = function (num) {
+    floatToReal(num) {
         var mant = 0, real = 0, bas, abs, tmp, exp, i;
         abs = Math.abs(num);
         if (num !== 0) {
@@ -1196,14 +1194,14 @@ var TAME = /** @class */ (function () {
             }
         }
         return real;
-    };
+    }
     /**
          * Convert a JavaScript floating point number to a PLC LREAL value.
          * Cause it's a 64 bit value, we have to split it in two 32 bit integer.
          *
          * @param {Number} num
          */
-    TAME.prototype.floatToLreal = function (num) {
+    floatToLreal(num) {
         var mant = 0, mant2 = 0, lreal = {
             part1: 0,
             part2: 0
@@ -1252,7 +1250,7 @@ var TAME = /** @class */ (function () {
             }
         }
         return lreal;
-    };
+    }
     /**
      * Convert a value to value in milliseconds, depending
      * on the format string.
@@ -1260,7 +1258,7 @@ var TAME = /** @class */ (function () {
      * @param {Number} time
      * @param {String} format
      */
-    TAME.prototype.toMillisec = function (time, format) {
+    toMillisec(time, format) {
         var tmp;
         switch (format) {
             case '#d':
@@ -1288,14 +1286,14 @@ var TAME = /** @class */ (function () {
                 break;
         }
         return tmp;
-    };
+    }
     /**
      * Convert a TOD string to a value of milliseconds.
      *
      * @param {Number} time
      * @param {String} format
      */
-    TAME.prototype.stringToTime = function (timestring, format) {
+    stringToTime(timestring, format) {
         var arrFormat = format.split('#'), arrlen = arrFormat.length, regex = /:|\.|-|_/, time = 0, cnt = 0, tmp, i, arrValues, splitterOk;
         //Check if a valid splitter is given
         for (i = 1; i < arrlen; i++) {
@@ -1340,13 +1338,13 @@ var TAME = /** @class */ (function () {
             time += tmp;
         }
         return time;
-    };
+    }
     /**
      * Base64 encoder
      *
      * @param {Array} data
      */
-    TAME.prototype.encodeBase64 = function (data) {
+    encodeBase64(data) {
         var $ = this.b64Enc, i = 0, out = '', c1, c2, c3;
         while (i < data.length) {
             c1 = data[i++];
@@ -1359,7 +1357,7 @@ var TAME = /** @class */ (function () {
                 ((isNaN(c2) || isNaN(c3)) ? '=' : $[c3 & 63]);
         }
         return out;
-    };
+    }
     /**
      * Function for converting the data values to a byte array.
      *
@@ -1369,7 +1367,7 @@ var TAME = /** @class */ (function () {
      * @param {Number} len      Data length.
      * @return {Array} bytes    An array containing the data as byte values.
      */
-    TAME.prototype.dataToByteArray = function (item, type, format, len) {
+    dataToByteArray(item, type, format, len) {
         var bytes = [], val, strlen, sl, i;
         //If no value is passed, set value to zero and log an error message.
         if (item.val === undefined) {
@@ -1571,7 +1569,7 @@ var TAME = /** @class */ (function () {
                 break;
         }
         return bytes;
-    };
+    }
     //======================================================================================
     //                                  Decoder Functions
     //======================================================================================
@@ -1580,13 +1578,13 @@ var TAME = /** @class */ (function () {
      *
      * @param {Number} value
      */
-    TAME.prototype.numToHexString = function (value) {
+    numToHexString(value) {
         var ret = value.toString(16);
         if ((ret.length % 2) !== 0) {
             ret = '0' + ret;
         }
         return ret;
-    };
+    }
     /**
      * Set a fixed length of an integer by adding leading
      * zeros(i.e. change 2 to 02).
@@ -1594,21 +1592,21 @@ var TAME = /** @class */ (function () {
      * @param {Number} numb
      * @param {Number} places
      */
-    TAME.prototype.fixNumbLength = function (numb, places) {
+    fixNumbLength(numb, places) {
         places = (isNaN(places)) ? 0 : places;
         var str = numb.toString(10);
         while (str.length < places) {
             str = '0' + str;
         }
         return str;
-    };
+    }
     /**
      * Convert a date object to a formatted string.
      *
      * @param {Date} time
      * @param {String} format
      */
-    TAME.prototype.dateToString = function (time, format) {
+    dateToString(time, format) {
         var arr = format.split('#'), arrlen = arr.length, tstring = '', tmp, i;
         for (i = 1; i < arrlen; i++) {
             switch (arr[i]) {
@@ -1687,14 +1685,14 @@ var TAME = /** @class */ (function () {
             tstring = tstring + tmp;
         }
         return tstring;
-    };
+    }
     /**
      * Convert a number with a value in milliseconds to a formatted string.
      *
      * @param {Number} time
      * @param {String} format
      */
-    TAME.prototype.timeToString = function (time, format) {
+    timeToString(time, format) {
         var arr = format.split('#'), arrlen = arr.length, tstring = '', tmp, i;
         for (i = 1; i < arrlen; i++) {
             switch (arr[i]) {
@@ -1788,94 +1786,94 @@ var TAME = /** @class */ (function () {
             tstring = tstring + tmp;
         }
         return tstring;
-    };
+    }
     /**
      * Convert data string to USINT/BYTE.
      *
      * @param {String} string
      */
-    TAME.prototype.parsePlcUsint = function (string) {
+    parsePlcUsint(string) {
         var hexs = this.numToHexString(string.charCodeAt(0));
         return parseInt(hexs, 16);
-    };
+    }
     /**
      * Convert data string to SINT.
      *
      * @param {String} string
      */
-    TAME.prototype.parsePlcSint = function (string) {
+    parsePlcSint(string) {
         var dec = this.parsePlcUsint(string);
         if (dec > 127) {
             dec = dec - 256;
         }
         return dec;
-    };
+    }
     /**
      * Convert data string to UINT/WORD.
      *
      * @param {String} string
      */
-    TAME.prototype.parsePlcUint = function (string) {
+    parsePlcUint(string) {
         var hexs = this.numToHexString(string.charCodeAt(1));
         hexs += this.numToHexString(string.charCodeAt(0));
         return parseInt(hexs, 16);
-    };
+    }
     /**
      * Convert data string to INT.
      *
      * @param {String} string
      */
-    TAME.prototype.parsePlcInt = function (string) {
+    parsePlcInt(string) {
         var dec = this.parsePlcUint(string);
         if (dec > 32767) {
             dec = dec - 65536;
         }
         return dec;
-    };
+    }
     /**
      * Convert data string to UDINT/DWORD.
      *
      * @param {String} string
      */
-    TAME.prototype.parsePlcUdint = function (string) {
+    parsePlcUdint(string) {
         var hexs = this.numToHexString(string.charCodeAt(3));
         hexs += this.numToHexString(string.charCodeAt(2));
         hexs += this.numToHexString(string.charCodeAt(1));
         hexs += this.numToHexString(string.charCodeAt(0));
         return parseInt(hexs, 16);
-    };
+    }
     /**
      * Convert data string to DINT.
      *
      * @param {String} string
      */
-    TAME.prototype.parsePlcDint = function (string) {
+    parsePlcDint(string) {
         var dec = this.parsePlcUdint(string);
         if (dec > 2147483647) {
             dec = dec - 4294967296;
         }
         return dec;
-    };
+    }
     /**
      * Convert data string to a formatted time string
      *
      * @param {String} string
      * @param {String} format
      */
-    TAME.prototype.parsePlcTime = function (string, format) {
+    parsePlcTime(string, format) {
         var time = this.parsePlcUdint(string);
         if (format === undefined) {
             return time; //Unformatted: value in milliseconds.
         }
         return (this.timeToString(time, format));
-    };
+    }
     /**
      * Convert data string to a formatted time of day string.
      *
      * @param {String} string
      * @param {String} format
      */
-    TAME.prototype.parsePlcTod = function (string, format) {
+    parsePlcTod(string, format) {
         //Create a date object (time base in the PLC are milliseconds)
         var time = new Date(this.parsePlcUdint(string));
         //Time zone correction.
@@ -1884,14 +1882,14 @@ var TAME = /** @class */ (function () {
             return time;
         }
         return (this.dateToString(time, format));
-    };
+    }
     /**
      * Convert data string to a formatted date/time of day string.
      *
      * @param {String} string
      * @param {String} format
      */
-    TAME.prototype.parsePlcDate = function (string, format) {
+    parsePlcDate(string, format) {
         //Converte to milliseconds an create a date object
         //(time base of DATE/DT variables in the PLC are seconds since 1.1.1970)
         var date = new Date(this.parsePlcUdint(string) * 1000);
@@ -1901,14 +1899,14 @@ var TAME = /** @class */ (function () {
             return date;
         }
         return (this.dateToString(date, format));
-    };
+    }
     /**
      * Convert data string of a REAL variable
      * to a JavaScript floating point number.
      *
      * @param {String} string
      */
-    TAME.prototype.parsePlcReal = function (string) {
+    parsePlcReal(string) {
         var mant = 1, dual = 0.5, num = this.parsePlcUdint(string), sign, exp, i;
         //Return if value is zero. 
         if (num === 0) {
@@ -1927,14 +1925,14 @@ var TAME = /** @class */ (function () {
             dual /= 2;
         }
         return parseFloat(sign + (mant * Math.pow(2, exp)));
-    };
+    }
     /**
      * Convert data string of a LREAL variable
      * to a JavaScript floating point number.
      *
      * @param {String} string
      */
-    TAME.prototype.parsePlcLreal = function (string) {
+    parsePlcLreal(string) {
         var num = this.parsePlcUdint(string.substring(4, 8)), num2 = this.parsePlcUdint(string.substring(0, 4)), i = 12, mant = 1, dual = 0.5, sign, exp;
         //Return if value is zero. 
         if (num === 0 && num2 === 0) {
@@ -1967,13 +1965,13 @@ var TAME = /** @class */ (function () {
             i++;
         }
         return parseFloat(sign + (mant * Math.pow(2, exp)));
-    };
+    }
     /**
      * Convert data string to string by simply cutting of superfluous characters.
      *
      * @param {String} string
      */
-    TAME.prototype.parsePlcString = function (string) {
+    parsePlcString(string) {
         /*
         var len = string.length;
         for (var i = 0; i < len; i++) {
@@ -1984,13 +1982,13 @@ var TAME = /** @class */ (function () {
         return string.substr(0, i);
         */
         return string.split(String.fromCharCode(0))[0];
-    };
+    }
     /**
      * Base64 decoder
      *
      * @param {String} data
      */
-    TAME.prototype.decodeBase64 = function (data) {
+    decodeBase64(data) {
         var $ = this.b64Dec, i = 0, output = '', c1, c2, c3, e1, e2, e3, e4;
         //Cut all characters but A-Z, a-z, 0-9, +, /, or =
         data = data.replace(/[^A-Za-z0-9\+\/\=]/g, '');
@@ -2011,7 +2009,7 @@ var TAME = /** @class */ (function () {
             }
         } while (i < data.length);
         return output;
-    };
+    }
     /**
      * Convert B64-substrings to data.
      *
@@ -2021,7 +2019,7 @@ var TAME = /** @class */ (function () {
      * @return {Mixed} data
      *
      */
-    TAME.prototype.subStringToData = function (dataString, type, format) {
+    subStringToData(dataString, type, format) {
         var data;
         switch (type) {
             case 'BOOL':
@@ -2091,13 +2089,13 @@ var TAME = /** @class */ (function () {
                 break;
         }
         return data;
-    };
+    }
     /**
      * Decode the response string of a Read Request and store the data.
      *
      * @param {Object} adsReq   ADS Reqest Object
      */
-    TAME.prototype.parseReadReq = function (adsReq) {
+    parseReadReq(adsReq) {
         var response, itemList = adsReq.reqDescr.items, arrType = [], strAddr = 0, item, dataString, dataSubString, data, strlen, len, plen, mod, type, format, idx, listlen, startaddr;
         try {
             response = adsReq.xmlHttpReq.responseXML.documentElement;
@@ -2157,20 +2155,19 @@ var TAME = /** @class */ (function () {
             this.log(item);
             return;
         }
-    };
+    }
     /**
      * Decode the response string of a SumReadRequest and store the data.
      *
      * @param {Object} adsReq   ADS Request Object
      */
-    TAME.prototype.parseSumReadReq = function (adsReq) {
-        var _this = this;
+    parseSumReadReq(adsReq) {
         var response, itemList = adsReq.reqDescr.items, arrType = [], strAddr = 0, subStrAddr = 0, dataObj = window, vlenMax = 0, item, dataString, dataSubString, data, len, type, format, idx, listlen, errorCode, jvar, i, arrayLength, itemSize, itemInfo;
         /**
          * Slice a piece out of the substring, convert the data and write it
          * to the JavaScript variable.
          */
-        var parseSubStringSlice = function () {
+        const parseSubStringSlice = () => {
             var strlen, subStrSlice;
             if (type === 'STRING') {
                 if (format !== undefined) {
@@ -2179,31 +2176,31 @@ var TAME = /** @class */ (function () {
                 else if (typeof itemInfo.stringLength === 'number') {
                     strlen = itemInfo.stringLength;
                 }
-                len = (_this.isValidStringLen(strlen) ? strlen : len) + 1;
+                len = (this.isValidStringLen(strlen) ? strlen : len) + 1;
             }
             //Take a piece of the data sub string
             subStrSlice = dataSubString.substr(subStrAddr, len);
             //Convert the data
-            data = _this.subStringToData(subStrSlice, type, format);
+            data = this.subStringToData(subStrSlice, type, format);
             //Parse the name of the JavaScript variable and write the data to it
-            _this.parseVarName(jvar, data, dataObj, item.prefix, item.suffix);
+            this.parseVarName(jvar, data, dataObj, item.prefix, item.suffix);
             subStrAddr += len;
         };
         /**
          * Parse the stucture definition and compute the data of
          * the substring.
          */
-        var parseStructure = function () {
+        const parseStructure = () => {
             var j, defArr, lenArrElem, lastDefArr, mod, elem;
             /**
              * Function for adjusting the address of the data in the string
              * if an alignment is used.
              */
-            var checkAlignment = function () {
+            const checkAlignment = () => {
                 var vlen, mod;
-                if (_this.alignment > 1 && type !== 'STRING' && type !== 'EndStruct') {
+                if (this.alignment > 1 && type !== 'STRING' && type !== 'EndStruct') {
                     //Set the length for calculating padding bytes
-                    vlen = len < _this.alignment ? len : _this.alignment;
+                    vlen = len < this.alignment ? len : this.alignment;
                     //Compute the address for the alignment.
                     if (vlen > 1 && subStrAddr > 0) {
                         mod = subStrAddr % vlen;
@@ -2220,14 +2217,14 @@ var TAME = /** @class */ (function () {
             };
             //Check structure definition
             if (typeof item.def === 'string') {
-                item.def = _this.parseVarName(item.def);
+                item.def = this.parseVarName(item.def);
             }
-            else if (_this.dataTypeTableReady === true && item.def === undefined) {
-                item.def = _this.createStructDef(itemInfo.dataType);
+            else if (this.dataTypeTableReady === true && item.def === undefined) {
+                item.def = this.createStructDef(itemInfo.dataType);
             }
             else if (typeof item.def !== 'object') {
-                _this.log('TAME library error: No structure defininition found (parseSumReadReq())!');
-                _this.log(item);
+                this.log('TAME library error: No structure defininition found (parseSumReadReq())!');
+                this.log(item);
             }
             for (elem in item.def) {
                 if (item.def.hasOwnProperty(elem)) {
@@ -2253,7 +2250,7 @@ var TAME = /** @class */ (function () {
                             if (i !== null) {
                                 jvar = i + '.' + jvar;
                             }
-                            len = _this.plcTypeLen[type];
+                            len = this.plcTypeLen[type];
                             checkAlignment();
                             parseSubStringSlice();
                         }
@@ -2271,16 +2268,16 @@ var TAME = /** @class */ (function () {
                             defArr[1] = defArr.slice(1).join('.');
                         }
                         format = defArr[1];
-                        len = _this.plcTypeLen[type];
+                        len = this.plcTypeLen[type];
                         checkAlignment();
                         parseSubStringSlice();
                     }
                 }
             }
             //Calculate the padding bytes at the end of the structure
-            if (_this.alignment > 1 && vlenMax > 1 && type !== 'STRING' && type !== 'EndStruct') {
-                if (vlenMax > _this.alignment) {
-                    vlenMax = _this.alignment;
+            if (this.alignment > 1 && vlenMax > 1 && type !== 'STRING' && type !== 'EndStruct') {
+                if (vlenMax > this.alignment) {
+                    vlenMax = this.alignment;
                 }
                 mod = subStrAddr % vlenMax;
                 if (mod > 0) {
@@ -2355,13 +2352,13 @@ var TAME = /** @class */ (function () {
             this.log(item);
             return;
         }
-    };
+    }
     /**
      * Decode the response string of a SumWriteRequest.
      *
      * @param {Object} adsReq   ADS Request Object
      */
-    TAME.prototype.parseSumWriteReq = function (adsReq) {
+    parseSumWriteReq(adsReq) {
         var response, itemList = adsReq.reqDescr.items, arrType = [], arrDeletedHdl = [], strAddr = 0, subStrAddr = 0, dataObj = window, item, dataString, dataSubString, data, len, type, format, idx, listlen, errorCode, delIdx, symName;
         //Just look for errors.
         try {
@@ -2413,13 +2410,13 @@ var TAME = /** @class */ (function () {
             this.log(item);
             return;
         }
-    };
+    }
     /**
      * Decode the response string of a ADS State Request and store the data.
      *
      * @param {Object} adsReq   ADS Reqest Object
      */
-    TAME.prototype.parseAdsState = function (adsReq) {
+    parseAdsState(adsReq) {
         var response;
         try {
             response = adsReq.xmlHttpReq.responseXML.documentElement;
@@ -2431,13 +2428,13 @@ var TAME = /** @class */ (function () {
             this.log('TAME library error: Parsing of ADS Read State Request failed:' + e);
             return;
         }
-    };
+    }
     /**
      * Decode the response string of a ReadWrite Request and store the handles.
      *
      * @param {Object} adsReq   ADS Request Object
      */
-    TAME.prototype.parseHandles = function (adsReq) {
+    parseHandles(adsReq) {
         var response, arrSymNames = this.handleNames, strAddr = 0, subStrAddr = 0, dataString, dataSubString, handleVal, idx, arrlen, errorCode, returnLen;
         response = adsReq.xmlHttpReq.responseXML.documentElement;
         dataString = this.decodeBase64(response.getElementsByTagName('ppRdData')[0].firstChild.data);
@@ -2467,7 +2464,7 @@ var TAME = /** @class */ (function () {
         }
         this.handleCacheReady = true;
         this.log('TAME library info: Handle cache ready.');
-    };
+    }
     //======================================================================================
     //                     Functions for Creating Request Descriptors
     //======================================================================================  
@@ -2479,7 +2476,7 @@ var TAME = /** @class */ (function () {
      * @param {String} type     The PLC data type.
      * @param {Object} args     The arguments for building for the Request Descriptor.
      */
-    TAME.prototype.createSingleDescriptor = function (method, type, args) {
+    createSingleDescriptor(method, type, args) {
         var reqDescr = {}, arrSymType, len, itemInfo;
         args.type = type; //To prevent error messages in getItemInformation()
         itemInfo = this.getItemInformation(args);
@@ -2557,7 +2554,7 @@ var TAME = /** @class */ (function () {
         else {
             this.readReq(reqDescr);
         }
-    };
+    }
     /**
      * Create a Request Descriptor for an array. An item list of
      * single variables is generated.
@@ -2566,8 +2563,7 @@ var TAME = /** @class */ (function () {
      * @param {String} type     The data type of the PLC variable.
      * @param {Object} args     The arguments for building the Request Descriptor.
      */
-    TAME.prototype.createArrayDescriptor = function (method, type, args) {
-        var _this = this;
+    createArrayDescriptor(method, type, args) {
         var reqDescr = {}, dataObj = {}, arrayLength, addrOffset, cnt = 0, i = 0, j = 0, len, defArr = [], lenArrElem, lastDefArr, structByteLen = 0, strlen, vlen, vlenMax = 0, endPadLen = 0, mod, addr, wrtOneOnly, arrSymType, itemInfo;
         itemInfo = this.getItemInformation(args);
         //Get the object of the stored data, direct with 'val'
@@ -2605,18 +2601,18 @@ var TAME = /** @class */ (function () {
         /**
          * Function for creating an descriptor for array of structures.
          */
-        var createStructArr = function () {
+        const createStructArr = () => {
             var elem;
             //Parse the name of the structure definiton, if it is passed
             //as a string.
             if (typeof args.def === 'string') {
-                args.def = _this.parseVarName(args.def);
+                args.def = this.parseVarName(args.def);
             }
-            else if (_this.dataTypeTableReady === true && args.def === undefined) {
-                args.def = _this.createStructDef(itemInfo.dataType);
+            else if (this.dataTypeTableReady === true && args.def === undefined) {
+                args.def = this.createStructDef(itemInfo.dataType);
             }
             else if (typeof args.def !== 'object') {
-                _this.log('TAME library error: No structure definition found!');
+                this.log('TAME library error: No structure definition found!');
             }
             //Calculate the length of the structure and the padding bytes
             for (elem in args.def) {
@@ -2637,13 +2633,13 @@ var TAME = /** @class */ (function () {
                             if (typeof defArr[1] === 'string') {
                                 strlen = parseInt(defArr[1], 10);
                             }
-                            vlen = (_this.isValidStringLen(strlen) ? strlen : _this.plcTypeLen[defArr[0]]) + 1;
+                            vlen = (this.isValidStringLen(strlen) ? strlen : this.plcTypeLen[defArr[0]]) + 1;
                         }
                         else {
-                            vlen = _this.plcTypeLen[defArr[0]];
+                            vlen = this.plcTypeLen[defArr[0]];
                         }
                         //Add the length of the PLC variables
-                        if (_this.alignment > 1 && vlen > 1 && defArr[0] !== 'STRING' && structByteLen > 0) {
+                        if (this.alignment > 1 && vlen > 1 && defArr[0] !== 'STRING' && structByteLen > 0) {
                             mod = structByteLen % vlen;
                             if (mod > 0) {
                                 structByteLen += vlen - mod;
@@ -2653,15 +2649,15 @@ var TAME = /** @class */ (function () {
                     }
                     //Store the maximum length of the PLC variables
                     //for inserting padding bytes at the end of the structure.
-                    if (_this.alignment > 1 && vlen > vlenMax && defArr[0] !== 'STRING') {
+                    if (this.alignment > 1 && vlen > vlenMax && defArr[0] !== 'STRING') {
                         vlenMax = vlen;
                     }
                 }
             }
             //Calculate the padding bytes at the end of the structure
-            if (_this.alignment > 1 && vlenMax > 1 && defArr[0] !== 'STRING') {
-                if (vlenMax > _this.alignment) {
-                    vlenMax = _this.alignment;
+            if (this.alignment > 1 && vlenMax > 1 && defArr[0] !== 'STRING') {
+                if (vlenMax > this.alignment) {
+                    vlenMax = this.alignment;
                 }
                 mod = structByteLen % vlenMax;
                 if (mod > 0) {
@@ -2769,7 +2765,7 @@ var TAME = /** @class */ (function () {
                 }
                 //Set an item as a mark at the end of the structure
                 //for inserting padding bytes in "writeReq" and "readReq" later.
-                if (_this.alignment > 1) {
+                if (this.alignment > 1) {
                     reqDescr.items[cnt] = {
                         type: 'EndStruct',
                         val: endPadLen
@@ -2781,11 +2777,11 @@ var TAME = /** @class */ (function () {
         /**
          * Function for creating a descriptor for a simple array.
          */
-        var createSimpleArr = function () {
-            len = _this.plcTypeLen[type];
+        const createSimpleArr = () => {
+            len = this.plcTypeLen[type];
             switch (type) {
                 case 'STRING':
-                    if (_this.isValidStringLen(args.strlen)) {
+                    if (this.isValidStringLen(args.strlen)) {
                         //Change the read length if a value is given.
                         type += '.' + args.strlen;
                         len = args.strlen;
@@ -2795,8 +2791,8 @@ var TAME = /** @class */ (function () {
                         type += '.' + len;
                     }
                     else {
-                        _this.log('TAME library error: Could not get the length of the string for this request!');
-                        _this.log(args);
+                        this.log('TAME library error: Could not get the length of the string for this request!');
+                        this.log(args);
                     }
                     len++; //Termination
                     break;
@@ -2879,7 +2875,7 @@ var TAME = /** @class */ (function () {
         else {
             this.readReq(reqDescr);
         }
-    };
+    }
     /**
      * Create a Request Descriptor for a structure,
      * a structure definition has to be passed as one of the arguments,
@@ -2888,7 +2884,7 @@ var TAME = /** @class */ (function () {
      * @param {String} method   The method, either "Read" or "Write".
      * @param {Object} args     The arguments for building the Request Descriptor.
      */
-    TAME.prototype.createStructDescriptor = function (method, args) {
+    createStructDescriptor(method, args) {
         var reqDescr = {}, //Request Descriptor
         dataObj = {}, //object wich holds the data for write requests 
         defArr = [], //subelements of a structure definition item
@@ -3000,7 +2996,7 @@ var TAME = /** @class */ (function () {
         else {
             this.readReq(reqDescr);
         }
-    };
+    }
     //======================================================================================
     //                                Public Methods
     //======================================================================================
@@ -3013,7 +3009,7 @@ var TAME = /** @class */ (function () {
      *                              this object contains the allocation of PLC and
      *                              JavaScript variables in an item list.
      */
-    TAME.prototype.writeReq = function (reqDescr) {
+    writeReq(reqDescr) {
         var itemList = reqDescr.items, adsReq = {}, pData = [], arrType = [], bytes = [], type, format, listlen, len, val, pcount, mod, item, i, idx;
         //Set the variable name to upper case.
         if (typeof reqDescr.name === 'string') {
@@ -3076,7 +3072,7 @@ var TAME = /** @class */ (function () {
             reqDescr: reqDescr
         };
         this.createRequest(adsReq).send();
-    };
+    }
     ;
     /**
      * This is the function for creating a read request. If no value for the
@@ -3087,7 +3083,7 @@ var TAME = /** @class */ (function () {
      *                              this object contains the allocation of PLC and
      *                              JavaScript variables in an item list.
      */
-    TAME.prototype.readReq = function (reqDescr) {
+    readReq(reqDescr) {
         var adsReq = {}, itemList = reqDescr.items, arrType = [], item, format, type, listlen, mod, vlen, strlen, idx, startaddr;
         //Calculate the data length if no argument is given.
         if (typeof reqDescr.readLength !== 'number') {
@@ -3139,7 +3135,7 @@ var TAME = /** @class */ (function () {
             reqDescr: reqDescr
         };
         this.createRequest(adsReq).send();
-    };
+    }
     ;
     /**
      * This is the function for creating a sum read request.
@@ -3148,7 +3144,7 @@ var TAME = /** @class */ (function () {
      *                              this object contains the allocation of PLC and
      *                              JavaScript variables in an item list.
      */
-    TAME.prototype.sumReadReq = function (reqDescr) {
+    sumReadReq(reqDescr) {
         var adsReq = {}, itemList = reqDescr.items, arrType = [], reqBuffer = [], bytes = [], listlen = itemList.length, dummy = {}, type, format, item, idx, len, pwrData, itemInfo;
         //Preset the read lenth with the number of byte for error codes.
         reqDescr.readLength = listlen * 4;
@@ -3185,7 +3181,7 @@ var TAME = /** @class */ (function () {
             reqDescr: reqDescr
         };
         this.createRequest(adsReq).send();
-    };
+    }
     ;
     /**
      * This is the function for creating a sum write request.
@@ -3194,15 +3190,14 @@ var TAME = /** @class */ (function () {
      *                              this object contains the allocation of PLC and
      *                              JavaScript variables in an item list.
      */
-    TAME.prototype.sumWriteReq = function (reqDescr) {
-        var _this = this;
+    sumWriteReq(reqDescr) {
         var adsReq = {}, itemList = reqDescr.items, arrType = [], reqBuffer = [], bytes = [], listlen = itemList.length, dummy = {}, vlenMax = 0, type, format, item, idx, len, pwrData, i, k, arrayLength, mod, pcount, itemInfo;
         /**
          * Function for getting the length of a variable.
          */
-        var getVarLength = function () {
+        const getVarLength = () => {
             var strlen;
-            len = _this.plcTypeLen[type];
+            len = this.plcTypeLen[type];
             if (type === 'STRING') {
                 if (format !== undefined) {
                     strlen = parseInt(format, 10);
@@ -3210,22 +3205,22 @@ var TAME = /** @class */ (function () {
                 else if (typeof itemInfo.stringLength === 'number') {
                     strlen = itemInfo.stringLength;
                 }
-                format = (_this.isValidStringLen(strlen) ? strlen : len);
+                format = (this.isValidStringLen(strlen) ? strlen : len);
             }
         };
         /*
             * Parse the stucture definition.
             */
-        var parseStruct = function () {
+        const parseStruct = () => {
             var j, defArr, lenArrElem, lastDefArr, mod, elem, subBuffer = [];
             /**
              * Function for adding padding bytes if an alignment is used.
              */
-            var checkAlignment = function () {
+            const checkAlignment = () => {
                 var vlen, k;
-                if (_this.alignment > 1 && type !== 'STRING' && type !== 'EndStruct') {
+                if (this.alignment > 1 && type !== 'STRING' && type !== 'EndStruct') {
                     //Set the length for calculating padding bytes
-                    vlen = len < _this.alignment ? len : _this.alignment;
+                    vlen = len < this.alignment ? len : this.alignment;
                     //Compute the padding bytes for the alignment.
                     if (vlen > 1 && subBuffer.length > 0) {
                         mod = subBuffer.length % vlen;
@@ -3245,14 +3240,14 @@ var TAME = /** @class */ (function () {
             };
             //Check structure definition
             if (typeof item.def === 'string') {
-                item.def = _this.parseVarName(item.def);
+                item.def = this.parseVarName(item.def);
             }
-            else if (_this.dataTypeTableReady === true && item.def === undefined) {
-                item.def = _this.createStructDef(itemInfo.dataType);
+            else if (this.dataTypeTableReady === true && item.def === undefined) {
+                item.def = this.createStructDef(itemInfo.dataType);
             }
             else if (typeof item.def !== 'object') {
-                _this.log('TAME library error: No structure defininition found (sumWriteReq())!');
-                _this.log(item);
+                this.log('TAME library error: No structure defininition found (sumWriteReq())!');
+                this.log(item);
             }
             //Walk through the structure definiton
             for (elem in item.def) {
@@ -3288,7 +3283,7 @@ var TAME = /** @class */ (function () {
                                 }
                                 getVarLength();
                                 checkAlignment();
-                                bytes = _this.dataToByteArray(dummy, type, format, len);
+                                bytes = this.dataToByteArray(dummy, type, format, len);
                                 subBuffer = subBuffer.concat(bytes);
                             }
                         }
@@ -3307,18 +3302,18 @@ var TAME = /** @class */ (function () {
                             format = defArr[1];
                             getVarLength();
                             checkAlignment();
-                            bytes = _this.dataToByteArray(dummy, type, format, len);
+                            bytes = this.dataToByteArray(dummy, type, format, len);
                             subBuffer = subBuffer.concat(bytes);
                         }
                     }
                     catch (e) {
-                        _this.log('TAME library error: Could not set values for a structure in SumWriteReq: ' + e);
-                        _this.log(item);
+                        this.log('TAME library error: Could not set values for a structure in SumWriteReq: ' + e);
+                        this.log(item);
                     }
                 }
             }
             //Calculate the padding bytes at the end of the structure.
-            if (_this.alignment > 1 && vlenMax > 1 && defArr[0] !== 'STRING' && defArr[0] !== 'EndStruct') {
+            if (this.alignment > 1 && vlenMax > 1 && defArr[0] !== 'STRING' && defArr[0] !== 'EndStruct') {
                 mod = subBuffer.length % vlenMax;
                 if (mod > 0) {
                     pcount = vlenMax - mod;
@@ -3429,7 +3424,7 @@ var TAME = /** @class */ (function () {
             reqDescr: reqDescr
         };
         this.createRequest(adsReq).send();
-    };
+    }
     ;
     /**
      * This is the function for reading the ADS state.
@@ -3438,7 +3433,7 @@ var TAME = /** @class */ (function () {
      *                              this object contains the allocation of PLC and
      *                              JavaScript variables in an item list.
      */
-    TAME.prototype.readAdsState = function (reqDescr) {
+    readAdsState(reqDescr) {
         //Generate the ADS request object and call the send function.
         var oefunct;
         if (reqDescr === undefined) {
@@ -3463,35 +3458,35 @@ var TAME = /** @class */ (function () {
             reqDescr: reqDescr
         };
         this.createRequest(adsReq).send();
-    };
+    }
     ;
     /**
      *  Prints the cached handles to the console.
      */
-    TAME.prototype.logHandleCache = function () {
+    logHandleCache() {
         this.log(this.handleCache);
-    };
+    }
     ;
     /**
      *  Prints the symbol table to the console.
      */
-    TAME.prototype.logSymbols = function () {
+    logSymbols() {
         this.log(this.symTable);
-    };
+    }
     ;
     /**
      *  Prints the data type table to the console.
      */
-    TAME.prototype.logDataTypes = function () {
+    logDataTypes() {
         this.log(this.dataTypeTable);
-    };
+    }
     ;
     /**
      * Converts the Symbol Table to a JSON string.
      *
      * @return {Array}  jstr    The Symbol Table as a JSON string .
      */
-    TAME.prototype.getSymbolsAsJSON = function () {
+    getSymbolsAsJSON() {
         var jstr;
         if (typeof JSON !== 'object') {
             this.log('TAME library error: No JSON parser found.');
@@ -3505,14 +3500,14 @@ var TAME = /** @class */ (function () {
                 this.log('TAME library error: Could not convert the Symbol Table to JSON:' + e);
             }
         }
-    };
+    }
     ;
     /**
      * Reads the Symbol Table from a JSON string
      *
      * @param {String}  jstr    A JSON string with the symbols.
      */
-    TAME.prototype.setSymbolsFromJSON = function (jstr) {
+    setSymbolsFromJSON(jstr) {
         if (typeof JSON !== 'object') {
             this.log('TAME library error: No JSON parser found.');
         }
@@ -3527,14 +3522,14 @@ var TAME = /** @class */ (function () {
             this.symTableReady = true;
             this.log('TAME library info: Symbol Table successfully created from JSON data.');
         }
-    };
+    }
     ;
     /**
      * Converts the Data Type Table to a JSON string.
      *
      * @return {Array}  jstr    The Data Type Table as a JSON string .
      */
-    TAME.prototype.getDataTypesAsJSON = function () {
+    getDataTypesAsJSON() {
         var jstr;
         if (typeof JSON !== 'object') {
             this.log('TAME library error: No JSON parser found.');
@@ -3548,14 +3543,14 @@ var TAME = /** @class */ (function () {
                 this.log('TAME library error: Could not convert the Data Type Table to JSON:' + e);
             }
         }
-    };
+    }
     ;
     /**
      * Reads the Data Type Table from a JSON string
      *
      * @param {String}  jstr    A JSON string with the data types.
      */
-    TAME.prototype.setDataTypesFromJSON = function (jstr) {
+    setDataTypesFromJSON(jstr) {
         if (typeof JSON !== 'object') {
             this.log('TAME library error: No JSON parser found.');
         }
@@ -3570,14 +3565,14 @@ var TAME = /** @class */ (function () {
             this.dataTypeTableReady = true;
             this.log('TAME library info: Data Type Table successfully created from JSON data.');
         }
-    };
+    }
     ;
     /**
      * Process the webservice's server response.
      *
      * @param {Object} adsReq   The object containing the arguments of the ADS request.
      */
-    TAME.prototype.parseResponse = function (adsReq) {
+    parseResponse(adsReq) {
         var response, errorCode, errorText;
         //Acknowledge the receive of a request with index 'id'.
         if (typeof adsReq.reqDescr.id === 'number') {
@@ -3665,14 +3660,14 @@ var TAME = /** @class */ (function () {
                 adsReq.reqDescr.oc();
             }
         }
-    };
+    }
     ;
     /**
      * Get the handles from the PLC.
      *
      * @param {Array} arrSymNames   Array with the symbol names.
      */
-    TAME.prototype.getHandles = function (reqDescr) {
+    getHandles(reqDescr) {
         var adsReq = {}, reqBuffer = [], arrlen = reqDescr.symbols.length, bytes, idx, len, pwrData, format, symname, i;
         this.log('TAME library info: Fetching handles from the PLC.');
         //Read lenth with the number of byte for error codes.
@@ -3719,13 +3714,13 @@ var TAME = /** @class */ (function () {
             reqDescr: reqDescr
         };
         this.createRequest(adsReq).send();
-    };
+    }
     ;
     /**
      * This is the function for releasing the cached handles.
      *
      */
-    TAME.prototype.releaseHandles = function (reqDescr) {
+    releaseHandles(reqDescr) {
         var adsReq = {}, reqBuffer = [], bytes = [], arrlen = 0, symNames = [], i = 0, idx, pwrData;
         this.log('TAME library info: Releasing handles.');
         //Check if a request descriptor exists
@@ -3786,7 +3781,7 @@ var TAME = /** @class */ (function () {
             reqDescr: reqDescr
         };
         this.createRequest(adsReq).send();
-    };
+    }
     ;
     //======================================================================================
     //                   Methods for Creating the Symbol Table from Upload
@@ -3795,7 +3790,7 @@ var TAME = /** @class */ (function () {
     /**
      *  Get the upload info.
      */
-    TAME.prototype.getUploadInfo = function () {
+    getUploadInfo() {
         //Generate the ADS request object and call the send function.
         var adsReq = {
             method: 'Read',
@@ -3807,14 +3802,14 @@ var TAME = /** @class */ (function () {
             }
         };
         this.createRequest(adsReq).send();
-    };
+    }
     /**
      * Parse the upload information and call the request for
      * reading the upload data.
      *
      * @param {Object} adsReq   An ADS Request Descriptor.
      */
-    TAME.prototype.parseUploadInfo = function (adsReq) {
+    parseUploadInfo(adsReq) {
         var response, dataString, dataSubString, data, adsReq2;
         try {
             response = adsReq.xmlHttpReq.responseXML.documentElement;
@@ -3838,14 +3833,14 @@ var TAME = /** @class */ (function () {
             }
         };
         this.createRequest(adsReq2).send();
-    };
+    }
     /**
      * Parse the upload data and an object (symTable) with the symbol names
      * as the properties.
      *
      * @param {Object} adsReq   An ADS Request Descriptor.
      */
-    TAME.prototype.parseUpload = function (adsReq) {
+    parseUpload(adsReq) {
         var response, strAddr = 0, igOffs = 4, ioOffs = 8, sizeOffs = 12, nameOffs = 30, dataString, dataSubString, data, cnt, infoLen, nameAndType, typeArr, arrayLength, type, elem;
         try {
             response = adsReq.xmlHttpReq.responseXML.documentElement;
@@ -3937,19 +3932,18 @@ var TAME = /** @class */ (function () {
             this.log('TAME library error: Parsing of uploaded symbol information failed:' + e);
             return;
         }
-    };
+    }
     /**
     * Get the symbol-file (*.tpy) from the server and create
     * an object (symTable) with the symbol names as the properties.
     */
-    TAME.prototype.getConfigFile = function () {
-        var _this = this;
+    getConfigFile() {
         var xmlHttpReq = this.createXMLHttpReq(), symbolArray = [], configFile, name, allSymbols, typeArr, arrayLength, type, elem, tcVersion, i;
         this.log('TAME library info: Start reading the TPY file.');
         //HTTPRequest
         xmlHttpReq.open('GET', this.service.configFileUrl, !this.service.syncXmlHttp, this.service.serviceUser, this.service.servicePassword);
         xmlHttpReq.setRequestHeader('Content-Type', 'text/xml');
-        xmlHttpReq.onreadystatechange = function () {
+        xmlHttpReq.onreadystatechange = () => {
             if ((xmlHttpReq.readyState === 4) && (xmlHttpReq.status === 200)) {
                 //Create a DOM object from XML
                 if (typeof DOMParser != 'undefined') {
@@ -3957,44 +3951,44 @@ var TAME = /** @class */ (function () {
                         configFile = (new DOMParser()).parseFromString(xmlHttpReq.responseText, "text/xml");
                     }
                     catch (e) {
-                        _this.log('TAME library error: Creating a DOM object from TPY failed:' + e);
+                        this.log('TAME library error: Creating a DOM object from TPY failed:' + e);
                         return;
                     }
                 }
                 else {
-                    _this.log('TAME library error: Can\'t parse the symbol file cause your browser does not provide a DOMParser function.');
+                    this.log('TAME library error: Can\'t parse the symbol file cause your browser does not provide a DOMParser function.');
                 }
                 //Get the information about the PLC and the routing
-                if (typeof _this.service.amsNetId !== 'string' || typeof _this.service.amsPort !== 'string' || _this.alignment === 0) {
-                    _this.log('TAME library info: Start reading the service information from the TPY file.');
+                if (typeof this.service.amsNetId !== 'string' || typeof this.service.amsPort !== 'string' || this.alignment === 0) {
+                    this.log('TAME library info: Start reading the service information from the TPY file.');
                     try {
-                        _this.serviceInfo = {
+                        this.serviceInfo = {
                             netId: configFile.getElementsByTagName('NetId')[0].childNodes[0].nodeValue,
                             port: configFile.getElementsByTagName('Port')[0].childNodes[0].nodeValue
                         };
                         tcVersion = configFile.getElementsByTagName('TwinCATVersion')[0].childNodes[0].nodeValue.charAt(0);
                         if (tcVersion === '2') {
-                            _this.serviceInfo.alignment = parseInt(configFile.getElementsByTagName('PackSize')[0].childNodes[0].nodeValue, 10);
+                            this.serviceInfo.alignment = parseInt(configFile.getElementsByTagName('PackSize')[0].childNodes[0].nodeValue, 10);
                         }
                         else if (tcVersion === '3') {
-                            _this.serviceInfo.alignment = 8;
+                            this.serviceInfo.alignment = 8;
                         }
                         else {
-                            _this.log('TAME library error: Could not determine the TwinCAT version.');
+                            this.log('TAME library error: Could not determine the TwinCAT version.');
                         }
-                        _this.log('TAME library info: End of reading the service information from the TPY file.');
+                        this.log('TAME library info: End of reading the service information from the TPY file.');
                     }
                     catch (e) {
-                        _this.log('TAME library error: An error occured while reading service information from the TPY file:');
-                        _this.log(e);
+                        this.log('TAME library error: An error occured while reading service information from the TPY file:');
+                        this.log(e);
                     }
                 }
                 else {
-                    _this.log('TAME library info: NetId, port and alignment manually set. Skip reading the service information from the TPY file.');
+                    this.log('TAME library info: NetId, port and alignment manually set. Skip reading the service information from the TPY file.');
                 }
                 //Create the symbol table
-                if (_this.service.forceUploadUsage !== true) {
-                    _this.log('TAME library info: Start reading the symbols from the TPY file.');
+                if (this.service.forceUploadUsage !== true) {
+                    this.log('TAME library info: Start reading the symbols from the TPY file.');
                     try {
                         //Create an Array of the Elements with "Symbol" as tag name.
                         allSymbols = configFile.getElementsByTagName('Symbols')[0];
@@ -4003,47 +3997,47 @@ var TAME = /** @class */ (function () {
                         //symTable is declared outside in the constructor function.
                         for (i = 0; i < symbolArray.length; i++) {
                             name = symbolArray[i].getElementsByTagName('Name')[0].childNodes[0].nodeValue.toUpperCase();
-                            _this.symTable[name] = {
+                            this.symTable[name] = {
                                 typeString: symbolArray[i].getElementsByTagName('Type')[0].childNodes[0].nodeValue.toUpperCase(),
                                 indexGroup: parseInt(symbolArray[i].getElementsByTagName('IGroup')[0].childNodes[0].nodeValue, 10),
                                 indexOffset: parseInt(symbolArray[i].getElementsByTagName('IOffset')[0].childNodes[0].nodeValue, 10),
                                 bitSize: parseInt(symbolArray[i].getElementsByTagName('BitSize')[0].childNodes[0].nodeValue, 10)
                             };
-                            _this.symTable[name].size = (_this.symTable[name].bitSize >= 8) ? _this.symTable[name].bitSize / 8 : _this.symTable[name].bitSize;
+                            this.symTable[name].size = (this.symTable[name].bitSize >= 8) ? this.symTable[name].bitSize / 8 : this.symTable[name].bitSize;
                             //Set additional information.
-                            typeArr = _this.symTable[name].typeString.split(" ");
+                            typeArr = this.symTable[name].typeString.split(" ");
                             if (typeArr[0] === 'ARRAY') {
                                 //Type
-                                _this.symTable[name].type = typeArr[0];
+                                this.symTable[name].type = typeArr[0];
                                 //Array length
                                 arrayLength = typeArr[1].substring(1, typeArr[1].length - 1);
                                 arrayLength = arrayLength.split('..');
-                                _this.symTable[name].arrStartIdx = parseInt(arrayLength[0], 10);
+                                this.symTable[name].arrStartIdx = parseInt(arrayLength[0], 10);
                                 arrayLength = parseInt(arrayLength[1], 10) - parseInt(arrayLength[0], 10) + 1;
-                                _this.symTable[name].arrayLength = arrayLength;
+                                this.symTable[name].arrayLength = arrayLength;
                                 //Data type of the array.
                                 type = typeArr[3].split('(');
                                 if (type[1] !== undefined) {
                                     type[1] = type[1].substr(0, type[1].length - 1);
-                                    _this.symTable[name].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0] + '.' + type[1];
-                                    _this.symTable[name].stringLength = parseInt(type[1], 10);
+                                    this.symTable[name].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0] + '.' + type[1];
+                                    this.symTable[name].stringLength = parseInt(type[1], 10);
                                 }
                                 else {
-                                    _this.symTable[name].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0];
+                                    this.symTable[name].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0];
                                 }
                                 //Item length
-                                _this.symTable[name].itemSize = _this.symTable[name].size / arrayLength;
+                                this.symTable[name].itemSize = this.symTable[name].size / arrayLength;
                                 //Check if variable is a user defined data type,
-                                _this.symTable[name].arrayDataType = 'USER';
-                                for (elem in _this.plcTypeLen) {
-                                    if (_this.plcTypeLen.hasOwnProperty(elem)) {
+                                this.symTable[name].arrayDataType = 'USER';
+                                for (elem in this.plcTypeLen) {
+                                    if (this.plcTypeLen.hasOwnProperty(elem)) {
                                         if (type[0] === elem) {
-                                            _this.symTable[name].arrayDataType = type[0];
+                                            this.symTable[name].arrayDataType = type[0];
                                         }
                                     }
                                 }
-                                if (_this.symTable[name].arrayDataType === 'USER') {
-                                    _this.symTable[name].dataType = type[0];
+                                if (this.symTable[name].arrayDataType === 'USER') {
+                                    this.symTable[name].dataType = type[0];
                                 }
                             }
                             else {
@@ -4051,42 +4045,42 @@ var TAME = /** @class */ (function () {
                                 if (type[1] !== undefined) {
                                     //String
                                     type[1] = type[1].substr(0, type[1].length - 1);
-                                    _this.symTable[name].fullType = type[0] + '.' + type[1];
-                                    _this.symTable[name].stringLength = parseInt(type[1], 10);
+                                    this.symTable[name].fullType = type[0] + '.' + type[1];
+                                    this.symTable[name].stringLength = parseInt(type[1], 10);
                                 }
                                 else {
-                                    _this.symTable[name].fullType = type[0];
+                                    this.symTable[name].fullType = type[0];
                                 }
                                 //Check if variable is a user defined data type,
-                                _this.symTable[name].type = 'USER';
-                                for (elem in _this.plcTypeLen) {
-                                    if (_this.plcTypeLen.hasOwnProperty(elem)) {
+                                this.symTable[name].type = 'USER';
+                                for (elem in this.plcTypeLen) {
+                                    if (this.plcTypeLen.hasOwnProperty(elem)) {
                                         if (type[0] === elem) {
-                                            _this.symTable[name].type = type[0];
+                                            this.symTable[name].type = type[0];
                                         }
                                     }
                                 }
-                                if (_this.symTable[name].type === 'USER') {
-                                    _this.symTable[name].dataType = type[0];
+                                if (this.symTable[name].type === 'USER') {
+                                    this.symTable[name].dataType = type[0];
                                 }
                             }
                         }
-                        _this.symTableReady = true;
-                        _this.log('TAME library info: End of reading the symbols from the TPY file.');
-                        _this.log('TAME library info: Symbol table ready.');
+                        this.symTableReady = true;
+                        this.log('TAME library info: End of reading the symbols from the TPY file.');
+                        this.log('TAME library info: Symbol table ready.');
                     }
                     catch (e) {
-                        _this.log('TAME library error: An error occured while parsing the symbol file:');
-                        _this.log(e);
+                        this.log('TAME library error: An error occured while parsing the symbol file:');
+                        this.log(e);
                     }
                 }
                 else {
-                    _this.log('TAME library info: Reading the symbols from the TPY file is deactivated.');
+                    this.log('TAME library info: Reading the symbols from the TPY file is deactivated.');
                 }
                 //Get the data types.
                 var allDataTypes, dataTypeArray, subItemArray, sName, fullName;
                 if (true) {
-                    _this.log('TAME library info: Start reading the data types from the TPY file.');
+                    this.log('TAME library info: Start reading the data types from the TPY file.');
                     try {
                         //Create an Array of the Elements with "DataType" as tag name.
                         allDataTypes = configFile.getElementsByTagName('DataTypes')[0];
@@ -4098,11 +4092,11 @@ var TAME = /** @class */ (function () {
                             fullName = dataTypeArray[i].getElementsByTagName('Name')[0].childNodes[0].nodeValue.toUpperCase();
                             name = fullName.split(" ")[0];
                             if (name === 'ARRAY') {
-                                _this.dataTypeTable[fullName] = {
+                                this.dataTypeTable[fullName] = {
                                     //type: dataTypeArray[i].getElementsByTagName('Type')[0].childNodes[0].nodeValue.toUpperCase(),
                                     bitSize: parseInt(dataTypeArray[i].getElementsByTagName('BitSize')[0].childNodes[0].nodeValue, 10)
                                 };
-                                _this.dataTypeTable[fullName].size = _this.dataTypeTable[fullName].bitSize / 8;
+                                this.dataTypeTable[fullName].size = this.dataTypeTable[fullName].bitSize / 8;
                             }
                         }
                         //Then the rest
@@ -4110,12 +4104,12 @@ var TAME = /** @class */ (function () {
                             fullName = dataTypeArray[i].getElementsByTagName('Name')[0].childNodes[0].nodeValue.toUpperCase();
                             name = fullName.split(" ")[0];
                             if (name !== 'ARRAY') {
-                                _this.dataTypeTable[name] = {
+                                this.dataTypeTable[name] = {
                                     //type: dataTypeArray[i].getElementsByTagName('Type')[0].childNodes[0].nodeValue.toUpperCase(),
                                     bitSize: parseInt(dataTypeArray[i].getElementsByTagName('BitSize')[0].childNodes[0].nodeValue, 10),
                                     subItems: {}
                                 };
-                                _this.dataTypeTable[name].size = _this.dataTypeTable[name].bitSize / 8;
+                                this.dataTypeTable[name].size = this.dataTypeTable[name].bitSize / 8;
                                 //Get the SubItems
                                 subItemArray = dataTypeArray[i].getElementsByTagName('SubItem');
                                 for (var j = 0; j < subItemArray.length; j++) {
@@ -4123,65 +4117,65 @@ var TAME = /** @class */ (function () {
                                     //Only SubItems with type information (problem occurs with TC3 and some libs)
                                     if (subItemArray[j].getElementsByTagName('Type').length > 0) {
                                         //sName = subItemArray[j].getElementsByTagName('Name')[0].childNodes[0].nodeValue.toUpperCase();
-                                        _this.dataTypeTable[name].subItems[sName] = {
+                                        this.dataTypeTable[name].subItems[sName] = {
                                             typeString: subItemArray[j].getElementsByTagName('Type')[0].childNodes[0].nodeValue.toUpperCase(),
                                             pointer: subItemArray[j].getElementsByTagName('Type')[0].hasAttribute('Pointer'),
                                             bitSize: parseInt(subItemArray[j].getElementsByTagName('BitSize')[0].childNodes[0].nodeValue, 10)
                                         };
                                         if (subItemArray[j].getElementsByTagName('BitOffs')[0] !== undefined) {
-                                            _this.dataTypeTable[name].subItems[sName].bitOffset = parseInt(subItemArray[j].getElementsByTagName('BitOffs')[0].childNodes[0].nodeValue, 10);
+                                            this.dataTypeTable[name].subItems[sName].bitOffset = parseInt(subItemArray[j].getElementsByTagName('BitOffs')[0].childNodes[0].nodeValue, 10);
                                         }
-                                        _this.dataTypeTable[name].subItems[sName].size = (_this.dataTypeTable[name].subItems[sName].bitSize >= 8) ? _this.dataTypeTable[name].subItems[sName].bitSize / 8 : _this.dataTypeTable[name].subItems[sName].bitSize;
+                                        this.dataTypeTable[name].subItems[sName].size = (this.dataTypeTable[name].subItems[sName].bitSize >= 8) ? this.dataTypeTable[name].subItems[sName].bitSize / 8 : this.dataTypeTable[name].subItems[sName].bitSize;
                                         //Set additional information
-                                        typeArr = _this.dataTypeTable[name].subItems[sName].typeString.split(" ");
+                                        typeArr = this.dataTypeTable[name].subItems[sName].typeString.split(" ");
                                         if (typeArr[0] === 'ARRAY') {
                                             //Type
-                                            _this.dataTypeTable[name].subItems[sName].type = typeArr[0];
+                                            this.dataTypeTable[name].subItems[sName].type = typeArr[0];
                                             //Array Length
                                             arrayLength = typeArr[1].substring(1, typeArr[1].length - 1);
                                             arrayLength = arrayLength.split('..');
-                                            _this.dataTypeTable[name].subItems[sName].arrStartIdx = parseInt(arrayLength[0], 10);
+                                            this.dataTypeTable[name].subItems[sName].arrStartIdx = parseInt(arrayLength[0], 10);
                                             arrayLength = parseInt(arrayLength[1], 10) - parseInt(arrayLength[0], 10) + 1;
-                                            _this.dataTypeTable[name].subItems[sName].arrayLength = arrayLength;
+                                            this.dataTypeTable[name].subItems[sName].arrayLength = arrayLength;
                                             //Data type of the array.
                                             type = typeArr[3].split('(');
                                             if (type[1] !== undefined) {
                                                 type[1] = type[1].substr(0, type[1].length - 1);
-                                                _this.dataTypeTable[name].subItems[sName].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0] + '.' + type[1];
-                                                _this.dataTypeTable[name].subItems[sName].stringLength = parseInt(type[1], 10);
+                                                this.dataTypeTable[name].subItems[sName].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0] + '.' + type[1];
+                                                this.dataTypeTable[name].subItems[sName].stringLength = parseInt(type[1], 10);
                                             }
                                             else {
-                                                _this.dataTypeTable[name].subItems[sName].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0];
+                                                this.dataTypeTable[name].subItems[sName].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0];
                                             }
                                             //Check added cause there are undefined data types some TwinCAT libs                                         
-                                            if (_this.service.skipMissingTypes === true && _this.dataTypeTable[_this.dataTypeTable[name].subItems[sName].typeString] === undefined) {
-                                                _this.log('TAME library error: Data type missing in TPY file:');
-                                                _this.log(_this.dataTypeTable[name].subItems[sName]);
-                                                _this.log('TAME library warning: Access to symbols using this data type will return wrong results:');
-                                                _this.log(name);
-                                                _this.log('TAME library info: Use handles to access symbols using this data type.');
+                                            if (this.service.skipMissingTypes === true && this.dataTypeTable[this.dataTypeTable[name].subItems[sName].typeString] === undefined) {
+                                                this.log('TAME library error: Data type missing in TPY file:');
+                                                this.log(this.dataTypeTable[name].subItems[sName]);
+                                                this.log('TAME library warning: Access to symbols using this data type will return wrong results:');
+                                                this.log(name);
+                                                this.log('TAME library info: Use handles to access symbols using this data type.');
                                             }
                                             else {
-                                                if (_this.dataTypeTable[_this.dataTypeTable[name].subItems[sName].typeString] === undefined) {
-                                                    _this.log('TAME library error: Data type missing in TPY file!');
-                                                    _this.log('TAME library info: If you don\'t use this data type you can set the client parameter "skipMissingTypes" to true.');
+                                                if (this.dataTypeTable[this.dataTypeTable[name].subItems[sName].typeString] === undefined) {
+                                                    this.log('TAME library error: Data type missing in TPY file!');
+                                                    this.log('TAME library info: If you don\'t use this data type you can set the client parameter "skipMissingTypes" to true.');
                                                 }
-                                                _this.dataTypeTable[name].subItems[sName].bitSize = _this.dataTypeTable[_this.dataTypeTable[name].subItems[sName].typeString].bitSize;
-                                                _this.dataTypeTable[name].subItems[sName].size = _this.dataTypeTable[_this.dataTypeTable[name].subItems[sName].typeString].size;
+                                                this.dataTypeTable[name].subItems[sName].bitSize = this.dataTypeTable[this.dataTypeTable[name].subItems[sName].typeString].bitSize;
+                                                this.dataTypeTable[name].subItems[sName].size = this.dataTypeTable[this.dataTypeTable[name].subItems[sName].typeString].size;
                                             }
                                             //Item length
-                                            _this.dataTypeTable[name].subItems[sName].itemSize = _this.dataTypeTable[name].subItems[sName].size / arrayLength;
+                                            this.dataTypeTable[name].subItems[sName].itemSize = this.dataTypeTable[name].subItems[sName].size / arrayLength;
                                             //Check if variable is a user defined data type,
-                                            _this.dataTypeTable[name].subItems[sName].arrayDataType = 'USER';
-                                            for (elem in _this.plcTypeLen) {
-                                                if (_this.plcTypeLen.hasOwnProperty(elem)) {
+                                            this.dataTypeTable[name].subItems[sName].arrayDataType = 'USER';
+                                            for (elem in this.plcTypeLen) {
+                                                if (this.plcTypeLen.hasOwnProperty(elem)) {
                                                     if (type[0] === elem) {
-                                                        _this.dataTypeTable[name].subItems[sName].arrayDataType = type[0];
+                                                        this.dataTypeTable[name].subItems[sName].arrayDataType = type[0];
                                                     }
                                                 }
                                             }
-                                            if (_this.dataTypeTable[name].subItems[sName].arrayDataType === 'USER') {
-                                                _this.dataTypeTable[name].subItems[sName].dataType = type[0];
+                                            if (this.dataTypeTable[name].subItems[sName].arrayDataType === 'USER') {
+                                                this.dataTypeTable[name].subItems[sName].dataType = type[0];
                                             }
                                         }
                                         else {
@@ -4189,53 +4183,53 @@ var TAME = /** @class */ (function () {
                                             if (type[1] !== undefined) {
                                                 //String
                                                 type[1] = type[1].substr(0, type[1].length - 1);
-                                                _this.dataTypeTable[name].subItems[sName].fullType = type[0] + '.' + type[1];
-                                                _this.dataTypeTable[name].subItems[sName].stringLength = parseInt(type[1], 10);
+                                                this.dataTypeTable[name].subItems[sName].fullType = type[0] + '.' + type[1];
+                                                this.dataTypeTable[name].subItems[sName].stringLength = parseInt(type[1], 10);
                                             }
                                             else {
-                                                _this.dataTypeTable[name].subItems[sName].fullType = type[0];
+                                                this.dataTypeTable[name].subItems[sName].fullType = type[0];
                                             }
                                             //Check if variable is a user defined data type,
-                                            _this.dataTypeTable[name].subItems[sName].type = 'USER';
-                                            for (elem in _this.plcTypeLen) {
-                                                if (_this.plcTypeLen.hasOwnProperty(elem)) {
+                                            this.dataTypeTable[name].subItems[sName].type = 'USER';
+                                            for (elem in this.plcTypeLen) {
+                                                if (this.plcTypeLen.hasOwnProperty(elem)) {
                                                     if (type[0] === elem) {
-                                                        _this.dataTypeTable[name].subItems[sName].type = type[0];
+                                                        this.dataTypeTable[name].subItems[sName].type = type[0];
                                                     }
                                                 }
                                             }
-                                            if (_this.dataTypeTable[name].subItems[sName].type === 'USER') {
-                                                _this.dataTypeTable[name].subItems[sName].dataType = type[0];
+                                            if (this.dataTypeTable[name].subItems[sName].type === 'USER') {
+                                                this.dataTypeTable[name].subItems[sName].dataType = type[0];
                                             }
                                         }
                                     }
                                     else {
-                                        _this.log('TAME library warning: Skipping SubItem with no type information: Data type: ' + name + ' ,SubItem: ' + sName);
+                                        this.log('TAME library warning: Skipping SubItem with no type information: Data type: ' + name + ' ,SubItem: ' + sName);
                                     }
                                 }
                             }
                         }
-                        _this.dataTypeTableReady = true;
-                        _this.log('TAME library info: End of reading the data types from the TPY file.');
-                        _this.log('TAME library info: Data type table ready.');
+                        this.dataTypeTableReady = true;
+                        this.log('TAME library info: End of reading the data types from the TPY file.');
+                        this.log('TAME library info: Data type table ready.');
                         //Get Upload Info
-                        _this.checkGetUploadInfo();
+                        this.checkGetUploadInfo();
                     }
                     catch (e) {
-                        _this.log('TAME library error: An error occured while creating the data type information:');
-                        _this.log('Type: ' + fullName);
-                        _this.log('SubItem: ' + sName);
-                        _this.log(e);
+                        this.log('TAME library error: An error occured while creating the data type information:');
+                        this.log('Type: ' + fullName);
+                        this.log('SubItem: ' + sName);
+                        this.log(e);
                     }
                 }
             }
         };
         xmlHttpReq.send(null);
-    };
+    }
     /**
      *  Set the service parameter with the values read from the TPY file.
      */
-    TAME.prototype.setServiceParamFromTPY = function () {
+    setServiceParamFromTPY() {
         if (typeof this.service.amsNetId !== 'string') {
             this.service.amsNetId = this.serviceInfo.netId;
             this.log('TAME library info: No NetId definition found. NetId from TPY file will be used.');
@@ -4258,11 +4252,11 @@ var TAME = /** @class */ (function () {
             this.log('TAME library warning: The value for the alignment should be 1, 4 or 8.');
         }
         this.log('TAME library info: Target information: NetId: ' + this.service.amsNetId + ', AMS port: ' + this.service.amsPort + ' , alignment: ' + this.alignment);
-    };
+    }
     /**
      * Check if the UploadInfo has to be fetched.
      */
-    TAME.prototype.checkGetUploadInfo = function () {
+    checkGetUploadInfo() {
         this.setServiceParamFromTPY();
         if (typeof this.service.configFileUrl != 'string' || this.service.forceUploadUsage === true) {
             this.log('TAME library info: Start fetching the symbols from PLC.');
@@ -4280,11 +4274,11 @@ var TAME = /** @class */ (function () {
                 this.onReady();
             }
         }
-    };
+    }
     /**
      * Call the onReady function.
      */
-    TAME.prototype.onReady = function () {
+    onReady() {
         //On-ready-function
         if (typeof this.service.onReady === 'function') {
             this.log('TAME library info: Calling the "onReady" function.');
@@ -4298,8 +4292,6 @@ var TAME = /** @class */ (function () {
             this.log('TAME library info: Start cyclic reading of ADS state.');
             setInterval(this.readAdsState, this.service.adsCheckInterval);
         }
-    };
-    return TAME;
-}());
+    }
+}
 exports.TAME = TAME;
-//# sourceMappingURL=tame.js.map
