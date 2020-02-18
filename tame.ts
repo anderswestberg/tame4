@@ -26,8 +26,6 @@ export class TAME {
     symTableReady: boolean
     dataTypeTableReady: boolean
     handleCacheReady: boolean
-    xmlHttpReqTimeout: number
-
     indexGroups = {
         M: 16416,    //PLC memory range(%M field), READ_M - WRITE_M
         MX: 16417,   //PLC memory range(%MX field), READ_MX - WRITE_MX
@@ -102,7 +100,6 @@ export class TAME {
     uploadLength: number
     handleCache = {}
     handleNames: any[]
-    xmlHttpReq: any
     log(message) {
         try {
             window.console.log(message);
@@ -248,9 +245,6 @@ export class TAME {
         this.symTableReady = false;
         this.dataTypeTableReady = false;
         this.handleCacheReady = false;
-
-        //XMLHttpRequest timeout
-        this.xmlHttpReqTimeout = 5000;
     }
 
     async open() {
@@ -792,35 +786,6 @@ export class TAME {
 
     }
 
-
-    /**
-     * This function creates a XMLHttpRequest object.
-     * 
-     * @return {Object} xmlHttpReq  A XMLHttpRequest.
-     */
-    createXMLHttpReq() {
-        var xmlHttpReq;
-
-        if (window.XMLHttpRequest) {
-            //Create the XMLHttpRequest object.
-            //Mozilla, Opera, Safari and Internet Explorer (> v7)
-            xmlHttpReq = new window.XMLHttpRequest();
-        } else {
-            //Internet Explorer 6 and older
-            try {
-                xmlHttpReq = new window.ActiveXObject('Msxml2.XMLHTTP');
-            } catch (e) {
-                try {
-                    xmlHttpReq = new window.ActiveXObject('Microsoft.XMLHTTP');
-                } catch (ex) {
-                    xmlHttpReq = null;
-                    this.log('TAME library error: Failed Creating XMLHttpRequest-Object!');
-                }
-            }
-        }
-        return xmlHttpReq;
-    }
-
     async adsReqSendAsync(adsReq) {
 
         //Generate the SOAP request.
@@ -878,7 +843,7 @@ export class TAME {
         let response = await fetch(this.service.serviceUrl, options);
         let str = await response.text()
         const xmlDocument = new window.DOMParser().parseFromString(str, "text/xml") as XMLDocument
-        return this.parseResponse(response, xmlDocument)
+        return this.parseResponse(adsReq, xmlDocument)
     }
 
     /**
@@ -1032,7 +997,7 @@ export class TAME {
         subitems = this.dataTypeTable[structname].subItems;
 
         for (subitem in subitems) {
-            if (subitems[subitem].type === "USER") {
+            if (subitems[subitem].type === "STRUCT") { // !!!!!!!!!!!!!!!!!!! Was USER ?????????????????????
                 //Creating a nested structue definition works, but parsing doesn't
                 this.log('TAME library error: Automatic creating of nested structures is not supported (yet)!');
                 struct[subitem] = this.createStructDef(subitems[subitem].dataType);
@@ -2073,10 +2038,9 @@ export class TAME {
      * 
      * @param {Object} adsReq   ADS Reqest Object
      */
-    parseReadReq(adsReq) {
+    parseReadReq(adsReq, response) {
 
-        let response,
-            itemList = adsReq.reqDescr.items,
+        let itemList = adsReq.reqDescr.items,
             arrType = [],
             strAddr = 0,
             item, dataString, dataSubString, strlen, len, plen, mod, type, format, idx, listlen, startaddr;
@@ -2084,7 +2048,6 @@ export class TAME {
 
         try {
 
-            response = this.xmlHttpReq.responseXML.documentElement;
             dataString = this.decodeBase64(response.getElementsByTagName('ppData')[0].firstChild.data);
 
             //Run through the elements in the item list.
@@ -2157,10 +2120,9 @@ export class TAME {
      * 
      * @param {Object} adsReq   ADS Request Object
      */
-    parseSumReadReq(adsReq) {
+    parseSumReadReq(adsReq, response) {
 
-        var response,
-            itemList = adsReq.reqDescr.items,
+        var itemList = adsReq.reqDescr.items,
             arrType = [],
             strAddr = 0,
             subStrAddr = 0,
@@ -2307,7 +2269,6 @@ export class TAME {
         }
 
         try {
-            response = this.xmlHttpReq.responseXML.documentElement;
             dataString = this.decodeBase64(response.getElementsByTagName('ppRdData')[0].firstChild.data);
 
             //Read the error codes of the ADS sub commands.
@@ -2395,10 +2356,9 @@ export class TAME {
      * 
      * @param {Object} adsReq   ADS Request Object
      */
-    parseSumWriteReq(adsReq) {
+    parseSumWriteReq(adsReq, response) {
 
-        var response,
-            itemList = adsReq.reqDescr.items,
+        var itemList = adsReq.reqDescr.items,
             arrType = [],
             arrDeletedHdl = [],
             strAddr = 0,
@@ -2409,7 +2369,6 @@ export class TAME {
 
         //Just look for errors.
         try {
-            response = this.xmlHttpReq.responseXML.documentElement;
             dataString = this.decodeBase64(response.getElementsByTagName('ppRdData')[0].firstChild.data);
 
             //Read the error codes of the ADS sub commands.
@@ -2467,12 +2426,11 @@ export class TAME {
      * 
      * @param {Object} adsReq   ADS Reqest Object
      */
-    parseAdsState(adsReq) {
+    parseAdsState(adsReq, response) {
 
         var response;
 
         try {
-            response = this.xmlHttpReq.responseXML.documentElement;
             this.adsState = parseInt(response.getElementsByTagName('pAdsState')[0].firstChild.data, 10);
             this.adsStateTxt = this.adsStates[this.adsState];
             this.deviceState = parseInt(response.getElementsByTagName('pDeviceState')[0].firstChild.data, 10);
@@ -2487,7 +2445,7 @@ export class TAME {
      * 
      * @param {Object} adsReq   ADS Request Object
      */
-    parseHandles(adsReq) {
+    parseHandles(adsReq, response) {
 
         var response,
             arrSymNames = this.handleNames,
@@ -2495,7 +2453,6 @@ export class TAME {
             subStrAddr = 0,
             dataString, dataSubString, handleVal, idx, arrlen, errorCode, returnLen;
 
-        response = this.xmlHttpReq.responseXML.documentElement;
         dataString = this.decodeBase64(response.getElementsByTagName('ppRdData')[0].firstChild.data);
 
         //Read the error codes and the return length of the ADS sub commands.
@@ -2550,6 +2507,22 @@ export class TAME {
         return value
     }
 
+    async writeAccessStruct(method, args) {
+        let reqDescr = this.createStructDescriptor(method, args)
+        let adsReq = this.writeReq(reqDescr)
+        this.createRequest(adsReq)
+        let value = await this.adsReqSendAsync(adsReq)
+        return value
+    }
+
+    async readAccessStruct(method, args) {
+        let reqDescr = this.createStructDescriptor(method, args)
+        let adsReq = this.readReq(reqDescr)
+        this.createRequest(adsReq)
+        let value = await this.adsReqSendAsync(adsReq)
+        return value
+    }
+
     //======================================================================================
     //                     Functions for Creating Request Descriptors
     //======================================================================================  
@@ -2573,6 +2546,7 @@ export class TAME {
         len = this.plcTypeLen[type];
 
         switch (type) {
+            case 'WSTRING':
             case 'STRING':
                 //Change the read length if a value is given.
                 if (this.isValidStringLen(args.strlen)) {
@@ -2894,6 +2868,7 @@ export class TAME {
             len = this.plcTypeLen[type];
 
             switch (type) {
+                case 'WSTRING':
                 case 'STRING':
                     if (this.isValidStringLen(args.strlen)) {
                         //Change the read length if a value is given.
@@ -2991,7 +2966,6 @@ export class TAME {
             this.readReq(reqDescr);
         }
     }
-
 
     /**
      * Create a Request Descriptor for a structure,
@@ -3111,13 +3085,7 @@ export class TAME {
                 }
             }
         }
-
-        //Call the send function
-        if (method === 'Write') {
-            this.writeReq(reqDescr);
-        } else {
-            this.readReq(reqDescr);
-        }
+        return reqDescr
     }
 
 
@@ -3162,7 +3130,7 @@ export class TAME {
             //Length of the data type.
             //Maximum lenght is limited to 4 (due to structure padding),
             //the lenght of strings is calculated later.
-            if (isNaN(this.plcTypeLen[type])) {
+            if (isNaN(this.plcTypeLen[type]) && type != "STRING" && type != "WSTRING") {
                 this.log('TAME library error: Could not get the length of the data type: ' + type);
                 this.log('TAME library error: Probably wrong type definition. Please check the manual.');
                 this.log(reqDescr);
@@ -3174,7 +3142,7 @@ export class TAME {
             //"writeArrayOfStruct/readArrayOfStruct"
             len = (this.plcTypeLen[type] < this.alignment) ? this.plcTypeLen[type] : this.alignment;
 
-            if (reqDescr.calcAlignment === true && len > 1 && type !== 'STRING' && type !== 'EndStruct' && pData.length > 0) {
+            if (reqDescr.calcAlignment === true && len > 1 && type !== 'STRING' && type !== 'WSTRING' && type !== 'EndStruct' && pData.length > 0) {
                 mod = pData.length % len;
                 if (mod > 0) {
                     pcount = len - mod;
@@ -3247,13 +3215,13 @@ export class TAME {
                 format = arrType[1];
 
                 //Set the length of the PLC variable.
-                if (isNaN(this.plcTypeLen[type])) {
+                if (isNaN(this.plcTypeLen[type]) && type !== 'STRING' && type !== 'WSTRING') {
                     this.log('TAME library error: Could not get the length of the data type: ' + type);
                     this.log('TAME library error: Probably wrong type definition. Please check the manual.');
                     this.log(reqDescr);
                     return;
                 }
-                if (type === 'STRING') {
+                if (type === 'STRING' || type === 'WSTRING') {
                     if (typeof format === 'string') {
                         strlen = parseInt(format, 10);
                     }
@@ -3264,7 +3232,7 @@ export class TAME {
 
                 if (reqDescr.seq === true) {
                     //Add the length of the PLC variables if continuously addressing is used.
-                    if (reqDescr.calcAlignment === true && vlen > 1 && type !== 'EndStruct' && type !== 'STRING' && reqDescr.readLength > 0) {
+                    if (reqDescr.calcAlignment === true && vlen > 1 && type !== 'EndStruct' && type !== 'STRING' && type !== 'WSTRING' && reqDescr.readLength > 0) {
                         mod = reqDescr.readLength % vlen;
                         if (mod > 0) {
                             reqDescr.readLength += vlen - mod;
@@ -3818,66 +3786,59 @@ export class TAME {
         //Look for errors in the response string (i.e. ADS errors).
         try {
             //Get errors
-            errorText = response.getElementsByTagName('faultstring')[0].firstChild.data;
-            try {
+            let faultTag = response.getElementsByTagName('faultstring')
+            if (faultTag.length) {
+                errorText = response.getElementsByTagName('faultstring')[0].firstChild.data;
                 errorCode = response.getElementsByTagName('errorcode')[0].firstChild.data;
-            } catch (e) {
-                errorCode = '-';
             }
-            this.log('TAME library error: Message from server:  ' + errorText + ' (' + errorCode + ')');
-
-            if (typeof adsReq.reqDescr.oe === 'function') {
-                //on error function
-                adsReq.reqDescr.oe();
-            }
-            return;
         } catch (ex) {
-            //All fine
-            errorCode = 0;
         }
 
-        //Normalize data (esp. for Firefox, who splits data in 4k chunks).
-        if (typeof response.normalize === 'function') {
-            response.normalize();
-        }
-
-        //Decode data if it's a read request.
-        if (adsReq.method === 'ReadState') {
-
-            this.parseAdsState(adsReq);
-
-        } else if (adsReq.method === 'Read' || adsReq.method === 'ReadWrite') {
-
-            switch (adsReq.indexGroup) {
-                case this.indexGroups.UploadInfo:
-                    this.parseUploadInfo(adsReq);
-                    break;
-                case this.indexGroups.Upload:
-                    this.parseUpload(adsReq);
-                    break;
-                case this.indexGroups.SumRd:
-                    this.parseSumReadReq(adsReq);
-                    break;
-                case this.indexGroups.SumWr:
-                    this.parseSumWriteReq(adsReq);
-                    break;
-                case this.indexGroups.SumRdWr:
-                    this.parseHandles(adsReq);
-                    break;
-                default:
-                    result = this.parseReadReq(adsReq);
+        if (!errorText) {
+            //Normalize data (esp. for Firefox, who splits data in 4k chunks).
+            if (typeof response.normalize === 'function') {
+                response.normalize();
             }
-        }
 
-        //Call the On-Complete-Script.
-        if (typeof adsReq.reqDescr.oc === 'function') {
-            if (typeof adsReq.reqDescr.ocd === 'number') {
-                window.setTimeout(adsReq.reqDescr.oc, adsReq.reqDescr.ocd);
+            //Decode data if it's a read request.
+            if (adsReq.method === 'ReadState') {
+
+                this.parseAdsState(adsReq, response);
+
+            } else if (adsReq.method === 'Read' || adsReq.method === 'ReadWrite') {
+
+                switch (adsReq.indexGroup) {
+                    case this.indexGroups.UploadInfo:
+                        this.parseUploadInfo(adsReq, response);
+                        break;
+                    case this.indexGroups.Upload:
+                        this.parseUpload(adsReq, response);
+                        break;
+                    case this.indexGroups.SumRd:
+                        this.parseSumReadReq(adsReq, response);
+                        break;
+                    case this.indexGroups.SumWr:
+                        this.parseSumWriteReq(adsReq, response);
+                        break;
+                    case this.indexGroups.SumRdWr:
+                        this.parseHandles(adsReq, response);
+                        break;
+                    default:
+                        result = this.parseReadReq(adsReq, response);
+                }
             }
-            else {
-                adsReq.reqDescr.oc();
+
+            //Call the On-Complete-Script.
+            if (typeof adsReq.reqDescr.oc === 'function') {
+                if (typeof adsReq.reqDescr.ocd === 'number') {
+                    window.setTimeout(adsReq.reqDescr.oc, adsReq.reqDescr.ocd);
+                }
+                else {
+                    adsReq.reqDescr.oc();
+                }
             }
-        }
+        } else
+            this.log('TAME library error: Message from server:  ' + errorText + " code: " + errorCode);
         return result
     };
 
@@ -4082,8 +4043,8 @@ export class TAME {
     readDate = async (args) => await this.readSingle('Read', 'DATE', args)
     readDt = async (args) => await this.readSingle('Read', 'DT', args)
 
-    writeStruct = (args) => this.createStructDescriptor('Write', args)
-    readStruct = (args) => this.createStructDescriptor('Read', args)
+    writeStruct = async (args) => await this.writeAccessStruct('Write', args)
+    readStruct = async (args) => await this.readAccessStruct('Read', args)
 
     writeArrayOfBool = (args) => this.createArrayDescriptor('Write', 'BOOL', args)
     writeArrayOfByte = (args) => this.createArrayDescriptor('Write', 'BYTE', args)
@@ -4159,11 +4120,10 @@ export class TAME {
      * 
      * @param {Object} adsReq   An ADS Request Descriptor.
      */
-    parseUploadInfo(adsReq) {
-        var response, dataString, dataSubString, data, adsReq2;
+    parseUploadInfo(adsReq, response) {
+        var dataString, dataSubString, data, adsReq2;
 
         try {
-            response = this.xmlHttpReq.responseXML.documentElement;
             dataString = this.decodeBase64(response.getElementsByTagName('ppData')[0].firstChild.data);
             dataSubString = dataString.substr(0, 4);
             this.symbolCount = this.subStringToData(dataSubString, 'DWORD');
@@ -4193,9 +4153,8 @@ export class TAME {
      * 
      * @param {Object} adsReq   An ADS Request Descriptor.
      */
-    parseUpload(adsReq) {
-        var response,
-            strAddr = 0,
+    parseUpload(adsReq, response) {
+        var strAddr = 0,
             igOffs = 4,
             ioOffs = 8,
             sizeOffs = 12,
@@ -4203,7 +4162,6 @@ export class TAME {
             dataString, dataSubString, data, cnt, infoLen, nameAndType, typeArr, arrayLength, type, elem;
 
         try {
-            response = this.xmlHttpReq.responseXML.documentElement;
             dataString = this.decodeBase64(response.getElementsByTagName('ppData')[0].firstChild.data);
 
             for (cnt = 0; cnt < this.symbolCount; cnt++) {
@@ -4309,341 +4267,326 @@ export class TAME {
         }
     }
 
-    configXmlHttpReq = null
     /**
     * Get the symbol-file (*.tpy) from the server and create
     * an object (symTable) with the symbol names as the properties. 
     */
     async getConfigFile() {
 
-        this.configXmlHttpReq = this.createXMLHttpReq()
         var symbolArray = [],
-            configFile, name, allSymbols, typeArr, arrayLength, type, elem,
+            name, allSymbols, typeArr, arrayLength, type, elem,
             tcVersion, i;
 
         this.log('TAME library info: Start reading the TPY file.');
 
-        //HTTPRequest
-        this.configXmlHttpReq.open('GET', this.service.configFileUrl, !this.service.syncXmlHttp, this.service.serviceUser, this.service.servicePassword);
-        this.configXmlHttpReq.setRequestHeader('Content-Type', 'text/xml');
+        let options =  { 
+            method: 'GET',
+            headers: [
+                ['Accept', 'text/xml']
+            ],
+        }
+        if (this.service.serviceUser || this.service.servicePassword)
+            options.headers.push(['Authorization', 'Basic ' + btoa(this.service.serviceUser + ":" + this.service.servicePassword)])
+        let response = await fetch(this.service.configFileUrl, options);
+        let str = await response.text()
+        const configFile = new window.DOMParser().parseFromString(str, "text/xml") as XMLDocument
 
-        this.configXmlHttpReq.onload = async () => {
+        //Get the information about the PLC and the routing
+        if (typeof this.service.amsNetId !== 'string' || typeof this.service.amsPort !== 'string' || this.alignment === 0) {
+            this.log('TAME library info: Start reading the service information from the TPY file.');
+            try {
+                this.serviceInfo = {
+                    netId: configFile.getElementsByTagName('NetId')[0].childNodes[0].nodeValue,
+                    port: configFile.getElementsByTagName('Port')[0].childNodes[0].nodeValue
+                };
 
-            //Create a DOM object from XML
-            if (typeof DOMParser != 'undefined') {
-                try {
-                    configFile = (new DOMParser()).parseFromString(this.configXmlHttpReq.responseText, "text/xml");
-                } catch (e) {
-                    this.log('TAME library error: Creating a DOM object from TPY failed:' + e);
-                    return;
+                tcVersion = configFile.getElementsByTagName('TwinCATVersion')[0].childNodes[0].nodeValue.charAt(0);
+
+                if (tcVersion === '2') {
+                    this.serviceInfo.alignment = parseInt(configFile.getElementsByTagName('PackSize')[0].childNodes[0].nodeValue, 10);
+                } else if (tcVersion === '3') {
+                    this.serviceInfo.alignment = 8;
+                } else {
+                    this.log('TAME library error: Could not determine the TwinCAT version.');
                 }
-            } else {
-                this.log('TAME library error: Can\'t parse the symbol file cause your browser does not provide a DOMParser function.');
+                this.log('TAME library info: End of reading the service information from the TPY file.');
+            } catch (e) {
+                this.log('TAME library error: An error occured while reading service information from the TPY file:');
+                this.log(e);
             }
+        } else {
+            this.log('TAME library info: NetId, port and alignment manually set. Skip reading the service information from the TPY file.');
+        }
 
 
-            //Get the information about the PLC and the routing
-            if (typeof this.service.amsNetId !== 'string' || typeof this.service.amsPort !== 'string' || this.alignment === 0) {
-                this.log('TAME library info: Start reading the service information from the TPY file.');
-                try {
-                    this.serviceInfo = {
-                        netId: configFile.getElementsByTagName('NetId')[0].childNodes[0].nodeValue,
-                        port: configFile.getElementsByTagName('Port')[0].childNodes[0].nodeValue
+        //Create the symbol table
+        if (this.service.forceUploadUsage !== true) {
+            this.log('TAME library info: Start reading the symbols from the TPY file.');
+            try {
+                //Create an Array of the Elements with "Symbol" as tag name.
+                allSymbols = configFile.getElementsByTagName('Symbols')[0];
+                symbolArray = allSymbols.getElementsByTagName('Symbol');
+
+                //Get the name of the symbol and create an object property with it.
+                //symTable is declared outside in the constructor function.
+                for (i = 0; i < symbolArray.length; i++) {
+                    name = symbolArray[i].getElementsByTagName('Name')[0].childNodes[0].nodeValue.toUpperCase();
+                    this.symTable[name] = {
+                        typeString: symbolArray[i].getElementsByTagName('Type')[0].childNodes[0].nodeValue.toUpperCase(),
+                        indexGroup: parseInt(symbolArray[i].getElementsByTagName('IGroup')[0].childNodes[0].nodeValue, 10),
+                        indexOffset: parseInt(symbolArray[i].getElementsByTagName('IOffset')[0].childNodes[0].nodeValue, 10),
+                        bitSize: parseInt(symbolArray[i].getElementsByTagName('BitSize')[0].childNodes[0].nodeValue, 10)
                     };
-
-                    tcVersion = configFile.getElementsByTagName('TwinCATVersion')[0].childNodes[0].nodeValue.charAt(0);
-
-                    if (tcVersion === '2') {
-                        this.serviceInfo.alignment = parseInt(configFile.getElementsByTagName('PackSize')[0].childNodes[0].nodeValue, 10);
-                    } else if (tcVersion === '3') {
-                        this.serviceInfo.alignment = 8;
-                    } else {
-                        this.log('TAME library error: Could not determine the TwinCAT version.');
-                    }
-                    this.log('TAME library info: End of reading the service information from the TPY file.');
-                } catch (e) {
-                    this.log('TAME library error: An error occured while reading service information from the TPY file:');
-                    this.log(e);
-                }
-            } else {
-                this.log('TAME library info: NetId, port and alignment manually set. Skip reading the service information from the TPY file.');
-            }
+                    this.symTable[name].size = (this.symTable[name].bitSize >= 8) ? this.symTable[name].bitSize / 8 : this.symTable[name].bitSize;
 
 
-            //Create the symbol table
-            if (this.service.forceUploadUsage !== true) {
-                this.log('TAME library info: Start reading the symbols from the TPY file.');
-                try {
-                    //Create an Array of the Elements with "Symbol" as tag name.
-                    allSymbols = configFile.getElementsByTagName('Symbols')[0];
-                    symbolArray = allSymbols.getElementsByTagName('Symbol');
+                    //Set additional information.
+                    typeArr = this.symTable[name].typeString.split(" ");
 
-                    //Get the name of the symbol and create an object property with it.
-                    //symTable is declared outside in the constructor function.
-                    for (i = 0; i < symbolArray.length; i++) {
-                        name = symbolArray[i].getElementsByTagName('Name')[0].childNodes[0].nodeValue.toUpperCase();
-                        this.symTable[name] = {
-                            typeString: symbolArray[i].getElementsByTagName('Type')[0].childNodes[0].nodeValue.toUpperCase(),
-                            indexGroup: parseInt(symbolArray[i].getElementsByTagName('IGroup')[0].childNodes[0].nodeValue, 10),
-                            indexOffset: parseInt(symbolArray[i].getElementsByTagName('IOffset')[0].childNodes[0].nodeValue, 10),
-                            bitSize: parseInt(symbolArray[i].getElementsByTagName('BitSize')[0].childNodes[0].nodeValue, 10)
-                        };
-                        this.symTable[name].size = (this.symTable[name].bitSize >= 8) ? this.symTable[name].bitSize / 8 : this.symTable[name].bitSize;
+                    if (typeArr[0] === 'ARRAY') {
 
+                        //Type
+                        this.symTable[name].type = typeArr[0];
 
-                        //Set additional information.
-                        typeArr = this.symTable[name].typeString.split(" ");
-
-                        if (typeArr[0] === 'ARRAY') {
-
-                            //Type
-                            this.symTable[name].type = typeArr[0];
-
-                            //Array length
-                            arrayLength = typeArr[1].substring(1, typeArr[1].length - 1);
-                            arrayLength = arrayLength.split('..');
-                            this.symTable[name].arrStartIdx = parseInt(arrayLength[0], 10);
-                            arrayLength = parseInt(arrayLength[1], 10) - parseInt(arrayLength[0], 10) + 1;
-                            this.symTable[name].arrayLength = arrayLength;
+                        //Array length
+                        arrayLength = typeArr[1].substring(1, typeArr[1].length - 1);
+                        arrayLength = arrayLength.split('..');
+                        this.symTable[name].arrStartIdx = parseInt(arrayLength[0], 10);
+                        arrayLength = parseInt(arrayLength[1], 10) - parseInt(arrayLength[0], 10) + 1;
+                        this.symTable[name].arrayLength = arrayLength;
 
 
 
-                            //Data type of the array.
-                            type = typeArr[3].split('(');
-                            if (type[1] !== undefined) {
-                                type[1] = type[1].substr(0, type[1].length - 1);
-                                this.symTable[name].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0] + '.' + type[1];
-                                this.symTable[name].stringLength = parseInt(type[1], 10);
-                            } else {
-                                this.symTable[name].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0];
-                            }
-
-                            //Item length
-                            this.symTable[name].itemSize = this.symTable[name].size / arrayLength;
-
-                            //Check if variable is a user defined data type,
-                            this.symTable[name].arrayDataType = 'USER';
-                            for (elem in this.plcTypeLen) {
-                                if (this.plcTypeLen.hasOwnProperty(elem)) {
-                                    if (type[0] === elem) {
-                                        this.symTable[name].arrayDataType = type[0];
-                                    }
-                                }
-                            }
-                            if (this.symTable[name].arrayDataType === 'USER') {
-                                this.symTable[name].dataType = type[0];
-                            }
-
+                        //Data type of the array.
+                        type = typeArr[3].split('(');
+                        if (type[1] !== undefined) {
+                            type[1] = type[1].substr(0, type[1].length - 1);
+                            this.symTable[name].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0] + '.' + type[1];
+                            this.symTable[name].stringLength = parseInt(type[1], 10);
                         } else {
-                            type = typeArr[0].split('(');
+                            this.symTable[name].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0];
+                        }
 
-                            if (type[1] !== undefined) {
-                                //String
-                                type[1] = type[1].substr(0, type[1].length - 1);
-                                this.symTable[name].fullType = type[0] + '.' + type[1];
-                                this.symTable[name].stringLength = parseInt(type[1], 10);
-                            } else {
-                                this.symTable[name].fullType = type[0];
-                            }
+                        //Item length
+                        this.symTable[name].itemSize = this.symTable[name].size / arrayLength;
 
-                            //Check if variable is a user defined data type,
-                            this.symTable[name].type = 'USER';
-                            for (elem in this.plcTypeLen) {
-                                if (this.plcTypeLen.hasOwnProperty(elem)) {
-                                    if (type[0] === elem) {
-                                        this.symTable[name].type = type[0];
-                                    }
+                        //Check if variable is a user defined data type,
+                        this.symTable[name].arrayDataType = 'USER';
+                        for (elem in this.plcTypeLen) {
+                            if (this.plcTypeLen.hasOwnProperty(elem)) {
+                                if (type[0] === elem) {
+                                    this.symTable[name].arrayDataType = type[0];
                                 }
                             }
-                            if (this.symTable[name].type === 'USER') {
-                                this.symTable[name].dataType = type[0];
+                        }
+                        if (this.symTable[name].arrayDataType === 'USER') {
+                            this.symTable[name].dataType = type[0];
+                        }
+
+                    } else {
+                        type = typeArr[0].split('(');
+
+                        if (type[1] !== undefined) {
+                            //String
+                            type[1] = type[1].substr(0, type[1].length - 1);
+                            this.symTable[name].fullType = type[0] + '.' + type[1];
+                            this.symTable[name].stringLength = parseInt(type[1], 10);
+                        } else {
+                            this.symTable[name].fullType = type[0];
+                        }
+
+                        //Check if variable is a user defined data type,
+                        this.symTable[name].type = 'USER';
+                        for (elem in this.plcTypeLen) {
+                            if (this.plcTypeLen.hasOwnProperty(elem)) {
+                                if (type[0] === elem) {
+                                    this.symTable[name].type = type[0];
+                                }
                             }
                         }
-                    }
-
-                    this.symTableReady = true;
-
-                    this.log('TAME library info: End of reading the symbols from the TPY file.');
-                    this.log('TAME library info: Symbol table ready.');
-
-                } catch (e) {
-                    this.log('TAME library error: An error occured while parsing the symbol file:');
-                    this.log(e);
-                }
-            } else {
-                this.log('TAME library info: Reading the symbols from the TPY file is deactivated.');
-            }
-
-
-            //Get the data types.
-            var allDataTypes, dataTypeArray, subItemArray, sName, fullName;
-
-            if (true) {
-                this.log('TAME library info: Start reading the data types from the TPY file.');
-                try {
-                    //Create an Array of the Elements with "DataType" as tag name.
-                    allDataTypes = configFile.getElementsByTagName('DataTypes')[0];
-                    dataTypeArray = allDataTypes.getElementsByTagName('DataType');
-
-                    //Get the name of the data type and create an object property with it.
-                    //dataTypeTable is declared outside in the constructor function.
-                    //Arrays first
-                    for (i = 0; i < dataTypeArray.length; i++) {
-                        fullName = dataTypeArray[i].getElementsByTagName('Name')[0].childNodes[0].nodeValue.toUpperCase();
-                        name = fullName.split(" ")[0];
-                        if (name === 'ARRAY') {
-
-                            this.dataTypeTable[fullName] = {
-                                //type: dataTypeArray[i].getElementsByTagName('Type')[0].childNodes[0].nodeValue.toUpperCase(),
-                                bitSize: parseInt(dataTypeArray[i].getElementsByTagName('BitSize')[0].childNodes[0].nodeValue, 10)
-                            };
-                            this.dataTypeTable[fullName].size = this.dataTypeTable[fullName].bitSize / 8;
+                        if (this.symTable[name].type === 'USER') {
+                            this.symTable[name].dataType = type[0];
                         }
                     }
-                    //Then the rest
-                    for (i = 0; i < dataTypeArray.length; i++) {
-                        fullName = dataTypeArray[i].getElementsByTagName('Name')[0].childNodes[0].nodeValue.toUpperCase();
-                        name = fullName.split(" ")[0];
-                        if (name !== 'ARRAY') {
+                }
 
-                            this.dataTypeTable[name] = {
-                                //type: dataTypeArray[i].getElementsByTagName('Type')[0].childNodes[0].nodeValue.toUpperCase(),
-                                bitSize: parseInt(dataTypeArray[i].getElementsByTagName('BitSize')[0].childNodes[0].nodeValue, 10),
-                                subItems: {}
+                this.symTableReady = true;
+
+                this.log('TAME library info: End of reading the symbols from the TPY file.');
+                this.log('TAME library info: Symbol table ready.');
+
+            } catch (e) {
+                this.log('TAME library error: An error occured while parsing the symbol file:');
+                this.log(e);
+            }
+        } else {
+            this.log('TAME library info: Reading the symbols from the TPY file is deactivated.');
+        }
+
+
+        //Get the data types.
+        var allDataTypes, dataTypeArray, subItemArray, sName, fullName;
+
+        this.log('TAME library info: Start reading the data types from the TPY file.');
+        try {
+            //Create an Array of the Elements with "DataType" as tag name.
+            allDataTypes = configFile.getElementsByTagName('DataTypes')[0];
+            dataTypeArray = allDataTypes.getElementsByTagName('DataType');
+
+            //Get the name of the data type and create an object property with it.
+            //dataTypeTable is declared outside in the constructor function.
+            //Arrays first
+            for (i = 0; i < dataTypeArray.length; i++) {
+                fullName = dataTypeArray[i].getElementsByTagName('Name')[0].childNodes[0].nodeValue.toUpperCase();
+                name = fullName.split(" ")[0];
+                if (name === 'ARRAY') {
+
+                    this.dataTypeTable[fullName] = {
+                        //type: dataTypeArray[i].getElementsByTagName('Type')[0].childNodes[0].nodeValue.toUpperCase(),
+                        bitSize: parseInt(dataTypeArray[i].getElementsByTagName('BitSize')[0].childNodes[0].nodeValue, 10)
+                    };
+                    this.dataTypeTable[fullName].size = this.dataTypeTable[fullName].bitSize / 8;
+                }
+            }
+            //Then the rest
+            for (i = 0; i < dataTypeArray.length; i++) {
+                fullName = dataTypeArray[i].getElementsByTagName('Name')[0].childNodes[0].nodeValue.toUpperCase();
+                name = fullName.split(" ")[0];
+                if (name !== 'ARRAY') {
+
+                    this.dataTypeTable[name] = {
+                        //type: dataTypeArray[i].getElementsByTagName('Type')[0].childNodes[0].nodeValue.toUpperCase(),
+                        bitSize: parseInt(dataTypeArray[i].getElementsByTagName('BitSize')[0].childNodes[0].nodeValue, 10),
+                        subItems: {}
+                    };
+                    this.dataTypeTable[name].size = this.dataTypeTable[name].bitSize / 8;
+
+                    //Get the SubItems
+                    subItemArray = dataTypeArray[i].getElementsByTagName('SubItem');
+
+                    for (var j = 0; j < subItemArray.length; j++) {
+                        sName = subItemArray[j].getElementsByTagName('Name')[0].childNodes[0].nodeValue.toUpperCase();
+                        //Only SubItems with type information (problem occurs with TC3 and some libs)
+                        if (subItemArray[j].getElementsByTagName('Type').length > 0) {
+
+                            //sName = subItemArray[j].getElementsByTagName('Name')[0].childNodes[0].nodeValue.toUpperCase();
+                            this.dataTypeTable[name].subItems[sName] = {
+                                typeString: subItemArray[j].getElementsByTagName('Type')[0].childNodes[0].nodeValue.toUpperCase(),
+                                pointer: subItemArray[j].getElementsByTagName('Type')[0].hasAttribute('Pointer'),
+                                bitSize: parseInt(subItemArray[j].getElementsByTagName('BitSize')[0].childNodes[0].nodeValue, 10)
                             };
-                            this.dataTypeTable[name].size = this.dataTypeTable[name].bitSize / 8;
-
-                            //Get the SubItems
-                            subItemArray = dataTypeArray[i].getElementsByTagName('SubItem');
-
-                            for (var j = 0; j < subItemArray.length; j++) {
-                                sName = subItemArray[j].getElementsByTagName('Name')[0].childNodes[0].nodeValue.toUpperCase();
-                                //Only SubItems with type information (problem occurs with TC3 and some libs)
-                                if (subItemArray[j].getElementsByTagName('Type').length > 0) {
-
-                                    //sName = subItemArray[j].getElementsByTagName('Name')[0].childNodes[0].nodeValue.toUpperCase();
-                                    this.dataTypeTable[name].subItems[sName] = {
-                                        typeString: subItemArray[j].getElementsByTagName('Type')[0].childNodes[0].nodeValue.toUpperCase(),
-                                        pointer: subItemArray[j].getElementsByTagName('Type')[0].hasAttribute('Pointer'),
-                                        bitSize: parseInt(subItemArray[j].getElementsByTagName('BitSize')[0].childNodes[0].nodeValue, 10)
-                                    };
-                                    if (subItemArray[j].getElementsByTagName('BitOffs')[0] !== undefined) {
-                                        this.dataTypeTable[name].subItems[sName].bitOffset = parseInt(subItemArray[j].getElementsByTagName('BitOffs')[0].childNodes[0].nodeValue, 10);
-                                    }
+                            if (subItemArray[j].getElementsByTagName('BitOffs')[0] !== undefined) {
+                                this.dataTypeTable[name].subItems[sName].bitOffset = parseInt(subItemArray[j].getElementsByTagName('BitOffs')[0].childNodes[0].nodeValue, 10);
+                            }
 
 
-                                    this.dataTypeTable[name].subItems[sName].size = (this.dataTypeTable[name].subItems[sName].bitSize >= 8) ? this.dataTypeTable[name].subItems[sName].bitSize / 8 : this.dataTypeTable[name].subItems[sName].bitSize;
+                            this.dataTypeTable[name].subItems[sName].size = (this.dataTypeTable[name].subItems[sName].bitSize >= 8) ? this.dataTypeTable[name].subItems[sName].bitSize / 8 : this.dataTypeTable[name].subItems[sName].bitSize;
 
-                                    //Set additional information
-                                    typeArr = this.dataTypeTable[name].subItems[sName].typeString.split(" ");
+                            //Set additional information
+                            typeArr = this.dataTypeTable[name].subItems[sName].typeString.split(" ");
 
-                                    if (typeArr[0] === 'ARRAY') {
+                            if (typeArr[0] === 'ARRAY') {
 
-                                        //Type
-                                        this.dataTypeTable[name].subItems[sName].type = typeArr[0];
+                                //Type
+                                this.dataTypeTable[name].subItems[sName].type = typeArr[0];
 
-                                        //Array Length
-                                        arrayLength = typeArr[1].substring(1, typeArr[1].length - 1);
-                                        arrayLength = arrayLength.split('..');
-                                        this.dataTypeTable[name].subItems[sName].arrStartIdx = parseInt(arrayLength[0], 10);
-                                        arrayLength = parseInt(arrayLength[1], 10) - parseInt(arrayLength[0], 10) + 1;
-                                        this.dataTypeTable[name].subItems[sName].arrayLength = arrayLength;
-
-
-                                        //Data type of the array.
-                                        type = typeArr[3].split('(');
-                                        if (type[1] !== undefined) {
-                                            type[1] = type[1].substr(0, type[1].length - 1);
-                                            this.dataTypeTable[name].subItems[sName].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0] + '.' + type[1];
-                                            this.dataTypeTable[name].subItems[sName].stringLength = parseInt(type[1], 10);
-                                        } else {
-                                            this.dataTypeTable[name].subItems[sName].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0];
-                                        }
-
-                                        //Check added cause there are undefined data types some TwinCAT libs                                         
-                                        if (this.service.skipMissingTypes === true && this.dataTypeTable[this.dataTypeTable[name].subItems[sName].typeString] === undefined) {
-                                            this.log('TAME library error: Data type missing in TPY file:');
-                                            this.log(this.dataTypeTable[name].subItems[sName]);
-                                            this.log('TAME library warning: Access to symbols using this data type will return wrong results:');
-                                            this.log(name);
-                                            this.log('TAME library info: Use handles to access symbols using this data type.');
-                                        } else {
-                                            if (this.dataTypeTable[this.dataTypeTable[name].subItems[sName].typeString] === undefined) {
-                                                this.log('TAME library error: Data type missing in TPY file!');
-                                                this.log('TAME library info: If you don\'t use this data type you can set the client parameter "skipMissingTypes" to true.');
-                                            }
-                                            this.dataTypeTable[name].subItems[sName].bitSize = this.dataTypeTable[this.dataTypeTable[name].subItems[sName].typeString].bitSize;
-                                            this.dataTypeTable[name].subItems[sName].size = this.dataTypeTable[this.dataTypeTable[name].subItems[sName].typeString].size;
-                                        }
+                                //Array Length
+                                arrayLength = typeArr[1].substring(1, typeArr[1].length - 1);
+                                arrayLength = arrayLength.split('..');
+                                this.dataTypeTable[name].subItems[sName].arrStartIdx = parseInt(arrayLength[0], 10);
+                                arrayLength = parseInt(arrayLength[1], 10) - parseInt(arrayLength[0], 10) + 1;
+                                this.dataTypeTable[name].subItems[sName].arrayLength = arrayLength;
 
 
-                                        //Item length
-                                        this.dataTypeTable[name].subItems[sName].itemSize = this.dataTypeTable[name].subItems[sName].size / arrayLength;
-
-                                        //Check if variable is a user defined data type,
-                                        this.dataTypeTable[name].subItems[sName].arrayDataType = 'USER';
-                                        for (elem in this.plcTypeLen) {
-                                            if (this.plcTypeLen.hasOwnProperty(elem)) {
-                                                if (type[0] === elem) {
-                                                    this.dataTypeTable[name].subItems[sName].arrayDataType = type[0];
-                                                }
-                                            }
-                                        }
-                                        if (this.dataTypeTable[name].subItems[sName].arrayDataType === 'USER') {
-                                            this.dataTypeTable[name].subItems[sName].dataType = type[0];
-                                        }
-
-                                    } else {
-                                        type = typeArr[0].split('(');
-
-                                        if (type[1] !== undefined) {
-                                            //String
-                                            type[1] = type[1].substr(0, type[1].length - 1);
-                                            this.dataTypeTable[name].subItems[sName].fullType = type[0] + '.' + type[1];
-                                            this.dataTypeTable[name].subItems[sName].stringLength = parseInt(type[1], 10);
-                                        } else {
-                                            this.dataTypeTable[name].subItems[sName].fullType = type[0];
-                                        }
-
-                                        //Check if variable is a user defined data type,
-                                        this.dataTypeTable[name].subItems[sName].type = 'USER';
-                                        for (elem in this.plcTypeLen) {
-                                            if (this.plcTypeLen.hasOwnProperty(elem)) {
-                                                if (type[0] === elem) {
-                                                    this.dataTypeTable[name].subItems[sName].type = type[0];
-                                                }
-                                            }
-                                        }
-                                        if (this.dataTypeTable[name].subItems[sName].type === 'USER') {
-                                            this.dataTypeTable[name].subItems[sName].dataType = type[0];
-                                        }
-                                    }
+                                //Data type of the array.
+                                type = typeArr[3].split('(');
+                                if (type[1] !== undefined) {
+                                    type[1] = type[1].substr(0, type[1].length - 1);
+                                    this.dataTypeTable[name].subItems[sName].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0] + '.' + type[1];
+                                    this.dataTypeTable[name].subItems[sName].stringLength = parseInt(type[1], 10);
                                 } else {
-                                    this.log('TAME library warning: Skipping SubItem with no type information: Data type: ' + name + ' ,SubItem: ' + sName);
+                                    this.dataTypeTable[name].subItems[sName].fullType = typeArr[0] + '.' + arrayLength + '.' + type[0];
+                                }
+
+                                //Check added cause there are undefined data types some TwinCAT libs                                         
+                                if (this.service.skipMissingTypes === true && this.dataTypeTable[this.dataTypeTable[name].subItems[sName].typeString] === undefined) {
+                                    this.log('TAME library error: Data type missing in TPY file:');
+                                    this.log(this.dataTypeTable[name].subItems[sName]);
+                                    this.log('TAME library warning: Access to symbols using this data type will return wrong results:');
+                                    this.log(name);
+                                    this.log('TAME library info: Use handles to access symbols using this data type.');
+                                } else {
+                                    if (this.dataTypeTable[this.dataTypeTable[name].subItems[sName].typeString] === undefined) {
+                                        this.log('TAME library error: Data type missing in TPY file!');
+                                        this.log('TAME library info: If you don\'t use this data type you can set the client parameter "skipMissingTypes" to true.');
+                                    }
+                                    this.dataTypeTable[name].subItems[sName].bitSize = this.dataTypeTable[this.dataTypeTable[name].subItems[sName].typeString].bitSize;
+                                    this.dataTypeTable[name].subItems[sName].size = this.dataTypeTable[this.dataTypeTable[name].subItems[sName].typeString].size;
+                                }
+
+
+                                //Item length
+                                this.dataTypeTable[name].subItems[sName].itemSize = this.dataTypeTable[name].subItems[sName].size / arrayLength;
+
+                                //Check if variable is a user defined data type,
+                                this.dataTypeTable[name].subItems[sName].arrayDataType = 'USER';
+                                for (elem in this.plcTypeLen) {
+                                    if (this.plcTypeLen.hasOwnProperty(elem)) {
+                                        if (type[0] === elem) {
+                                            this.dataTypeTable[name].subItems[sName].arrayDataType = type[0];
+                                        }
+                                    }
+                                }
+                                if (this.dataTypeTable[name].subItems[sName].arrayDataType === 'USER') {
+                                    this.dataTypeTable[name].subItems[sName].dataType = type[0];
+                                }
+
+                            } else {
+                                type = typeArr[0].split('(');
+
+                                if (type[1] !== undefined) {
+                                    //String
+                                    type[1] = type[1].substr(0, type[1].length - 1);
+                                    this.dataTypeTable[name].subItems[sName].fullType = type[0] + '.' + type[1];
+                                    this.dataTypeTable[name].subItems[sName].stringLength = parseInt(type[1], 10);
+                                } else {
+                                    this.dataTypeTable[name].subItems[sName].fullType = type[0];
+                                }
+
+                                //Check if variable is a user defined data type,
+                                this.dataTypeTable[name].subItems[sName].type = 'USER';
+                                for (elem in this.plcTypeLen) {
+                                    if (this.plcTypeLen.hasOwnProperty(elem)) {
+                                        if (type[0] === elem) {
+                                            this.dataTypeTable[name].subItems[sName].type = type[0];
+                                        }
+                                    }
+                                }
+                                if (this.dataTypeTable[name].subItems[sName].type === 'USER') {
+                                    this.dataTypeTable[name].subItems[sName].dataType = type[0];
                                 }
                             }
+                        } else {
+                            this.log('TAME library warning: Skipping SubItem with no type information: Data type: ' + name + ' ,SubItem: ' + sName);
                         }
-
                     }
-                    this.dataTypeTableReady = true;
-
-                    this.log('TAME library info: End of reading the data types from the TPY file.');
-                    this.log('TAME library info: Data type table ready.');
-
-                    //Get Upload Info
-                    await this.checkGetUploadInfo();
-
-                } catch (e) {
-                    this.log('TAME library error: An error occured while creating the data type information:');
-                    this.log('Type: ' + fullName);
-                    this.log('SubItem: ' + sName);
-                    this.log(e);
                 }
+
             }
-        };
+            this.dataTypeTableReady = true;
 
-        this.configXmlHttpReq.send(null);
+            this.log('TAME library info: End of reading the data types from the TPY file.');
+            this.log('TAME library info: Data type table ready.');
 
+            //Get Upload Info
+            await this.checkGetUploadInfo();
+
+        } catch (e) {
+            this.log('TAME library error: An error occured while creating the data type information:');
+            this.log('Type: ' + fullName);
+            this.log('SubItem: ' + sName);
+            this.log(e);
+        }
     }
 
 
@@ -4716,7 +4659,8 @@ export class TAME {
         //Start cyclic ADS checks if defined
         if (!isNaN(this.service.adsCheckInterval) && this.service.adsCheckInterval >= 1) {
             this.log('TAME library info: Start cyclic reading of ADS state.');
-            setInterval(this.readAdsState, this.service.adsCheckInterval);
+            this.readAdsState({})
+            setInterval(() => this.readAdsState({}), this.service.adsCheckInterval);
         }
     }
 

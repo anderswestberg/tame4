@@ -37,5 +37,9 @@
     "@typescript-eslint/parser": "^2.19.2",
     "jshint": "^2.8.0",
     "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "set-interval-async": "1.0.30"
   }
 }

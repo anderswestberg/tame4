@@ -6,3 +6,7 @@ node_modules/
 .~*
 *#
 *.tgz
+
+test/.cache/
+
+test/dist/

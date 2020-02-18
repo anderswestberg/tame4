@@ -32,7 +32,6 @@ export declare class TAME {
     symTableReady: boolean;
     dataTypeTableReady: boolean;
     handleCacheReady: boolean;
-    xmlHttpReqTimeout: number;
     indexGroups: {
         M: number;
         MX: number;
@@ -87,7 +86,6 @@ export declare class TAME {
     uploadLength: number;
     handleCache: {};
     handleNames: any[];
-    xmlHttpReq: any;
     log(message: any): void;
     constructor(service: any);
     open(): Promise<void>;
@@ -131,12 +129,6 @@ export declare class TAME {
      *
      */
     getItemInformation(item: any): any;
-    /**
-     * This function creates a XMLHttpRequest object.
-     *
-     * @return {Object} xmlHttpReq  A XMLHttpRequest.
-     */
-    createXMLHttpReq(): any;
     adsReqSendAsync(adsReq: any): Promise<any>;
     /**
      * Create the objects for SOAP and XMLHttpRequest and send the request.
@@ -356,33 +348,35 @@ export declare class TAME {
      *
      * @param {Object} adsReq   ADS Reqest Object
      */
-    parseReadReq(adsReq: any): any;
+    parseReadReq(adsReq: any, response: any): any;
     /**
      * Decode the response string of a SumReadRequest and store the data.
      *
      * @param {Object} adsReq   ADS Request Object
      */
-    parseSumReadReq(adsReq: any): void;
+    parseSumReadReq(adsReq: any, response: any): void;
     /**
      * Decode the response string of a SumWriteRequest.
      *
      * @param {Object} adsReq   ADS Request Object
      */
-    parseSumWriteReq(adsReq: any): void;
+    parseSumWriteReq(adsReq: any, response: any): void;
     /**
      * Decode the response string of a ADS State Request and store the data.
      *
      * @param {Object} adsReq   ADS Reqest Object
      */
-    parseAdsState(adsReq: any): void;
+    parseAdsState(adsReq: any, response: any): void;
     /**
      * Decode the response string of a ReadWrite Request and store the handles.
      *
      * @param {Object} adsReq   ADS Request Object
      */
-    parseHandles(adsReq: any): void;
+    parseHandles(adsReq: any, response: any): void;
     writeSingle(method: any, type: any, args: any): Promise<any>;
     readSingle(method: any, type: any, args: any): Promise<any>;
+    writeAccessStruct(method: any, args: any): Promise<any>;
+    readAccessStruct(method: any, args: any): Promise<any>;
     /**
      * Create the Request Descriptor for a single variable. An item list
      * with a single array item is generated.
@@ -409,7 +403,7 @@ export declare class TAME {
      * @param {String} method   The method, either "Read" or "Write".
      * @param {Object} args     The arguments for building the Request Descriptor.
      */
-    createStructDescriptor(method: any, args: any): void;
+    createStructDescriptor(method: any, args: any): any;
     /**
      * This is the function for creating a write request. Depending on the
      * values and PLC data types passed in the variable list a byte array is
@@ -550,8 +544,8 @@ export declare class TAME {
     readTod: (args: any) => Promise<any>;
     readDate: (args: any) => Promise<any>;
     readDt: (args: any) => Promise<any>;
-    writeStruct: (args: any) => void;
-    readStruct: (args: any) => void;
+    writeStruct: (args: any) => Promise<any>;
+    readStruct: (args: any) => Promise<any>;
     writeArrayOfBool: (args: any) => void;
     writeArrayOfByte: (args: any) => void;
     writeArrayOfUsint: (args: any) => void;
@@ -602,15 +596,14 @@ export declare class TAME {
      *
      * @param {Object} adsReq   An ADS Request Descriptor.
      */
-    parseUploadInfo(adsReq: any): void;
+    parseUploadInfo(adsReq: any, response: any): void;
     /**
      * Parse the upload data and an object (symTable) with the symbol names
      * as the properties.
      *
      * @param {Object} adsReq   An ADS Request Descriptor.
      */
-    parseUpload(adsReq: any): void;
-    configXmlHttpReq: any;
+    parseUpload(adsReq: any, response: any): void;
     /**
     * Get the symbol-file (*.tpy) from the server and create
     * an object (symTable) with the symbol names as the properties.
